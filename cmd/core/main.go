@@ -10,8 +10,8 @@ import (
 // Entrypoint for the program.
 func main() {
     //var starter *app.App
-    //url := "https://somemangasite.com/mangaid/pagenumber"
-    //starter.SaveHtml(url)
+    //MagnaUrl := "https://somemangasite.com/{mangaid}/{pagenumber}"
+    //starter.SaveHtml(MangaUrl)
 
     //html := starter.LoadHtml("manga.html")
     //fmt.Println(starter.FindMangaTitle(html))
