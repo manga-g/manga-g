@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"time"
 
-	"manga-g/app"
+	MangaG "manga-g/app"
 )
 
 // Entrypoint for the program.
 func main() {
 	//var starter *app.App
 	//MagnaUrl := "https://somemangasite.com/{mangaid}/{pagenumber}"
-	//starter.SaveHtml(MangaUrl)
+	//MangaG.SaveHtml(MangaUrl)
 
 	//html := MangaG.LoadHtml("manga.html")
 	//fmt.Println(MangaG.FindMangaTitle(html))
