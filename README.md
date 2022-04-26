@@ -17,7 +17,7 @@ Manual Install (linux) commands
 
 
 
-# Fo' testing dis Manga-G out fa' yo-self
+# Fo' testing dis Manga-G out fuh' yo-self
 
 ## Terminal commands for project setup and run:
 
