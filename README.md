@@ -42,7 +42,9 @@ Manual Install (linux) commands
 # Shouts out to Similar Manga Projects
 <Your manga project github repo LINK here UPON pull request>
 - project 1 
+
 - anotha manga thing
+
 - third thing here
  
 
