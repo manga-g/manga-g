@@ -36,3 +36,9 @@ Manual Install (linux) commands
 ### This command goes into the run folder and tries to run the program
 
 ## `cd cmd/core && go run main.go`
+
+
+
+# Shouts out to Similar Manga Projects
+<Your manga project github repo LINK here UPON pull request>
+
