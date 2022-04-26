@@ -126,11 +126,11 @@ func (app *App) GetImageNumber(url string) string {
 }
 func (app *App) SaveImage(url string) {
 
+	NewDir("images")
 	filename := app.GetImageNumber(url)
 	filename = strings.Replace(filename, ".png", ".jpg", -1)
 	filename = "images/" + filename
 	fmt.Println("Image being written to file location: " + filename)
-	NewDir("images")
 
 	results, _ := http.Get(url)
 	emptyFile, _ := CreateEmptyFile(filename)
