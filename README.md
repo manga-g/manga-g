@@ -1,5 +1,4 @@
-# Manga-G
-### FAST Terminal Manga Program
+# Manga-G FAST Terminal Manga Program
 
 ### Requirements to use Manga-G
  - Go Version 1.18
