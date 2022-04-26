@@ -1,6 +1,7 @@
 package app
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -129,33 +130,38 @@ func (app *App) GetMangaPages(api MangaAPI) {
 }
 
 // DeleteHtml function to delete os file
-func (app *App) DeleteHtml(file string) {
+func (app *App) DeleteFile(file string) {
 	err := os.RemoveAll(file)
 	if err != nil {
 		fmt.Println(err)
 	}
 }
 
-// SaveHtml write a function to save html from url to file
-func (app *App) SaveHtml(url string) {
-	// get the html from the url
+func (app *App) StringifyHtml(url string) string {
 	results, _ := http.Get(url)
 	bytes, err := io.ReadAll(results.Body)
 	if err != nil {
 		fmt.Println(err)
 	}
+	return string(bytes)
+
+}
+
+// SaveHtml write a function to save html from url to file
+func (app *App) SaveHtml(url string) {
+	// get the html from the url
 
 	// save it to a file
-	file, err2 := os.Create("manga.html")
-	if err2 != nil {
+	file, err := os.Create("manga.html")
+	if err != nil {
 		return
 	}
 
 	// turn result into a string
 
 	// write the string to the file
-	_, err3 := file.WriteString(string(bytes))
-	if err3 != nil {
+	_, err2 := file.WriteString(app.StringifyHtml(url))
+	if err2 != nil {
 		return
 	}
 
@@ -175,7 +181,8 @@ func (app *App) LoadHtml(file string) string {
 }
 
 // FindImageUrl write a function to find image url from html
-func (app *App) FindImageUrl(html string) string {
+func (app *App) FindImageUrl(html string) ([]string, error) {
+
 	// find the image url from the html
 	//bytes := []byte(html)
 
@@ -183,18 +190,24 @@ func (app *App) FindImageUrl(html string) string {
 	// find urls from string using regex
 	// find all urls ending in an image extension
 	// return the first url
-	reg, _ := regexp.Compile("https://[a-z]\\d.[a-z]*.[a-z]*/galleries/[1-9]*/[1-9]*.(jpg|png|gif)")
-	return reg.FindString(html)
+
+	reg, _ := regexp.Compile("(https://[a-z][1-9].[a-z]+.[a-z]+/[a-z]+/\\d+.(jpg|png|gif))")
+	match := reg.FindStringSubmatch(html)
+	if match != nil {
+		return match, nil
+	}
+	return nil, errors.New("no image url found")
 }
 
-// Find imagekey from html and url
+// FindImageKey from html and url
 func (app *App) FindImageKey(url string) string {
 	reg, _ := regexp.Compile("galleries/(\\d+)/\\d+.(jpg|png|gif)")
-	ImageKey := reg.FindStringSubmatch(url)[1]
-	return ImageKey
+	// try to find the image key from the url
+	ImageKey := reg.FindStringSubmatch(url)
+	return ImageKey[1]
 }
 
-// Get image number from url
+// GetImageNumber from url
 func (app *App) GetImageNumber(url string) string {
 	reg, _ := regexp.Compile("\\d+.(jpg|png|gif)")
 	return reg.FindString(url)
