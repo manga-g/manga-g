@@ -2,8 +2,8 @@
 ### FAST Terminal Manga Program
 
 ### Requirements to use Manga-G
-## - Go Version 1.18
-## - git
+ - Go Version 1.18
+ - git
 
 ## Go Manual Install (linux) commands
 ## `rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.1.linux-amd64.tar.gz`
