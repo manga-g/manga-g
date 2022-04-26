@@ -17,11 +17,17 @@
 ### Terminal commands for project setup and run:
 
 This command gets the Manga-G code "FROM UP OFF DA HUB"
+
 `git clone https://github.com/4cecoder/manga-g`
 
 This command takes you into the project folder
+
 `cd manga-g`
+
 Checking if there are any problems before running 
+
 `go mod tidy && go mod vendor`
+
 This command goes into the run folder and tries to run the program
+
 `cd cmd/core && go run main.go`
