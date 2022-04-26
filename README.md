@@ -1,4 +1,4 @@
-# Manga-G FAST Terminal Manga Program
+# Manga-G (FAST Terminal Manga Program in written in Go)
 
 ### Requirements to use Manga-G
  - Go Version 1.18
