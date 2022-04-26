@@ -10,7 +10,7 @@
 `export PATH=$PATH:/usr/local/go/bin`
 `go version`
 
-# Fo' testing #Manga-G out fo' yo-self
+# Fo' testing Manga-G out fo' yo-self
 
 ### Terminal commands for project setup and run:
 
