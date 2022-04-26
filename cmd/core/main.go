@@ -11,15 +11,23 @@ import (
 func main() {
 	MangaG := new(app.App)
 
-	mangaUrl := "https://somemangasite.com/{mangaid}/{pagenumber}"
-	MangaG.SaveHtml(mangaUrl)
+	//	mangaUrl := "https://somemangasite.com/{mangaid}/{pagenumber}"
+	fmt.Println("Starting MangaG...")
+	fmt.Println("Please Enter a URL to download:")
+	MangaUrl := MangaG.GetInput()
+	fmt.Println("trying to grab manga from:", MangaUrl)
 
-	//html := MangaG.LoadHtml("manga.html")
-	//fmt.Println(MangaG.FindMangaTitle(html))
-	//imageurl := MagnaG.FindImageUrl(html)
-	//fmt.Println(MangaG.FindImageKey(imageurl))
-	//cycleImages(MangaG, imageurl, html)
+	MangaG.SaveHtml(MangaUrl)
+	fmt.Println("Saved HTML")
 
+	html := MangaG.LoadHtml("manga.html")
+	fmt.Println(MangaG.FindMangaTitle(html))
+
+	ImageUrl := MangaG.FindImageUrl(html)
+	fmt.Println(MangaG.FindImageKey(ImageUrl))
+	cycleImages(MangaG, ImageUrl, html)
+	MangaG.DeleteHtml("manga.html")
+	fmt.Println("Deleted HTML no longer needed")
 }
 
 func cycleImages(starter *app.App, imageurl string, html string) {

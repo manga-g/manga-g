@@ -38,7 +38,7 @@ type App struct {
 }
 
 // GetInput Function to get user input from the command line
-func GetInput() string {
+func (app *App) GetInput() string {
 	var input string
 	_, err := fmt.Scanln(&input)
 	if err != nil {
@@ -126,6 +126,14 @@ func (app *App) GetMangaPages(api MangaAPI) {
 	// get the manga id from the url
 	// get the page number from the url if any
 	// add them to the manga api struct
+}
+
+// DeleteHtml function to delete os file
+func (app *App) DeleteHtml(file string) {
+	err := os.RemoveAll(file)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 // SaveHtml write a function to save html from url to file
