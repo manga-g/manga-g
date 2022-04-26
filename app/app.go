@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 // GetInput Function to get user input from the command line
@@ -124,24 +125,13 @@ func (app *App) GetImageNumber(url string) string {
 	reg, _ := regexp.Compile("\\d+.(jpg|png|gif)")
 	return reg.FindString(url)
 }
-func (app *App) SaveImage(url string) {
-
-	NewDir("images")
-	filename := app.GetImageNumber(url)
-	filename = strings.Replace(filename, ".png", ".jpg", -1)
-	filename = "images/" + filename
-	fmt.Println("Image being written to file location: " + filename)
-
-	results, _ := http.Get(url)
-	emptyFile, _ := CreateEmptyFile(filename)
-	_, _ = io.Copy(emptyFile, results.Body)
-}
 
 // FindMangaId from html string
 func (app *App) FindMangaId(html string) string {
 	reg, _ := regexp.Compile("/g/[1-9]*/")
 	MangaId := strings.Replace(reg.FindString(html), "/g/", "", -1)
 	MangaId = strings.Replace(MangaId, "/", "", -1)
+	fmt.Println("Manga Id: " + MangaId)
 	return MangaId
 }
 
@@ -151,6 +141,7 @@ func (app *App) FindMangaTitle(html string) string {
 	Title := TitleReg.FindString(html)
 	Title = strings.Replace(Title, "<title>", "", -1)
 	Title = strings.Replace(Title, "</title>", "", -1)
+	fmt.Println("Manga Title: " + Title)
 	return Title
 }
 
@@ -179,5 +170,21 @@ func (app *App) GetPageCount(html string) int {
 	PageCount = strings.Replace(PageCount, "<span class=\"num-pages\">", "", -1)
 	PageCount = strings.Replace(PageCount, "</span>", "", -1)
 	PageCountInt := app.StringToInt(PageCount)
+	fmt.Println("Page Count: ", PageCountInt)
 	return PageCountInt
+}
+
+func (app *App) CycleImages(ImageUrl []string, max int) {
+	wg := new(sync.WaitGroup)
+	for i := 1; i < max; i++ {
+		wg.Add(1)
+		go func(ImageUrl []string, i int, wg *sync.WaitGroup) {
+			defer wg.Done()
+			fmt.Println("Attempting to download page:", i)
+			app.SaveImage(ImageUrl[1], app.GetImageNumber(ImageUrl[1]))
+			ImageUrl[1] = app.IncrementImageUrl(ImageUrl[1])
+		}(ImageUrl, i, wg)
+		wg.Wait()
+	}
+	fmt.Println("Finished downloading all pages.")
 }

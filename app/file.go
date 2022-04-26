@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 )
 
 // CreateEmptyFile a function to create an empty file
@@ -70,7 +71,7 @@ func (app *App) LoadHtml(file string) string {
 	return string(bytes)
 }
 
-func NewDir(dir string) {
+func (app *App) NewDir(dir string) {
 
 	// if directory doesn't exist, create it
 	if _, err := os.Stat("images"); os.IsNotExist(err) {
@@ -80,5 +81,32 @@ func NewDir(dir string) {
 		}
 	} else if err != nil {
 		fmt.Printf("Error creating directory: %s\n", err)
+	}
+}
+
+// SaveImage save image to file
+func (app *App) SaveImage(url string, filename string) {
+
+	app.NewDir("images")
+	//filename := app.GetImageNumber(url)
+
+	fmt.Println("got page for filename:", filename)
+	filename = strings.Replace(filename, ".png", ".jpg", -1)
+	fmt.Println("tweaked filename", filename)
+	filename = "images/" + filename
+	fmt.Println("Image being written to file location: " + filename)
+
+	results, _ := http.Get(url)
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+
+		}
+	}(results.Body)
+
+	emptyFile, _ := CreateEmptyFile(filename)
+	_, copyErr := io.Copy(emptyFile, results.Body)
+	if copyErr != nil {
+		fmt.Println("error copying file", copyErr)
 	}
 }
