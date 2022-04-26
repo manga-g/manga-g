@@ -5,7 +5,7 @@
  - Go Version 1.18
  - git
 
-### Don't have Go programming language?
+### Don't have Go programming language? Let's FIX DAT!
 
 Manual Install (linux) commands
 ### `rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.1.linux-amd64.tar.gz`
