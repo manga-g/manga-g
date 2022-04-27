@@ -1,5 +1,7 @@
  Manga-G 
  ### (FAST Terminal Manga Program in written in Go)
+## Usage:
+Paste a url with a similar structure like `mangasite.com/gallery/{Manga-ID}/{Manga-Page-Number}`
 
 ### Requirements to use Manga-G
  - Go Version 1.18
