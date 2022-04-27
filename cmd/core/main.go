@@ -40,8 +40,8 @@ func main() {
 		//	fmt.Println("Attempting to retrieve all manga pages from the site.")
 		//cycleImages(MangaG, ImageUrl[1], MangaG.GetPageCount(html))
 	}
-	//MangaG.DeleteFile("manga.html")
-	//fmt.Println("Deleted HTML no longer needed")
+	MangaG.DeleteFile("manga.html")
+	fmt.Println("Deleted HTML no longer needed")
 	//MangaG.DeleteFile("images/")
 	//fmt.Println("Deleted images no longer needed")
 }
