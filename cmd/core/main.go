@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 
 	"manga-g/app"
 )
@@ -17,7 +16,7 @@ func main() {
 	MangaUrl := MangaG.GetInput()
 	fmt.Println("trying to grab manga from:", MangaUrl)
 
-	time.Sleep(time.Second * 8)
+	//	time.Sleep(time.Second * 8)
 	MangaG.SaveHtml(MangaUrl, "manga.html")
 	fmt.Println("Saved HTML")
 
@@ -29,19 +28,19 @@ func main() {
 	//	fmt.Println("Html was loaded into memory")
 
 	fmt.Println("Got title from header:\n" + MangaG.FindMangaTitle(html))
-	MangaG.NewDir("images")
-	ImageUrl, imgErr := MangaG.FindImageUrl(html)
-	if imgErr != nil {
-		fmt.Println("Error:", imgErr)
-	} else {
-		fmt.Println("Found Image URL:", ImageUrl[1])
-		MangaG.CycleImages(ImageUrl, MangaG.GetPageCount(html))
+	//	MangaG.NewDir("images")
+	//	ImageUrl, imgErr := MangaG.FindImageUrl(html)
+	//	if imgErr != nil {
+	//		fmt.Println("Error:", imgErr)
+	//	} else {
+	//		fmt.Println("Found Image URL:", ImageUrl[1])
+	//		MangaG.CycleImages(ImageUrl, MangaG.GetPageCount(html))
 
-		//	fmt.Println("Attempting to retrieve all manga pages from the site.")
-		//cycleImages(MangaG, ImageUrl[1], MangaG.GetPageCount(html))
-	}
-	MangaG.DeleteFile("manga.html")
-	fmt.Println("Deleted HTML no longer needed")
+	//	fmt.Println("Attempting to retrieve all manga pages from the site.")
+	//cycleImages(MangaG, ImageUrl[1], MangaG.GetPageCount(html))
+	//	}
+	//	MangaG.DeleteFile("manga.html")
+	//	fmt.Println("Deleted HTML no longer needed")
 	//MangaG.DeleteFile("images/")
 	//fmt.Println("Deleted images no longer needed")
 }
