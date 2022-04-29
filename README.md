@@ -1,6 +1,6 @@
  Manga-G 
 ## URASUNDAY BRANCH
- ### (FAST Terminal UraSunday Program in written in Go)
+ ### (FAST Terminal *UraSunday* Program in written in Go)
 ## Usage:
 
 run MangaG in terminal with this command
