@@ -1,5 +1,7 @@
  Manga-G 
- ### (FAST Terminal Manga Program in written in Go)
+MANGA DEX CRAWLIN'
+
+ ### (FAST Terminal Manga Dex Program in written in Go)
 ## Usage:
 Paste a url with a similar structure such as: `mangasite.com/gallery/{Manga-ID}/{Manga-Page-Number}`
 
