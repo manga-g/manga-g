@@ -26,6 +26,8 @@ Manual Install (linux) commands
 
 ### `go version`
 
+### For other operating systems:
+https://go.dev/docs/install
 
 
 
