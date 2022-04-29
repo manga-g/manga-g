@@ -45,6 +45,7 @@ Manual Install (linux) commands
 
 ## `cd cmd/core && go run main.go`
 
+## `go build main.go && mv main MangaG`
 
 
 # Shouts out to Similar Manga Projects
