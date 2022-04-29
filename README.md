@@ -1,5 +1,5 @@
  Manga-G 
- ### (FAST Terminal Manga Program in written in Go)
+ ### (Terminal Manga Program in written in Go)
 ![Manga G Logo](manga-g.png "MangaG")
 ## Usage:
 Paste a url with a similar structure such as: `mangasite.com/gallery/{Manga-ID}/{Manga-Page-Number}`
