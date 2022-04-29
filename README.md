@@ -1,5 +1,6 @@
  Manga-G 
-MANGA DEX CRAWLIN'
+
+MANGA DEX EDITION
 
  ### (FAST Terminal Manga Dex Program in written in Go)
 ## Usage:
