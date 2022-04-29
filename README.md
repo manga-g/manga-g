@@ -2,8 +2,11 @@
 ## URASUNDAY BRANCH
  ### (FAST Terminal Manga Program in written in Go)
 ## Usage:
+
 run MangaG in terminal with this command
+
 `./MangaG`
+
 Paste a url with a similar structure such as: `https://urasunday.com/title/1749/185053`
 
 ### Requirements to use Manga-G
