@@ -12,7 +12,7 @@ Paste a url with a similar structure such as: `mangasite.com/gallery/{Manga-ID}/
 
 Manual Install (linux) commands
 
-### wget https://go.dev/dl/go1.18.1.linux-amd64.tar.gz
+### `wget https://go.dev/dl/go1.18.1.linux-amd64.tar.gz`
 
 ### `rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.1.linux-amd64.tar.gz`
 
