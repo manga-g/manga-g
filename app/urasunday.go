@@ -15,6 +15,7 @@ import (
 func (app *App) FindImageUrls(html string) []string {
 	var urls []string
 	rx := regexp.MustCompile("https://urasunday.com/secure/\\d+/webp/manga_page_high/\\d+/\\d+.webp\\?hash=.*?&expires=\\d+")
+
 	for _, match := range rx.FindAllStringSubmatch(html, -1) {
 		match[0] = strings.ReplaceAll(match[0], "'", "")
 		match[0] = strings.ReplaceAll(match[0], "\"", "")

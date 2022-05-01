@@ -82,28 +82,8 @@ func (app *App) StringToInt(str string) int {
 	return i
 }
 
-// GetMangaPages function to get the manga pages form a url string
-//func (app *App) GetMangaPages(api MangaAPI) {
-//	// get the page number from the url
-//	// get the image file location from the body of the request
-//	// and store it in the app.Mangas
-//	// get the api endpoint from the url
-//	// get the manga id from the url
-//	// get the page number from the url if any
-//	// add them to the manga api struct
-//}
-
 // FindImageUrl write a function to find image url from html
 func (app *App) FindImageUrl(html string) ([]string, error) {
-
-	// find the image url from the html
-	//bytes := []byte(html)
-
-	// find the image url from the html
-	// find urls from string using regex
-	// find all urls ending in an image extension
-	// return the first url
-
 	reg, _ := regexp.Compile("(https?://[a-z]\\d+.[a-z]+.[a-z]+/[a-z]+/\\d+/\\d+.(png|jpg|gif))")
 	match := reg.FindStringSubmatch(html)
 	if match != nil {

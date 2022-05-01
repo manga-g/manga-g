@@ -26,7 +26,19 @@ func (app *App) DeleteFile(file string) {
 }
 
 func (app *App) StringifyHtml(url string) string {
-	results, _ := http.Get(url)
+
+	// set user-agent
+	client := &http.Client{}
+	html, _ := http.Get(url)
+	body := html.Body // get body
+	req, err := http.NewRequest("GET", url, body)
+	if err != nil {
+		fmt.Println(err)
+	}
+	req.Header.Set("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0 Mobile/14C92 Safari/602.1")
+
+	results, err := client.Do(req)
+
 	bytes, err := io.ReadAll(results.Body)
 	if err != nil {
 		fmt.Println(err)
