@@ -1,10 +1,13 @@
- Manga-G 
-
- ### (FAST Terminal *MangaDex* Program in written in Go)
-
+Manga-G 
+ 
+ 
 MANGA DEX EDITION
 
- ### (FAST Terminal Manga Dex Program in written in Go)
+
+### (FAST Terminal *MangaDex* Program in written in Go)
+
+
+
 ## Usage:
 
 run MangaG in terminal with this command
