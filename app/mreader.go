@@ -13,8 +13,8 @@ import (
 
 const baseURL = "http://www.mangareader.net"
 
-// Manga is a struct that holds the logic about how download HQ from MangaReader
-type Manga struct {
+// ReadManga is a struct that holds the logic about how download HQ from MangaReader
+type ReadManga struct {
 	URL            string
 	ChapterNode    string
 	PageNode       string
@@ -25,7 +25,7 @@ type Manga struct {
 }
 
 // FetchManga gets all manga pages basead on an URL
-func (m *Manga) FetchManga(out string) error {
+func (m *ReadManga) FetchManga(out string) error {
 	done := make(chan struct{})
 	defer close(done)
 
@@ -42,7 +42,7 @@ func (m *Manga) FetchManga(out string) error {
 }
 
 // getChapters get page links for a specific chapter
-func (m *Manga) getChapters(done chan struct{}) (<-chan string, <-chan error) {
+func (m *ReadManga) getChapters(done chan struct{}) (<-chan string, <-chan error) {
 	chapters := make(chan string)
 	errc := make(chan error, 1)
 
@@ -73,7 +73,7 @@ func (m *Manga) getChapters(done chan struct{}) (<-chan string, <-chan error) {
 }
 
 // getImages spawn goroutines for fetch images URLs
-func (m *Manga) getImages(done <-chan struct{}, in <-chan string) <-chan map[string]string {
+func (m *ReadManga) getImages(done <-chan struct{}, in <-chan string) <-chan map[string]string {
 	var wg sync.WaitGroup
 	images := make(chan map[string]string)
 
@@ -93,7 +93,7 @@ func (m *Manga) getImages(done <-chan struct{}, in <-chan string) <-chan map[str
 }
 
 // getPages spawn goroutines for fetch page URLs
-func (m *Manga) getPages(done <-chan struct{}, in <-chan string) <-chan string {
+func (m *ReadManga) getPages(done <-chan struct{}, in <-chan string) <-chan string {
 	var wg sync.WaitGroup
 	pages := make(chan string)
 
@@ -113,7 +113,7 @@ func (m *Manga) getPages(done <-chan struct{}, in <-chan string) <-chan string {
 }
 
 // fetchImages given a page URL extract an image link from it
-func (m *Manga) fetchImages(done <-chan struct{}, pages <-chan string, images chan<- map[string]string) {
+func (m *ReadManga) fetchImages(done <-chan struct{}, pages <-chan string, images chan<- map[string]string) {
 	for page := range pages {
 		doc, _ := goquery.NewDocument(page)
 		image := doc.Find(m.ImageNode).First()
@@ -128,7 +128,7 @@ func (m *Manga) fetchImages(done <-chan struct{}, pages <-chan string, images ch
 }
 
 // fetchPages given a chapter URL extract a page link from it
-func (m *Manga) fetchPages(done <-chan struct{}, chapters <-chan string, pages chan<- string) {
+func (m *ReadManga) fetchPages(done <-chan struct{}, chapters <-chan string, pages chan<- string) {
 	for chapter := range chapters {
 		page, err := goquery.NewDocument(chapter)
 
@@ -153,7 +153,7 @@ func (m *Manga) fetchPages(done <-chan struct{}, chapters <-chan string, pages c
 }
 
 // outputFunc call the OutputFunc on Manga struct or retuning nothing
-func (m *Manga) outputFunc(images <-chan map[string]string, out string) error {
+func (m *ReadManga) outputFunc(images <-chan map[string]string, out string) error {
 	if m.OutputFunc != nil {
 		return m.OutputFunc(images, out)
 	}
