@@ -5,8 +5,13 @@
 Paste a url with a similar structure such as: `mangasite.com/gallery/{Manga-ID}/{Manga-Page-Number}`
 
 ### Requirements to use Manga-G
- - Go Version 1.18
+ - Go Version 1.18 (Should work with previous go versions)
  - git
+### If you have Go but NOT 1.18+ then
+
+- Modify the `go.mod` file to your currently installed go base version number
+
+- For example I have go `1.18.1` installed but in the go mod I only need to write `1.18`
 
 ### Don't have Go programming language? Let's FIX DAT!
 
