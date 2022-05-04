@@ -1,12 +1,8 @@
 Manga-G 
- 
- 
-MANGA DEX EDITION
 
+ ### Terminal Manga Program in written in Go
 
-### (FAST Terminal *MangaDex* Program in written in Go)
-
-
+![Manga G Logo](manga-g.png "MangaG")
 
 ## Usage:
 
@@ -14,13 +10,19 @@ run MangaG in terminal with this command
 
 `./MangaG`
 
-Paste a url with a similar structure such as: `https://urasunday.com/title/1749/185053`
+Paste url with a similar structure such as: `https://urasunday.com/title/1749/185053`
 
 ### Requirements to use Manga-G
- - Go Version 1.18
+ - Go Version 1.18 (Should work with previous go versions)
  - git
  - wget 
  
+### If you have Go but NOT 1.18+ then
+
+- Modify the `go.mod` file to your currently installed go base version number
+
+- For example, I have go `1.18.1` installed but in the go mod I only need to write `1.18`
+
 ### Don't have Go programming language? Let's FIX DAT!
 
 Manual Install (linux) commands
@@ -67,5 +69,3 @@ https://go.dev/docs/install
 - project 1 
 - anotha manga thing
 - third thing here
- 
-
