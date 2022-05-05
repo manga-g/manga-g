@@ -10,7 +10,7 @@ run MangaG in terminal with this command
 
 `./MangaG`
 
-Paste url with a similar structure such as: `https://urasunday.com/title/1749/185053`
+Paste url with a similar structure such as: `https://somemangasite.com/1749/185053`
 
 ### Requirements to use Manga-G
  - Go Version 1.18 (Should work with previous go versions)
