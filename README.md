@@ -48,7 +48,7 @@ Manga-G
     ·
     <a href="https://github.com/4cecoder/manga-g/issues">Report Bug</a>
     ·
-    <a href="https://github.com/4cecoder/manga-g/issues">Request Feature</a>
+    <a href="https://github.com/4cecoder/manga-g/issues/new/choose">Request Feature</a>
   </p>
 </div>
 
