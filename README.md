@@ -33,7 +33,7 @@ Manga-G
 <br />
 <div align="center">
   <a href="https://github.com/4cecoder/manga-g">
-    <img src="images/manga-g.png" alt="Logo" width="80" height="80">
+    <img src="manga-g.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Best-README-Template</h3>
