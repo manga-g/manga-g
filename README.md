@@ -39,7 +39,7 @@ Manga-G
     <img src="manga-g.png" alt="Logo" width="400" height="200">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">Manga-G</h3>
 
   <p align="center">
     An awesome CLI program to read Manga via Terminal!
