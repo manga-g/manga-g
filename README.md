@@ -3,7 +3,7 @@ Manga-G
  ### Terminal Manga Program in written in Go
 
 ![Manga G Logo](manga-g.png "MangaG")
-[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Get%20terminal%20170%20reading%20Manga%20linux%20golang%20on%20cli%204&url=https://www.github.com/4cecoder/manga-g&via=github&hashtags=cli,fast,golang,manga,downloader)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=In%20terminal%20read%20Manga%20fast%20with%20our%20cli%204&url=https://www.github.com/4cecoder/manga-g&via=github&hashtags=cli,fast,golang,manga,downloader)
 
 ## Usage:
 
