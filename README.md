@@ -6,7 +6,12 @@ Manga-G
  - in the Go programming Language
  - For use (but not limited to) Linux, MacOS, and Windows Systems
  
- <!-- TABLE OF CONTENTS -->
+ 
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+
+<!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
   <ol>
