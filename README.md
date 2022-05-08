@@ -1,10 +1,8 @@
 Manga-G 
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=In%20terminal%20read%20Manga%20fast%20with%20our%20cli&url=https://www.github.com/4cecoder/manga-g&via=github&hashtags=cli,fast,golang,manga,downloader)
  ### Terminal Manga Program in written in Go
-Linux MacOS Windows
-![Manga G Logo](manga-g.png "MangaG")
-
-<!-- TABLE OF CONTENTS -->
+ 
+ <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
   <ol>
@@ -28,6 +26,12 @@ Linux MacOS Windows
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
+ 
+ 
+Linux MacOS Windows
+![Manga G Logo](manga-g.png "MangaG")
+
+
 </details>
 
 ## Usage:
