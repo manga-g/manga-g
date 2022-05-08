@@ -44,6 +44,20 @@ run MangaG in terminal with this command
 
 Paste url with a similar structure such as: `https://somemangasite.com/1749/185053`
 
+
+# Shouts out to Similar Manga Projects
+<Your manga project github repo LINK here UPON pull request>
+
+- project 1 
+- anotha manga thing
+- third thing here
+ 
+ 
+ 
+ 
+ 
+ 
+ ## Installation
  
 ### If you have Go but NOT 1.18+ then
 
@@ -67,9 +81,6 @@ Manual Install (linux) commands
 https://go.dev/doc/install
 
 
-
-# Testing Manga-G
-
 ## Terminal commands for project setup and run:
 
 ### This command gets the Manga-G code "FROM UP OFF DA HUB"
@@ -91,9 +102,3 @@ https://go.dev/doc/install
 ## `go build main.go && mv main MangaG`
 
 
-# Shouts out to Similar Manga Projects
-<Your manga project github repo LINK here UPON pull request>
-
-- project 1 
-- anotha manga thing
-- third thing here
