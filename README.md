@@ -74,8 +74,8 @@ run MangaG in terminal with this command
 
 Paste url with a similar structure such as: `https://somemangasite.com/1749/185053`
 
-
-# Shouts out to Similar Manga Projects
+# Acknowledgments
+## Shouts out to Similar Manga Projects
 <Your manga project github repo LINK here UPON pull request>
 
 - project 1 
