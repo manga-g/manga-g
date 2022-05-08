@@ -1,6 +1,9 @@
 Manga-G 
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=In%20terminal%20read%20Manga%20fast%20with%20our%20cli&url=https://www.github.com/4cecoder/manga-g&via=github&hashtags=cli,fast,golang,manga,downloader)
- ### Manga Program in written for your Terminal in Go
+
+ ### About the Project
+ - written for your Terminal
+ -  in the Go programming Language
  For use on Linux, MacOS, and Windows Systems
  
  <!-- TABLE OF CONTENTS -->
