@@ -25,10 +25,37 @@ Manga-G
      <li><a href="#contributing">Contributing</a></li>
      <li><a href="#license">License</a></li>
   </ol>
- 
- 
-![Manga G Logo](manga-g.png "MangaG")
+
 </details>
+
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/4cecoder/manga-g">
+    <img src="images/manga-g.png" alt="Logo" width="80" height="80">
+  </a>
+
+  <h3 align="center">Best-README-Template</h3>
+
+  <p align="center">
+    An awesome CLI program to read Manga via Terminal!
+    <br />
+    <a href="https://github.com/4cecoder/manga-g/doc/"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    ·
+    <a href="https://github.com/4cecoder/manga-g/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/4cecoder/manga-g/issues">Request Feature</a>
+  </p>
+</div>
+
+
+
+
+
 
 ## Prerequisites
  - Go Version 1.18 (Should work with previous go versions)
