@@ -3,8 +3,8 @@ Manga-G
 
  ### About the Project
  - written for your Terminal
- -  in the Go programming Language
- For use on Linux, MacOS, and Windows Systems
+ - in the Go programming Language
+ - For use (but not limited to) Linux, MacOS, and Windows Systems
  
  <!-- TABLE OF CONTENTS -->
 <details>
