@@ -30,7 +30,7 @@ Manga-G
 ![Manga G Logo](manga-g.png "MangaG")
 </details>
 
-## Prerequisetes
+## Prerequisites
  - Go Version 1.18 (Should work with previous go versions)
  - git
  - wget 
