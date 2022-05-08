@@ -30,6 +30,12 @@ Manga-G
 ![Manga G Logo](manga-g.png "MangaG")
 </details>
 
+## Prerequisetes
+ - Go Version 1.18 (Should work with previous go versions)
+ - git
+ - wget 
+
+
 ## Usage:
 
 run MangaG in terminal with this command
@@ -38,10 +44,6 @@ run MangaG in terminal with this command
 
 Paste url with a similar structure such as: `https://somemangasite.com/1749/185053`
 
-### Requirements to use Manga-G
- - Go Version 1.18 (Should work with previous go versions)
- - git
- - wget 
  
 ### If you have Go but NOT 1.18+ then
 
