@@ -4,8 +4,6 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
-<img src="https://img.shields.io/badge/os-linux-brightgreen"><img src="https://img.shields.io/badge/os-mac-brightgreen"><img src="https://img.shields.io/badge/os-windows-brightgreen">
-
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=In%20terminal%20read%20Manga%20fast%20with%20our%20cli&url=https://www.github.com/4cecoder/manga-g&via=github&hashtags=cli,fast,golang,manga,downloader)
 
 
@@ -39,6 +37,7 @@
      <li><a href="#acknowledgments">Acknowledgments</a></li>
      <li><a href="#installation">Installation</a></li>
      <li><a href="#contributing">Contributing</a></li>
+     <li><a href="#contact">Contact</a></li>
      <li><a href="#license">License</a></li>
   </ol>
 
@@ -144,6 +143,8 @@ https://go.dev/doc/install
 
 ## `go build main.go && mv main MangaG`
 
+## Contact
+<img src="https://img.shields.io/badge/os-linux-brightgreen"><img src="https://img.shields.io/badge/os-mac-brightgreen"><img src="https://img.shields.io/badge/os-windows-brightgreen">
 
 <!-- LICENSE -->
 ## License
@@ -163,6 +164,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [issues-shield]: https://img.shields.io/github/issues/4cecoder/manga-g.svg?style=for-the-badge
 [issues-url]: https://github.com/4cecoder/manga-g/issues
 [license-shield]: https://img.shields.io/github/license/4cecoder/manga-g.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[license-url]: https://github.com/4cecoder/manga-g/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
