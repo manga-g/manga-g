@@ -81,7 +81,7 @@ Paste url with a similar structure such as: `https://somemangasite.com/1749/1850
 ### Shouts out to Similar Manga Projects
 <Your manga project github repo LINK here UPON pull request>
 
-- project 1 
+- [Tachiyomi](https://github.com/tachiyomiorg/tachiyomi)
 - anotha manga thing
 - third thing here
  
