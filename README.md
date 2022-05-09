@@ -52,8 +52,6 @@
     <a href="https://github.com/4cecoder/manga-g/doc/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
     <a href="https://github.com/4cecoder/manga-g/issues">Report Bug</a>
     ·
     <a href="https://github.com/4cecoder/manga-g/issues/new/choose">Request Feature</a>
