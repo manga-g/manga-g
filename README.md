@@ -63,6 +63,9 @@
  - written for your Terminal
  - in the Go programming Language
  - For use (but not limited to) Linux, MacOS, and Windows Systems
+<img src="https://img.shields.io/badge/os-linux-brightgreen">
+<img src="https://img.shields.io/badge/os-mac-brightgreen">
+<img src="https://img.shields.io/badge/os-windows-brightgreen">
 
 
 
