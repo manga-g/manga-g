@@ -1,6 +1,8 @@
 package main
 
 import (
+    "fmt"
+
     "manga-g/app"
 )
 
@@ -8,10 +10,10 @@ import (
 func main() {
     MangaG := new(app.App)
 
-    //MangaUrl := "https://mangadex.org/chapter/ef0a1ebe-c57d-49f2-bae8-75a64cfbd2a9/1"
+    //MangaUrl := ""
     //fmt.Println("Starting MangaG...")
     //	fmt.Println("Please Enter a URL for a Manga's first page to download:")
-    //	MangaUrl := MangaG.GetInput()
+    MangaUrl := MangaG.GetInput()
     //	fmt.Println("trying to grab manga from:", MangaUrl)
 
     //time.Sleep(time.Second * 8)
@@ -22,12 +24,13 @@ func main() {
     //html := MangaG.LoadHtml("manga.html")
     //fmt.Println("Attempting to load HTML from a file...")
 
-    //html := MangaG.StringifyHtml(MangaUrl)
+    html := MangaG.StringifyHtml(MangaUrl)
     //fmt.Println(html)
-    //	fmt.Println("Html was loaded into memory")
+    fmt.Println("Html was loaded into memory")
 
     //	fmt.Println("Attempting to retrieve all manga pages from the site.")
     MangaG.NewDir("images")
+    MangaG.NewDir(MangaG.TitleToDirName(MangaG.FindMangaTitle(html)))
 
     //pages, _ := MangaG.GetMangaDex(html)
     //fmt.Println("Pages:", pages)
