@@ -47,7 +47,7 @@
   <p align="center">
     An awesome CLI program to read Manga via Terminal!
     <br />
-    <a href="https://github.com/4cecoder/manga-g/doc/"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/4cecoder/manga-g/tree/main/doc"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/4cecoder/manga-g/issues">Report Bug</a>
