@@ -136,6 +136,8 @@ https://go.dev/doc/install
 
 ## Contact
 <a href="https://discord.gg/aqu7GpqVmR"><img src="https://invidget.switchblade.xyz/aqu7GpqVmR"></a>
+  
+<a href="https://nightly.revolt.chat/invite/4FKHbs78"><img src="https://developers.revolt.chat/img/logo.png" width="80"></a>
 
 <!-- LICENSE -->
 ## License
