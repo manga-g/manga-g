@@ -135,7 +135,7 @@ https://go.dev/doc/install
 ## `go build main.go && mv main MangaG`
 
 ## Contact
-
+<a href="https://discord.gg/aqu7GpqVmR"><img src="https://invidget.switchblade.xyz/aqu7GpqVmR"></a>
 
 <!-- LICENSE -->
 ## License
