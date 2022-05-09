@@ -135,6 +135,8 @@ https://go.dev/doc/install
 ## `go build main.go && mv main MangaG`
 
 ## Contact
+  
+### On the Cord
 <a href="https://discord.gg/aqu7GpqVmR"><img src="https://invidget.switchblade.xyz/aqu7GpqVmR"></a>
   
 ### You can also join us on Revolt.  
