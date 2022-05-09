@@ -6,7 +6,7 @@ on:
       - main
 jobs:
   Rebuild:
-    runs-on:ubuntu-18.04
+    runs-on: ubuntu-18.04
   steps:
     - name: Build Main Binary
       run: go build cmd/core/main.go
