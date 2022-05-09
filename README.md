@@ -71,9 +71,7 @@
 
 ## Usage:
 
-run MangaG in terminal with this command
-
-`./MangaG`
+run the program with this command: `./MangaG`
 
 Paste url with a similar structure such as: `https://somemangasite.com/1749/185053`
 
