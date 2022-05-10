@@ -1,11 +1,13 @@
 <div id="top"></div>
 <div align="center">
   
-<a href="https://github.com/wasmerio/wasmer-go/actions?query=workflow%3A%22Build+and+Test%22"><img src="https://github.com/wasmerio/wasmer-go/workflows/Build%20and%20Test/badge.svg" alt="Build Status"></a>  
+ 
   
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+  
+  <a href="https://github.com/wasmerio/wasmer-go/actions?query=workflow%3A%22Build+and+Test%22"><img src="https://github.com/wasmerio/wasmer-go/workflows/Build%20and%20Test/badge.svg" alt="Build Status"></a> 
 
 <img src="https://img.shields.io/badge/os-linux-brightgreen"> <img src="https://img.shields.io/badge/os-mac-brightgreen"> <img src="https://img.shields.io/badge/os-windows-brightgreen">
 
