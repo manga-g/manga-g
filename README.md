@@ -146,6 +146,8 @@ https://go.dev/doc/install
   
 ### On the Cord
 <a href="https://discord.gg/aqu7GpqVmR"><img src="https://invidget.switchblade.xyz/aqu7GpqVmR"></a>
+
+<a href="https://slack.wasmer.io/">Slack Channel</a>
   
 ### You can also join us on Revolt.  
   
