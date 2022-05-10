@@ -101,7 +101,8 @@ Paste url with a similar structure such as: `https://somemangasite.com/1749/1850
 ### Don't have Go programming language? Let's FIX DAT!
 
 ### Debian/Ubuntu/Mint/etc.: `sudo apt-get install golang-go`
-
+  
+# OR (For advanced users)
 Manual Install (linux) commands
 
 ### `wget https://go.dev/dl/go1.18.1.linux-amd64.tar.gz`
