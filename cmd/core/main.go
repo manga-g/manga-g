@@ -42,7 +42,7 @@ func DoStuff(MangaG *app.MG, MangaUrl string) {
 	MangaG.NewDir("images")
 	newFolderName := string(MangaG.TitleToDirName(MangaG.FindMangaTitle(html)))
 
-	// if nfnString length is longer than nameLimit set newFolderName to the length of nameLimit
+	// if newFolderName is longer than nameLimit set newFolderName to the length of nameLimit
 	if nameLimit < len(newFolderName) {
 		newFolderName = newFolderName[:nameLimit]
 	}
