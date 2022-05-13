@@ -100,9 +100,6 @@ func (app *MG) NewDir(dir string) {
 // SaveImage save image to file
 func (app *MG) SaveImage(url string, filename string) {
 
-	//app.NewDir("images")
-	//filename := app.GetImageNumber(url)
-
 	fmt.Println("got page for filename:", filename)
 	filename = strings.Replace(filename, ".png", ".jpg", -1)
 	fmt.Println("tweaked filename", filename)
