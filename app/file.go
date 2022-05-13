@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -86,8 +87,8 @@ func (app *App) LoadHtml(file string) string {
 func (app *App) NewDir(dir string) {
 
 	// if directory doesn't exist, create it
-	if _, err := os.Stat("images"); os.IsNotExist(err) {
-		err := os.Mkdir("images", 0755)
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		err := os.Mkdir(dir, 0755)
 		if err != nil {
 			println("Error creating directory: " + err.Error())
 		}
@@ -99,7 +100,7 @@ func (app *App) NewDir(dir string) {
 // SaveImage save image to file
 func (app *App) SaveImage(url string, filename string) {
 
-	app.NewDir("images")
+	//app.NewDir("images")
 	//filename := app.GetImageNumber(url)
 
 	fmt.Println("got page for filename:", filename)
@@ -121,4 +122,9 @@ func (app *App) SaveImage(url string, filename string) {
 	if copyErr != nil {
 		fmt.Println("error copying file", copyErr)
 	}
+}
+
+func (app *App) TitleToDirName(title string) string {
+	reg, _ := regexp.Compile("[^a-zA-Z\\d]+")
+	return reg.ReplaceAllString(title, "")
 }
