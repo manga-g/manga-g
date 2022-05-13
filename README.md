@@ -83,6 +83,7 @@ Paste url with a similar structure such as: `https://somemangasite.com/1749/1850
 ### Shouts out to Similar Manga Projects
 <Your manga project github repo LINK here UPON pull request>
   
+- [MangoDL](https://github.com/Gyro7/mangodl)
 - [MangaDL](https://github.com/MangDL/MangDL)
 - [Manga-py](https://github.com/manga-py/manga-py)
 - [Tachiyomi](https://github.com/tachiyomiorg/tachiyomi)
