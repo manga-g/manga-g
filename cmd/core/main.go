@@ -24,6 +24,7 @@ func main() {
 }
 
 func DoStuff(MangaG *app.MG, MangaUrl string) {
+    nameLimit := 15
     //	fmt.Println("trying to grab manga from:", MangaUrl)
     //time.Sleep(time.Second * 8)
     //MangaG.SaveHtml(MangaUrl, "manga.html")
@@ -39,17 +40,14 @@ func DoStuff(MangaG *app.MG, MangaUrl string) {
 
     //	fmt.Println("Attempting to retrieve all manga pages from the site.")
     MangaG.NewDir("images")
-    newFolderName := MangaG.TitleToDirName(MangaG.FindMangaTitle(html))
-    // turn newFolderName to a string
-    nfnString := string(newFolderName)
-    // if nfnString length is longer than 10 characters then set nfnString to the first 10 characters
-    nameLimit := 15
+    newFolderName := string(MangaG.TitleToDirName(MangaG.FindMangaTitle(html)))
 
-    if nameLimit < len(nfnString) {
-        nfnString = nfnString[:nameLimit]
+    // if nfnString length is longer than nameLimit set newFolderName to the length of nameLimit
+    if nameLimit < len(newFolderName) {
+        newFolderName = newFolderName[:nameLimit]
     }
-    fmt.Println(nfnString)
-    MangaG.NewDir("images/" + nfnString)
+
+    MangaG.NewDir("images/" + newFolderName)
 
     //	found := MangaG.FindImageUrls(html)
     //	MangaG.DownloadAllWebp(found)
