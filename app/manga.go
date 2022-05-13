@@ -9,7 +9,7 @@ import (
 )
 
 // GetMangaAPI function to get the manga information form a url string
-func (app *App) GetMangaAPI(url string) MangaAPI {
+func (app *MG) GetMangaAPI(url string) MangaAPI {
 	var api MangaAPI
 	result, err := http.Get(url)
 	if err != nil {
@@ -43,7 +43,7 @@ func (app *App) GetMangaAPI(url string) MangaAPI {
 }
 
 // FindMangaId from html string
-func (app *App) FindMangaId(html string) string {
+func (app *MG) FindMangaId(html string) string {
 	reg, _ := regexp.Compile("/g/[1-9]*/")
 	MangaId := strings.Replace(reg.FindString(html), "/g/", "", -1)
 	MangaId = strings.Replace(MangaId, "/", "", -1)
@@ -52,7 +52,7 @@ func (app *App) FindMangaId(html string) string {
 }
 
 // AddManga adds a new to append add manga to app.Mangas
-func (app *App) AddManga(manga Manga) {
+func (app *MG) AddManga(manga Manga) {
 	// append manga to app.Mangas
 	app.Mangas = append(app.Mangas, manga)
 }

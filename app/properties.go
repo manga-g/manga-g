@@ -20,8 +20,9 @@ type Page struct {
 
 type Pages []Page
 
-type App struct {
+type MG struct {
 	Query    string
+	Sites    Sites
 	MangaAPI MangaAPI
 	Mangas   []Manga
 	// Viewer
@@ -33,3 +34,11 @@ type MangaAPI struct {
 	MangaId    int
 	PageNumber int
 }
+type Site struct {
+	url string
+}
+type Sites []Site
+type Reg struct {
+}
+
+type Regi []Reg

@@ -1,7 +1,7 @@
-package app
+package site
 
 //
-//func (app *App) GetMangaDex(html string) ([]string, error) {
+//func (app *MG) GetMangaDex(html string) ([]string, error) {
 //	var manga []string
 //	reg := regexp.MustCompile("blob.*?\"")
 //	for i, match := range reg.FindAllStringSubmatch(html, -1) {

@@ -1,4 +1,4 @@
-package app
+package site
 
 import (
 	"errors"

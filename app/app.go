@@ -10,7 +10,7 @@ import (
 )
 
 // GetInput Function to get user input from the command line
-func (app *App) GetInput() string {
+func (app *MG) GetInput() string {
 	var input string
 	_, err := fmt.Scanln(&input)
 	if err != nil {
@@ -20,7 +20,7 @@ func (app *App) GetInput() string {
 }
 
 // ValidateUrl checks if url is valid
-func (app *App) ValidateUrl(UrlToCheck string) bool {
+func (app *MG) ValidateUrl(UrlToCheck string) bool {
 	_, err := url.ParseRequestURI(UrlToCheck)
 	if err != nil {
 		return false
@@ -31,7 +31,7 @@ func (app *App) ValidateUrl(UrlToCheck string) bool {
 // get title form http request
 
 // StringToInt to change string to int
-func (app *App) StringToInt(str string) int {
+func (app *MG) StringToInt(str string) int {
 	var i int
 	i, err := strconv.Atoi(str)
 	if err != nil {
@@ -41,7 +41,7 @@ func (app *App) StringToInt(str string) int {
 }
 
 // FindImageUrl write a function to find image url from html
-func (app *App) FindImageUrl(html string) ([]string, error) {
+func (app *MG) FindImageUrl(html string) ([]string, error) {
 	reg, _ := regexp.Compile("(https?://[a-z]\\d+.[a-z]+.[a-z]+/[a-z]+/\\d+/\\d+.(png|jpg|gif))")
 	match := reg.FindStringSubmatch(html)
 	if match != nil {
@@ -51,7 +51,7 @@ func (app *App) FindImageUrl(html string) ([]string, error) {
 }
 
 // FindImageKey from html and url
-func (app *App) FindImageKey(url string) string {
+func (app *MG) FindImageKey(url string) string {
 	reg, _ := regexp.Compile("galleries/(\\d+)/\\d+.(jpg|png|gif)")
 	// try to find the image key from the url
 	ImageKey := reg.FindStringSubmatch(url)
@@ -59,13 +59,13 @@ func (app *App) FindImageKey(url string) string {
 }
 
 // GetImageNumber from url
-func (app *App) GetImageNumber(url string) string {
+func (app *MG) GetImageNumber(url string) string {
 	reg, _ := regexp.Compile("\\d+.(jpg|png|gif)")
 	return reg.FindString(url)
 }
 
 // FindMangaTitle from html string
-func (app *App) FindMangaTitle(html string) string {
+func (app *MG) FindMangaTitle(html string) string {
 	TitleReg, _ := regexp.Compile("<title>(.*)</title>")
 	Title := TitleReg.FindString(html)
 	Title = strings.Replace(Title, "<title>", "", -1)

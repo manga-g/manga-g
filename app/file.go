@@ -10,7 +10,7 @@ import (
 )
 
 // CreateEmptyFile a function to create an empty file
-func CreateEmptyFile(fileName string) (*os.File, error) {
+func (app *MG) CreateEmptyFile(fileName string) (*os.File, error) {
 	file, err := os.Create(fileName)
 	if err != nil {
 		return nil, err
@@ -19,14 +19,14 @@ func CreateEmptyFile(fileName string) (*os.File, error) {
 }
 
 // DeleteFile function to delete os file
-func (app *App) DeleteFile(file string) {
+func (app *MG) DeleteFile(file string) {
 	err := os.RemoveAll(file)
 	if err != nil {
 		fmt.Println(err)
 	}
 }
 
-func (app *App) StringifyHtml(url string) string {
+func (app *MG) StringifyHtml(url string) string {
 
 	// set user-agent
 	client := &http.Client{}
@@ -48,7 +48,7 @@ func (app *App) StringifyHtml(url string) string {
 
 }
 
-func (app *App) SaveHtml(url string, fileName string) {
+func (app *MG) SaveHtml(url string, fileName string) {
 	// get the html from the url
 
 	// save it to a file
@@ -67,7 +67,7 @@ func (app *App) SaveHtml(url string, fileName string) {
 }
 
 // LoadHtml load html from file to string
-func (app *App) LoadHtml(file string) string {
+func (app *MG) LoadHtml(file string) string {
 	// open the file
 	f, err := os.Open(file)
 	if err != nil {
@@ -84,7 +84,7 @@ func (app *App) LoadHtml(file string) string {
 	return string(bytes)
 }
 
-func (app *App) NewDir(dir string) {
+func (app *MG) NewDir(dir string) {
 
 	// if directory doesn't exist, create it
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
@@ -98,7 +98,7 @@ func (app *App) NewDir(dir string) {
 }
 
 // SaveImage save image to file
-func (app *App) SaveImage(url string, filename string) {
+func (app *MG) SaveImage(url string, filename string) {
 
 	//app.NewDir("images")
 	//filename := app.GetImageNumber(url)
@@ -117,14 +117,14 @@ func (app *App) SaveImage(url string, filename string) {
 		}
 	}(results.Body)
 
-	emptyFile, _ := CreateEmptyFile(filename)
+	emptyFile, _ := app.CreateEmptyFile(filename)
 	_, copyErr := io.Copy(emptyFile, results.Body)
 	if copyErr != nil {
 		fmt.Println("error copying file", copyErr)
 	}
 }
 
-func (app *App) TitleToDirName(title string) string {
+func (app *MG) TitleToDirName(title string) string {
 	reg, _ := regexp.Compile("[^a-zA-Z\\d]+")
 	return reg.ReplaceAllString(title, "")
 }
