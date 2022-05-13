@@ -1,4 +1,4 @@
-package site
+package app
 
 //
 //func (app *MG) GetMangaDex(html string) ([]string, error) {

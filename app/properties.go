@@ -34,9 +34,11 @@ type MangaAPI struct {
 	MangaId    int
 	PageNumber int
 }
+
 type Site struct {
 	url string
 }
+
 type Sites []Site
 type Reg struct {
 }
