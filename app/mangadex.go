@@ -1,6 +1,5 @@
 package app
 
-//
 //func (app *MG) GetMangaDex(html string) ([]string, error) {
 //	var manga []string
 //	reg := regexp.MustCompile("blob.*?\"")

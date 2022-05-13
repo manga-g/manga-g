@@ -36,11 +36,12 @@ type MangaAPI struct {
 }
 
 type Site struct {
-	url string
+	URL string
+	Reg Reg
 }
 
 type Sites []Site
-type Reg struct {
-}
 
-type Regi []Reg
+type Reg struct {
+	Regexp string
+}

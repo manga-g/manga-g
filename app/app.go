@@ -28,13 +28,12 @@ func (app *MG) ValidateUrl(UrlToCheck string) bool {
 	return true
 }
 
-// get title form http request
-
 // StringToInt to change string to int
 func (app *MG) StringToInt(str string) int {
 	var i int
 	i, err := strconv.Atoi(str)
 	if err != nil {
+		fmt.Println("Error converting string to integer:", err)
 		return 0
 	}
 	return i
@@ -47,7 +46,7 @@ func (app *MG) FindImageUrl(html string) ([]string, error) {
 	if match != nil {
 		return match, nil
 	}
-	return nil, errors.New("no image url found")
+	return nil, errors.New("could not find image url")
 }
 
 // FindImageKey from html and url
@@ -72,4 +71,24 @@ func (app *MG) FindMangaTitle(html string) string {
 	Title = strings.Replace(Title, "</title>", "", -1)
 	fmt.Println("Manga Title: " + Title)
 	return Title
+}
+
+// InitMangaG initializes the MangaG struct.
+func InitMangaG() {
+	MangaG := new(MG)
+	fmt.Println("Starting Manga-G...")
+	if MangaG.Connected() {
+		fmt.Println("Enter a URL for a Manga's first page to download:")
+		MangaUrl := MangaG.GetInput()
+		if MangaG.ValidateUrl(MangaUrl) {
+			DoStuff(MangaG, MangaUrl)
+		} else {
+			fmt.Println("Invalid URL please try again.")
+			fmt.Println("Example: https://www.mangaeden.com/en/en-manga/one-piece/")
+			fmt.Println("Exiting...")
+		}
+	} else {
+		fmt.Println("Could not connect to the internet.")
+		fmt.Println("Exiting...")
+	}
 }
