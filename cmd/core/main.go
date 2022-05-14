@@ -6,5 +6,5 @@ import (
 
 // Entrypoint for the program.
 func main() {
-	ui.StartLoop()
+	ui.StartProgram()
 }

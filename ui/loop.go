@@ -4,21 +4,33 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 type MangaModel struct {
+	textInput textinput.Model
+
+	typing  bool
+	loading bool
+
 	choices  []string
 	cursor   int
 	selected map[int]struct{}
+
+	err error
 }
 
 func (m *MangaModel) Init() tea.Cmd {
-	return nil
+	return textinput.Blink
 }
-func InitModel() tea.Model {
+func InitModel() *MangaModel {
 	return &MangaModel{
-		choices:  []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
+		typing:    true,
+		loading:   false,
+		textInput: textinput.New(),
+
+		choices:  []string{"1", "2", "3", "4", "5"},
 		selected: make(map[int]struct{}),
 	}
 
@@ -42,18 +54,29 @@ func (m *MangaModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		case "enter":
 			if _, ok := m.selected[m.cursor]; ok {
+				m.typing = false
+				m.loading = true
 				delete(m.selected, m.cursor)
 			} else {
 				m.selected[m.cursor] = struct{}{}
 			}
 		}
 	}
+	if m.typing {
+		var cmd tea.Cmd
+		m.textInput, cmd = m.textInput.Update(msg)
+		return m, cmd
+	}
 	return m, nil
 }
 
 func (m *MangaModel) View() string {
 	footer := "\nPress ctrl+c to quit.\n"
-	header := "Enter a manga URL:\n"
+	if m.typing {
+		header := "Enter a manga URL:\n"
+		return header + m.textInput.View() + footer
+	}
+	header := "Manga List:\n"
 
 	for i, choice := range m.choices {
 		cursor := " "
@@ -72,8 +95,11 @@ func (m *MangaModel) View() string {
 	return header
 }
 
-func StartLoop() {
-	program := tea.NewProgram(InitModel(), tea.WithAltScreen())
+func StartProgram() {
+	mod := InitModel()
+	mod.textInput.Focus()
+	program := tea.NewProgram(mod)
+
 	err := program.Start()
 	if err != nil {
 		_, err2 := fmt.Fprintf(os.Stderr, err.Error())
