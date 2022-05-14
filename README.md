@@ -73,6 +73,7 @@
  - wget 
 
 <img src="doc/screenshot.png" alt="Screenshot" width="850" height="380">
+
 ## Usage:
 
 run the program with this command: `./MangaG`
