@@ -43,7 +43,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/4cecoder/manga-g">
-    <img src="doc/manga-g.png" alt="Logo" width="700" height="200">
+    <img src="doc/manga-g.png" alt="Logo" width="444" height="444">
   </a>
 
   <h3 align="center">Manga-G</h3>
