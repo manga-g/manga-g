@@ -7,6 +7,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"manga-g/ui"
 )
 
 // GetInput Function to get user input from the command line
@@ -76,19 +78,21 @@ func (app *MG) FindMangaTitle(html string) string {
 // InitMangaG initializes the MangaG struct.
 func InitMangaG() {
 	MangaG := new(MG)
-	fmt.Println("Starting Manga-G...")
+	style := ui.InitStyle()
+
+	ui.Render(style, "Starting Manga-G...")
 	if MangaG.Connected() {
-		fmt.Println("Enter a URL for a Manga's first page to download:")
+		ui.Render(style, "Enter a URL for a Manga's first page to download:")
 		MangaUrl := MangaG.GetInput()
 		if MangaG.ValidateUrl(MangaUrl) {
 			DoStuff(MangaG, MangaUrl)
 		} else {
-			fmt.Println("Invalid URL please try again.")
-			fmt.Println("Example: https://www.mangaeden.com/en/en-manga/one-piece/")
-			fmt.Println("Exiting...")
+			ui.Render(style, "Invalid URL please try again.")
+			ui.Render(style, "Example: https://www.mangaeden.com/en/en-manga/one-piece/")
+			ui.Render(style, "Exiting...")
 		}
 	} else {
-		fmt.Println("Could not connect to the internet.")
-		fmt.Println("Exiting...")
+		ui.Render(style, "Could not connect to the internet.")
+		ui.Render(style, "Exiting...")
 	}
 }
