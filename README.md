@@ -80,8 +80,16 @@ run the program with this command: `./MangaG`
 Paste url with a similar structure such as: `https://somemangasite.com/1749/185053`
 
 ## Acknowledgments
+
+### Turn your little cli application into *Unforgetable* experience
+ ```(Like visiting Disney World!) But in your terminal```
+- [Charm Suite](https://github.com/charmbracelet)
+
+
 ### Shouts out to Similar Manga Projects
 <Your manga project github repo LINK here UPON pull request>
+
+
   
 - [mangodl](https://github.com/Gyro7/mangodl)
 - [MangaDL](https://github.com/MangDL/MangDL)
