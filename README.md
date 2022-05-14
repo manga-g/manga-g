@@ -88,8 +88,8 @@ Paste url with a similar structure such as: `https://somemangasite.com/1749/1850
  But in your terminal
  ```
  
-- [Charm Suite](https://github.com/charmbracelet)
-
+- [Charm Suite](https://charm.sh)
+- [Warp](https://warp.dev)
 
 ### Shouts out to Similar Manga Projects
 <Your manga project github repo LINK here UPON pull request>
