@@ -72,7 +72,7 @@
  - git
  - wget 
 
-<img src="doc/screenshot.png" alt="Screenshot" width="444" height="444">
+<div align="center"><img src="doc/screenshot.png" alt="Screenshot" width="444" height="444"></div>
 
 ## Usage:
 
