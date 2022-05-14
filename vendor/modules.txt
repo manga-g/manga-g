@@ -9,6 +9,7 @@ github.com/andybalholm/cascadia
 github.com/atotto/clipboard
 # github.com/charmbracelet/bubbles v0.10.3
 ## explicit; go 1.13
+github.com/charmbracelet/bubbles/spinner
 github.com/charmbracelet/bubbles/textinput
 # github.com/charmbracelet/bubbletea v0.20.0
 ## explicit; go 1.13

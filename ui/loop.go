@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 type MangaModel struct {
+	loader    spinner.Model
 	textInput textinput.Model
 
 	typing  bool
@@ -28,6 +30,7 @@ func InitModel() *MangaModel {
 	return &MangaModel{
 		typing:    true,
 		loading:   false,
+		loader:    spinner.New(),
 		textInput: textinput.New(),
 
 		choices:  []string{"1", "2", "3", "4", "5"},
@@ -57,14 +60,21 @@ func (m *MangaModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.typing = false
 				m.loading = true
 				delete(m.selected, m.cursor)
+				return m, spinner.Tick
 			} else {
 				m.selected[m.cursor] = struct{}{}
 			}
+
 		}
 	}
 	if m.typing {
 		var cmd tea.Cmd
 		m.textInput, cmd = m.textInput.Update(msg)
+		return m, cmd
+	}
+	if m.loading {
+		var cmd tea.Cmd
+		m.loader, cmd = m.loader.Update(msg)
 		return m, cmd
 	}
 	return m, nil
@@ -79,6 +89,9 @@ func (m *MangaModel) View() string {
 	header := "Manga List:\n"
 
 	for i, choice := range m.choices {
+		if m.loading {
+			return m.loader.View() + "Please wait a moment...\n" + footer
+		}
 		cursor := " "
 		if m.cursor == i {
 			cursor = ">"
@@ -98,6 +111,7 @@ func (m *MangaModel) View() string {
 func StartProgram() {
 	mod := InitModel()
 	mod.textInput.Focus()
+	mod.loader.Spinner = spinner.MiniDot
 	program := tea.NewProgram(mod)
 
 	err := program.Start()
