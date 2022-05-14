@@ -82,8 +82,12 @@ Paste url with a similar structure such as: `https://somemangasite.com/1749/1850
 
 ## Acknowledgments
 
-### Turn your little cli application into an *Unforgetable* experience
- ```(Like visiting Disney World!) But in your terminal```
+### From little cli application to an *Unforgetable* Experience
+
+ ```(Like visiting Disney World!)
+ But in your terminal
+ ```
+ 
 - [Charm Suite](https://github.com/charmbracelet)
 
 
