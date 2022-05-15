@@ -69,6 +69,8 @@
 ### How is Manga-G the fastest? 
 - Manga-G leverages go's multithreading in such a way to check multiple manga api's
   - while dynamically aggregating the results
+  - giving you the leetest manga reading experience 
+    - that feels like starcraft
 
 ## Prerequisites
  - Go Version 1.18 (Should work with previous go versions)
