@@ -66,7 +66,7 @@
  - in the Go programming Language
  - For use (but not limited to) Linux, MacOS, and Windows Systems
  
-### How Manga-G NECK SNAPPINGLY FAST 
+### How Manga-G got NECK SNAPPINGLY FAST 
 - Manga-G leverages go's multithreading
   - in such a way to check multiple manga api's
   - simultaniously searching different manga sites for your search terms
