@@ -65,7 +65,7 @@
  - written for your Terminal
  - in the Go programming Language
  - For use (but not limited to) Linux, MacOS, and Windows Systems
- - 
+ 
 ### How is Manga-G the fastest? 
 - Manga-G leverages go's multithreading in such a way to check multiple manga api's
   - while dynamically aggregating the results
@@ -98,8 +98,6 @@ Paste url with a similar structure such as: `https://somemangasite.com/1749/1850
 
 ### Shouts out to Similar Manga Projects
 <Your manga project github repo LINK here UPON pull request>
-
-
   
 - [mangodl](https://github.com/Gyro7/mangodl)
 - [MangaDL](https://github.com/MangDL/MangDL)
@@ -107,9 +105,6 @@ Paste url with a similar structure such as: `https://somemangasite.com/1749/1850
 - [Tachiyomi](https://github.com/tachiyomiorg/tachiyomi)
 - [Hakuneko](https://github.com/manga-download/hakuneko)
 - [Manga Desk](https://github.com/darylhjd/mangadesk)
- 
- 
- 
  
  
  
