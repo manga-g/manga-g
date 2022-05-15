@@ -177,7 +177,11 @@ https://go.dev/doc/install
   
 <a href="https://nightly.revolt.chat/invite/4FKHbs78"><img src="https://developers.revolt.chat/img/logo.png" width="80"></a>
 ### Extra Thanks to our sponsors!
- <a href="https://youtu.be/Zb63UgDv1fs" <img src=https://static01.eu/1prospekte.de/images/uploads/080221/ja-21-orangen-zitronen-limonaden-2C-cola-2C-cola-mix-oder-cola-44259.jpg/></a>
+  
+ <a href="https://youtu.be/Zb63UgDv1fs">
+  <img src=https://static01.eu/1prospekte.de/images/uploads/080221/ja-21-orangen-zitronen-limonaden-2C-cola-2C-cola-mix-oder-cola-44259.jpg/>
+  </a>
+ 
 <!-- LICENSE -->
 ## License
 
