@@ -179,7 +179,7 @@ https://go.dev/doc/install
 ### Extra Thanks to our sponsors!
   
  <a href="https://youtu.be/Zb63UgDv1fs">
-  <img src=https://static01.eu/1prospekte.de/images/uploads/080221/ja-21-orangen-zitronen-limonaden-2C-cola-2C-cola-mix-oder-cola-44259.jpg/>
+  <img src="https://static01.eu/1prospekte.de/images/uploads/080221/ja-21-orangen-zitronen-limonaden-2C-cola-2C-cola-mix-oder-cola-44259.jpg"/>
   </a>
  
 <!-- LICENSE -->
