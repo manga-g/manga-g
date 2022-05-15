@@ -65,7 +65,10 @@
  - written for your Terminal
  - in the Go programming Language
  - For use (but not limited to) Linux, MacOS, and Windows Systems
-
+ - 
+### How is it the fastest? 
+- Manga-G leverages go's multithreading in such a way to check multiple manga api's
+  - while dynamically aggregating the results
 
 ## Prerequisites
  - Go Version 1.18 (Should work with previous go versions)
