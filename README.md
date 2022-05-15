@@ -90,6 +90,8 @@ Paste url with a similar structure such as: `https://somemangasite.com/1749/1850
  
 - [Charm Suite](https://charm.sh)
 - [Warp](https://warp.dev)
+- [Goland](https://www.jetbrains.com/go/)
+
 
 ### Shouts out to Similar Manga Projects
 <Your manga project github repo LINK here UPON pull request>
