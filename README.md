@@ -71,7 +71,7 @@
   - in such a way to check multiple manga api's
   - simultaniously searching different manga sites for your search terms
    - while dynamically aggregating the results
-   - giving you the leetest manga reading experience 
+   - giving you the LEETEST Manga reading experience
      - that feels like starcraft
 
 ## Prerequisites
