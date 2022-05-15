@@ -94,6 +94,8 @@ Paste url with a similar structure such as: `https://somemangasite.com/1749/1850
  ```
  
 - [Charm Suite](https://charm.sh)
+
+### Other Tools Used:
 - [Warp](https://warp.dev)
 - [Goland](https://www.jetbrains.com/go/)
 
