@@ -89,11 +89,12 @@ Paste url with a similar structure such as: `https://somemangasite.com/1749/1850
 
 ### From little cli application to an *Unforgetable* Experience
 
+## [Charm Suite](https://charm.sh)
+
  ```(Like visiting Disney World!)
  > But in your terminal
  ```
  
-## - [Charm Suite](https://charm.sh)
 
 ### Other Tools Used:
 - [Warp](https://warp.dev)
