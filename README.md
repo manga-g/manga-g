@@ -120,7 +120,7 @@ Paste url with a similar structure such as: `https://somemangasite.com/1749/1850
  ## Installation
   
  ### `cd deploy && chmod +x install.sh && ./install.sh`
-
+ ### [Alternate Install Guide](doc/install.md)
 
 ## Contact
   
