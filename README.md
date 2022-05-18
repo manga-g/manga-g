@@ -87,6 +87,12 @@ run the program with this command: `./MangaG`
 
 Paste url with a similar structure such as: `https://somemangasite.com/1749/185053`
 
+## Installation
+  
+### `cd deploy && chmod +x install.sh && ./install.sh`
+### [Alternate Install Guide](doc/install.md)
+
+
 ## Acknowledgments
 
 ## [Charm Suite](https://charm.sh)
@@ -115,12 +121,6 @@ Paste url with a similar structure such as: `https://somemangasite.com/1749/1850
 - [Hakuneko](https://github.com/manga-download/hakuneko)
 - [Manga Desk](https://github.com/darylhjd/mangadesk)
  
- 
- 
- ## Installation
-  
- ### `cd deploy && chmod +x install.sh && ./install.sh`
- ### [Alternate Install Guide](doc/install.md)
 
 ## Contact
   
