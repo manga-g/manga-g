@@ -178,7 +178,7 @@ https://go.dev/doc/install
 <a href="https://nightly.revolt.chat/invite/4FKHbs78"><img src="https://developers.revolt.chat/img/logo.png" width="80"></a>
 ### Extra Thanks to our sponsors!
   
- <a href="https://youtu.be/Zb63UgDv1fs">
+ <a href="https://rr1---sn-5uaezne6.googlevideo.com/videoplayback?expire=1652871810&ei=IX6EYqTqPJ381wKL44CoBQ&ip=158.101.212.134&id=o-AJcvqvVa26XrjFg-L-CbcyA5YZfXbJcQOeu6B384_DEB&itag=18&source=youtube&requiressl=yes&vprv=1&mime=video%2Fmp4&gir=yes&clen=372515&ratebypass=yes&dur=10.263&lmt=1616819542534359&fexp=24001373,24007246&c=ANDROID&txp=6319222&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cvprv%2Cmime%2Cgir%2Cclen%2Cratebypass%2Cdur%2Clmt&sig=AOq0QJ8wRQIgJmWBJWdf-X373CA9v4NNoH-gEN2CW6pw9qtz8UY01TwCIQDMmufDvHuBvM-KjnVDdgblCsQNpLbyowz5BVxvSarFoQ%3D%3D&host=rr5---sn-5hne6nzs.googlevideo.com&redirect_counter=1&rm=sn-5hness76&req_id=3d83b6c86f74a3ee&cms_redirect=yes&ipbypass=yes&mh=WN&mip=2600:1700:33f2:c040::23&mm=31&mn=sn-5uaezne6&ms=au&mt=1652850059&mv=m&mvi=1&pl=41&lsparams=ipbypass,mh,mip,mm,mn,ms,mv,mvi,pl&lsig=AG3C_xAwRgIhAMi0_plhoXMyG3e1IbBXeQrSnZP5CmuHJJ20-UQrUSXiAiEA2oR1RqmvRtK9_1KO0uimSbjTBd5ogw8mLwgMtR-nraA%3D">
   <img src="https://static01.eu/1prospekte.de/images/uploads/080221/ja-21-orangen-zitronen-limonaden-2C-cola-2C-cola-mix-oder-cola-44259.jpg"/>
   </a>
  
