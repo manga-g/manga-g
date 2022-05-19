@@ -1,0 +1,14 @@
+{
+    "python.analysis.diagnosticSeverityOverrides": {
+        // none
+        "reportMatchNotExhaustive": "none",
+        "reportUnboundVariable": "none",
+        "reportSelfClsParameterName": "none",
+        "reportMissingParameterType": "none",
+        "reportMissingModuleSource": "none",
+        "reportMissingImports": "none",
+
+        // error
+        "reportMissingParameterDoc": "error",
+    }
+}

@@ -1,0 +1,67 @@
+---
+title: Notes
+---
+
+There is a more personal version of this notes [here](notes to self.md).
+
+## Versioning System
+
+Hyaku uses modified semver. This is due to the fact that I believe that I, the developer of this app, introduces too much breaking change to the API without noticeable changes to the user interface and/or experience. And such, I have decided to use the following versioning system:
+
+Given a version number `user.dev.minor.patch`, increment the:
+
+- `major` version when you make incompatible API changes.
+- `minor` version when you add functionality in a backwards compatible manner; and
+- `patch` version when you make backwards compatible bug fixes.
+
+Anything else adheres to the semantic versioning 2.0.0.
+
+If in doubt, please do not hesitate to visit [semver.org](https://semver.org/).
+
+```mermaid
+flowchart TD
+    VB([Version Bump])
+        VB --> |"prerelease identifier (pi)"| e_pr{existing `pi`}
+            e_pr --> |none| bprv("bump prerelease version (pv)")
+                bprv --> ba(bump `pi` to `alpha`)
+                ba --> bp([bump `patch`])
+            e_pr --> |alpha| bb(bump to `beta`)
+                bb --> r0([reset version/s below it to `0` or `none`])
+            e_pr --> |beta| br(bump to `rc`) --> r0
+            e_pr --> |rc| rn(reset to `none`) --> r0
+        VB --> |others| bsv(bump specified version) --> r0
+```
+
+## Changelog
+
+As used in the changelog, the following types of changes shall have the following implications, of which, their allowed version bumps should be everything, unless explicably stated otherwise:
+
+- `Added` for new features.
+    - major
+    - minor
+- `Changed` for changes in existing functionality.
+    - major
+- `Deprecated` for soon-to-be removed features.
+    - patch
+- `Removed` for now removed features.
+    - major
+- `Fixed` for any bug fixes.
+- `Security` in case of vulnerabilities.
+
+Example format:
+
+```md
+## 1.0.0-rc.1 (pre-release identifier bump)
+
+Concisely describe changes in this release.
+
+### Added
+
+- List additions here.
+```
+
+## Documentation
+
+The documentation system is a custom solution.
+
+Documenting it will be futile, as it is ever-changing, tuned to the developer's needs.

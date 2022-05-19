@@ -1,6 +1,10 @@
-MIT License
+<h1 align="center" style="font-weight: bold">
+    <a target="_blank" href="https://choosealicense.com/licenses/mit/">MIT LICENSE</a>
+</h1>
 
-Copyright (c) 2022 4ce
+Copyright for portions of project [Manga-G](https://github.com/4cecoder/Manga-G) are held .
+
+All other copyright for project [Manga-G](https://github.com/4cecoder/Manga-G) are held by [Github Account [4cecoder](https://github.com/4cecoder) Owner, 2022].
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
