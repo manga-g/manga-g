@@ -1,0 +1,80 @@
+<!--
+
+Hewwoooo!
+
+This is whi_ne's notes of her latest pull request.
+
+whi_ne has been paid to help with the project, and thus, her pull request/s.
+
+Want help in your projects too? Inquire through Discord (username: whi_ne | whinyaan.xyz#5135, link: https://discord.com/users/867696753434951732) or through e-mail (whinyaan@protonmail.com). Price starts at 40 USD. For commisioning projects, price starts at 20 USD.
+
+ -->
+
+# Pull Request
+
+*[whi_ne](https://github.com/whinee) has been paid to help with the project. But she's just starting, so expect more!*
+
+*Want help in your projects too? Inquire through Discord(<a target="_blank" href="https://discord.com/users/867696753434951732">whi_ne | whinyaan.xyz#5135</a>) or through e-mail(<a target="_blank" href="mailto:whinyaan@protonmail.com">whinyaan@protonmail.com</a>). Price starts at 40 USD. For commisioning projects, price starts at 20 USD.*
+
+---
+
+## About
+
+This pull request introduces a multitude of changes, and the following is one of the more noticeable ones:
+
+- Website for documentation, currently located at https://mg.test.whinyaan.xyz
+- Added development utility tools
+
+    This is mostly self-developed, originally for my own hobby projects, for generating documentations and a site to host it at. However, as they're mostly internal until now, I have yet to document their functionality.
+
+    - Markdown
+
+        I have developed a tool to add more functionality to markdowns, like variables. All of these utilities are written in Python programming language.
+
+        `.ymd` are markdowns, but with variables.
+
+        `.mmd` are markdowns that needs to be processed by a `.mako` file, preferably with the same name in the same directory.
+
+        `.mako` is a template file used by `mako`, a template library written for python.
+
+    - Script generation
+
+        I have developed a little piece of code that can generate a script with variables written in a `.yml` or generated programmatically with a python script.
+
+I am super excited to document all this stuff, as this really helped me automate my workflow, and thus, minimize the tedious task that I need to do in order to at the very least have a decent documentation.
+
+## **Changes**
+
+This is the more specific, nitty-gritty details of the changes.
+
+### **Changed**
+
+#### In README
+
+- Structure
+
+    The new structure is more intuitive than the old one. As I've seen in the past, users want to find out how to install the application before using it. Acknowledgments and such are generally in the lower sections of the README.
+
+- Badges
+
+    I have added more badges in the README, but at the same time, also modified some of them. From the style to sizes.
+
+### **Fixed**
+
+#### In README
+
+- Changed `MangaDL` to `MangDL`
+
+    It's `MangDL`! The "typographical" error is intentional!
+
+### **Removed**
+
+#### In README
+
+- Build Status
+
+    I have removed the build status from the README.md file, as it displays the build and test status of `wasmerio/wasmer-go` instead of this repository.
+
+- Table of contents
+
+    Unless generated automatically, Table of Contents will probably be overlooked and not be updated when the README is updated. I have plans of generating it automatically, but as of now, it will be removed. The site however provides a Table of Contents.

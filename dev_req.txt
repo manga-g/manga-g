@@ -1,0 +1,10 @@
+inquirer
+isort
+mako
+mkdocs
+mkdocs-material
+mkdocs-minify-plugin
+mkdocs-redirects
+msgpack
+pdoc3
+python-frontmatter
