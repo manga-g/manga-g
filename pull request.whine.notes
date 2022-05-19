@@ -4,7 +4,7 @@ Hewwoooo!
 
 This is whi_ne's notes of her latest pull request.
 
-whi_ne has been paid to help with the project, and thus, her pull request/s.
+whi_ne has been paid to help with this project, and thus, her pull request/s.
 
 Want help in your projects too? Inquire through Discord (username: whi_ne | whinyaan.xyz#5135, link: https://discord.com/users/867696753434951732) or through e-mail (whinyaan@protonmail.com). Price starts at 40 USD. For commisioning projects, price starts at 20 USD.
 
@@ -12,13 +12,13 @@ Want help in your projects too? Inquire through Discord (username: whi_ne | whin
 
 # Pull Request
 
-*[whi_ne](https://github.com/whinee) has been paid to help with the project. But she's just starting, so expect more!*
+*[whi_ne](https://github.com/whinee) has been paid to help with this project. But she's just starting, so expect more!*
 
 *Want help in your projects too? Inquire through Discord(<a target="_blank" href="https://discord.com/users/867696753434951732">whi_ne | whinyaan.xyz#5135</a>) or through e-mail(<a target="_blank" href="mailto:whinyaan@protonmail.com">whinyaan@protonmail.com</a>). Price starts at 40 USD. For commisioning projects, price starts at 20 USD.*
 
 ---
 
-## About
+## **About**
 
 This pull request introduces a multitude of changes, and the following is one of the more noticeable ones:
 
@@ -78,3 +78,7 @@ This is the more specific, nitty-gritty details of the changes.
 - Table of contents
 
     Unless generated automatically, Table of Contents will probably be overlooked and not be updated when the README is updated. I have plans of generating it automatically, but as of now, it will be removed. The site however provides a Table of Contents.
+
+## **Plans**
+
+As said earlier, I have plans on automating the generation of the Table of Contents on the README and writing documentation on this newly introduced development utility tool. I also plan on raising some issues regarding some stuff that needs to be talked over.

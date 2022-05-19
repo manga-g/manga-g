@@ -181,7 +181,7 @@ Have a similar project to this application too? Do not hesitate to make a pull r
 
 ### README
 
-[whi_ne](https://github.com/whinee) has been paid to help with the project, and started with this README.
+[whi_ne](https://github.com/whinee) has been paid to help with this project, and started with this README.
 
 But she's just starting, so expect more!
 
