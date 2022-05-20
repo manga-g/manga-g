@@ -4,9 +4,9 @@
 
 Look, whi_ne, I have written this for you.
 
-Please, do I humbly plead you, do not ever forgot to read this before pushing changes to Github.
+Please, do I humbly plead you, do not ever forget to read this before pushing changes to GitHub.
 
-There is also a professional version of this notes [here](notes.md).
+There is also a professional version of these notes [here](notes.md).
 
 ## Versioning System
 
@@ -73,11 +73,11 @@ Sprinkle a description here.
 
 ### Deprecated
 
-- This feature will be depracated 'cuz I can't maintain it anymore.
+- This feature will be deprecated 'cuz I can't maintain it anymore.
 
 ### Security
 
-- Fixed stuff where the anilist token is leaked to everyone using this app.
+- Fixed stuff where the ani-list token is leaked to everyone using this app.
 ```
 
 ## Documentation
