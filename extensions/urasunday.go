@@ -35,10 +35,10 @@ func FindImageUrls(html string) []string {
 	return urls
 }
 
-// function to download the webp from all urls in the array
+// DownloadWebp function to download the webp from all urls in the array
 // write a function to download the webp from the url
 // write a function to write the webp to the disk
-func DownloadWebp(app *app.MG, string, url string, filename string) {
+func DownloadWebp(app *app.MG, url string, filename string) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
