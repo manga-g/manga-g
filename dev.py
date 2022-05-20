@@ -39,20 +39,6 @@ VERSIONS_NAME = {
 }
 VERSIONS = ["user", "dev", "minor", "patch", "pri", "prv"]
 
-def cp():
-    for k, v in META_YML["cp"].items():
-        with open(
-            path.join("constants", *[str(_) for _ in VLS[0:2]], f'{k}.yml'),
-            "r"
-        ) as f:
-            fc = yaml.safe_load(f.read())
-        if v.get("mp", True):
-            with open(f'{v["dir"]}.mp', "wb") as f:
-                f.write(msgpack.packb(fc, use_bin_type=True))
-        else:
-            with open(f'{v["dir"]}.yml', "w") as f:
-                yaml.dump(fc, f, indent=4)
-
 def run(s: str):
     call(shlex.split(s))
 
@@ -156,7 +142,6 @@ def main():
     match inquirer.list_input(
         message="What action do you want to take",
         choices=[
-            ["Copy constants to project folder", "cp"],
             ["Generate documentation", "docs"],
             ["Generate scripts", "gs"],
             ["Push to github", "gh"],
@@ -164,10 +149,7 @@ def main():
             ["Set the version manually", "set_ver"]
         ]
     ):
-        case "cp":
-            cp()
         case "docs":
-            cp()
             gen_script()
             from scripts import md_vars
             md_vars.main()
@@ -214,11 +196,6 @@ if __name__ == "__main__":
 
         with open("version", "r") as f:
             VLS = [int(i) for i in f.read().split(" ")]
-
-        META_YML = stg(
-            None,
-            path.join("constants", *[str(_) for _ in VLS[0:2]], "_meta.yml")
-        )
 
         YML = stg(None, "dev.yml")
         GLOBAL = partial(ddir, ddir(YML, "md_vars/global"))

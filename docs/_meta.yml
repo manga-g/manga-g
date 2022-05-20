@@ -1,19 +1,19 @@
 generated:
   docs:
     files:
-    - docs/license.md
     - docs/docs/0/0/structure.md
-    - docs/notes.md
-    - docs/docs/0/0/config.md
     - docs/README.md
-    - docs/notes to self.md
-    - docs/docs/0/0/setup.md
     - docs/docs/0/0/installation.md
+    - docs/docs/0/0/setup.md
+    - docs/license.md
+    - docs/notes to self.md
+    - docs/docs/0/0/config.md
+    - docs/notes.md
     folders: []
   mako:
     files:
-    - docs/changelog.md
     - docs/docs/0/0/index.md
+    - docs/changelog.md
     folders: []
   pdoc:
     files: []
