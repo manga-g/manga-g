@@ -1,3 +1,0 @@
-alias o="onefetch --no-bots --true-color always -T programming -e '*.js'"
-alias dev="python dev.py"
-alias wd="nodemon -e ymd --watch raw_docs/ --watch ./dev.yml --exec 'python dev.py' docs"
