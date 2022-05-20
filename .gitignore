@@ -42,7 +42,7 @@ venv/
 .AppleDouble
 .LSOverride
 .idea/
-
+.vscode/
 # Icon must end with two \r
 Icon
 
