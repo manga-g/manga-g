@@ -1,4 +1,4 @@
-package sites
+package extensions
 
 import (
 	"fmt"
@@ -7,12 +7,14 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+
+	"manga-g/app"
 )
 
 // parse jpg url and hash
 // write a regex to extract the hash and the url
 
-func (app *app.MG) FindImageUrls(html string) []string {
+func FindImageUrls(html string) []string {
 	var urls []string
 	rx := regexp.MustCompile("https://urasunday.com/secure/\\d+/webp/manga_page_high/\\d+/\\d+.webp\\?hash=.*?&expires=\\d+")
 
@@ -36,7 +38,7 @@ func (app *app.MG) FindImageUrls(html string) []string {
 // function to download the webp from all urls in the array
 // write a function to download the webp from the url
 // write a function to write the webp to the disk
-func (app *app.MG) DownloadWebp(url string, filename string) {
+func DownloadWebp(app *app.MG, string, url string, filename string) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -55,7 +57,17 @@ func (app *app.MG) DownloadWebp(url string, filename string) {
 	}
 }
 
-// get title from url header and use as filename but remove spaces and special characters and use smart numbers to avoid overwriting
+// DownloadAllWebp make a for loop to download all webp files from the array of urls from FindImageUrls
+func DownloadAllWebp(app *app.MG, urls []string) {
+	for i, url := range urls {
+		fmt.Println(i, url)
+		number := fmt.Sprintf("%03d", i)
+		filename := "images/0" + number + ".webp"
+		DownloadWebp(app, url, filename)
+	}
+}
+
+// GetWebpTitle from url header and use as filename but remove spaces and special characters and use smart numbers to avoid overwriting
 func GetWebpTitle(title string) string {
 	title = strings.ReplaceAll(title, " ", "")
 	title = strings.ReplaceAll(title, ":", "")
@@ -72,14 +84,4 @@ func GetWebpTitle(title string) string {
 	title = strings.ReplaceAll(title, "~", "")
 
 	return title
-}
-
-// DownloadWebp make a for loop to download all webp files from the array of urls from FindImageUrls
-func (app *app.MG) DownloadAllWebp(urls []string) {
-	for i, url := range urls {
-		fmt.Println(i, url)
-		number := fmt.Sprintf("%03d", i)
-		filename := "images/0" + number + ".webp"
-		app.DownloadWebp(url, filename)
-	}
 }

@@ -1,4 +1,4 @@
-package sites
+package extensions
 
 //func (app *MG) GetMangaDex(html string) ([]string, error) {
 //	var manga []string
