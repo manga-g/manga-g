@@ -6,10 +6,12 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+
+	"manga-g/app"
 )
 
 // IncrementImageUrl to increment the image url
-func (app *app.MG) IncrementImageUrl(url string) string {
+func IncrementImageUrl(app *app.MG, url string) string {
 	ImageName := app.GetImageNumber(url)
 	ImageNumber := strings.Replace(ImageName, ".png", "", -1)
 	ImageNumber = strings.Replace(ImageNumber, ".jpg", "", -1)
@@ -27,7 +29,7 @@ func (app *app.MG) IncrementImageUrl(url string) string {
 	return final
 }
 
-func (app *app.MG) GetPageCount(html string) int {
+func GetPageCount(app *app.MG, html string) int {
 	reg, _ := regexp.Compile("<span class=\"num-pages\">[1-9]*</span>")
 	PageCount := reg.FindString(html)
 	PageCount = strings.Replace(PageCount, "<span class=\"num-pages\">", "", -1)
@@ -37,7 +39,7 @@ func (app *app.MG) GetPageCount(html string) int {
 	return PageCountInt
 }
 
-func (app *app.MG) CycleImages(ImageUrl []string, max int) {
+func CycleImages(app *app.MG, ImageUrl []string, max int) {
 	wg := new(sync.WaitGroup)
 	for i := 1; i < max; i++ {
 		wg.Add(1)
@@ -45,7 +47,7 @@ func (app *app.MG) CycleImages(ImageUrl []string, max int) {
 			defer wg.Done()
 			fmt.Println("Attempting to download page:", i)
 			app.SaveImage(ImageUrl[1], app.GetImageNumber(ImageUrl[1]))
-			ImageUrl[1] = app.IncrementImageUrl(ImageUrl[1])
+			ImageUrl[1] = IncrementImageUrl(app, ImageUrl[1])
 		}(ImageUrl, i, wg)
 		wg.Wait()
 	}
