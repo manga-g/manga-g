@@ -1,6 +1,3 @@
-<a href="manga-g.netlify.app"> 
-  
-# manga-g
-</a>
+# [manga-g](http://manga-g.netlify.app)
 
 check some mangos
