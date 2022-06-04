@@ -3,7 +3,7 @@
     Changelog
 </h1>
 
-<h2 id="0-0-0-0-0-0">0.0.0.0-alpha.0</h2>
+<h2 id="0-0-0-0-0-1">0.0.0.0-alpha.1</h2>
 
 Initial release of the application
 

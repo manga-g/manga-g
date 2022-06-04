@@ -37,11 +37,29 @@ from mako.template import Template
 from .settings import stg, wr_stg
 from .utils import ddir, inmd, repl, stg
 
+# Constants
+RE_MD_TPL = r"(?<=# {key} start\n).+(?=\n(\s)*# {key} end)"
+META = {
+    "site_name": ["{formal_name}", ["formal_name",]],
+    "site_url": ["https://{site}",["site",]],
+    "repo_url": [
+        "https://github.com/{organization}/{repo_name}",
+        ["organization", "repo_name"]
+    ],
+    "site_description": ["{desc}",["desc",]],
+    "site_author": ["{user}",["user",]],
+    "copyright": ["Copyright &copy; {year} {user}", ["year", "user"]]
+}
+SOCIAL = {
+    "fontawesome/brands/github": [
+        "https://github.com/{organization}/{repo_name}",
+        ["organization", "repo_name"]
+    ],
+}
+
+# Derived constants
 with open("version", "r") as f:
     VLS = [int(i) for i in f.read().split(" ")]
-v_ud = '/'.join([str(i) for i in VLS[0:2]])
-
-RE_MD_TPL = r"(?<=# {key} start\n).+(?=\n\s+# {key} end)"
 
 YML = stg(None, "dev.yml")
 
@@ -53,6 +71,7 @@ MD_VARS_YML = ddir(YML, "md_vars")
 RMVC = ddir(MD_VARS_YML, "global")
 IDF = Path(f'./{ddir(YML, "docs/input")}')
 
+# Initialized variables
 GEN = {
     "docs": [[], []],
     "mako": [[], []],
@@ -129,7 +148,7 @@ def del_gen():
         shutil.copy("docs/_meta.yml.bak", "docs/_meta.yml")
         del_gen()
 
-def main(rmv: Dict[Any, Any]={}, hr :bool=False):
+def main(rmv: Dict[Any, Any]={}, hr: bool=False):
     docs_pdir = DOCS["op"]
     rmv_r = ddir(rmv, "rules")
     rmv_mv = ddir(rmv, "md_vars")
@@ -223,12 +242,41 @@ def main(rmv: Dict[Any, Any]={}, hr :bool=False):
         nd = yaml.dump(ndd, default_flow_style=False)
         nd = "\n".join([f'    - {i}' for i in nd.strip().split("\n")][::-1])
 
-        
+        md = {}
+        for k, v in META.items():
+            vars = {}
+            for i in v[1]:
+                if mv:=MVC.get(i, None):
+                    vars[i] = mv
+            md[k] = v[0].format(**vars)
+        m = yaml.dump(md, default_flow_style=False)
+
+        sls = []
+        for k, v in SOCIAL.items():
+            vars = {}
+            for i in v[1]:
+                if mv:=MVC.get(i, None):
+                    vars[i] = mv
+            sls.append({
+                "icon": k,
+                "link": v[0].format(**vars),
+            })
+        s = yaml.dump(sls, default_flow_style=False)
+        s = "\n".join([f'  {i}' for i in s.strip().split("\n")])
 
         with open("mkdocs.yml", "r") as f:
             mkdocs = f.read()
 
-        mkdocs = re.sub(RE_MD_TPL.format(key="nav docs"), nd, mkdocs, 1, flags=re.DOTALL)
+        MDRD = {
+            "nav docs": nd,
+            "meta": m,
+            "soc icons": s,
+        }
+
+        for k, v in MDRD.items():
+            mkdocs = re.sub(
+                RE_MD_TPL.format(key=k), v, mkdocs, 1, re.DOTALL
+            )
 
         with open("mkdocs.yml", "w") as f:
             f.write(mkdocs)

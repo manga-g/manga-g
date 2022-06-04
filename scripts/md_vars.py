@@ -46,8 +46,9 @@ def b64(name: str):
     with open(f"./docs/assets/images/icons/{name}", "rb") as f:
         return base64.b64encode(f.read()).decode("utf-8")
 
-if (copyright := []) == []:
-    for c, mp in LICENSE("cholder").items():
+if lc := LICENSE("cholder"):
+    copyright = []
+    for c, mp in lc.items():
         user = mp['user']
         for org, projects in mp["projects"].items():
             for project, pm in projects.items():
@@ -60,7 +61,7 @@ if (copyright := []) == []:
     cholder = f"""Copyright for portions of project [{FN}](https://github.com/{ORG}/{FN}) are held {', '.join(copyright)}.\n
 All other copyright for project [{FN}](https://github.com/{ORG}/{FN}) are held by [Github Account [{USER}](https://github.com/{USER}) Owner, {LICENSE('year')}]."""
 else:
-    cholder = f"Copyright (c) 2021 Github Account [{FN}](https://github.com/{USER}) Owner"
+    cholder = f"Copyright (c) 2021 Github Account [{USER}](https://github.com/{USER}) Owner"
 
 RULES_MDV = {
     "rules": {

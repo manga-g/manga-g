@@ -1,13 +1,12 @@
-
 # Do Not Modify!
 # meta start
-site_name: smp
-site_url: https://smp.hyaku.download
-repo_url: https://github.com/hyaku-dl/shonen-magazine-pocket
-site_description: |-
-  A Basic Shonen Magazine Pocket Scraper
-site_author: whi~nyaan!
-copyright: Copyright &copy; 2022 whitespace_negative
+copyright: Copyright &copy; 2022 4cecoder
+repo_url: https://github.com/manga-g/manga-g
+site_author: 4cecoder
+site_description: An awesome CLI program to read Manga via Terminal!
+site_name: Manga-G
+site_url: https://manga-g.pages.dev
+
 # meta end
 
 theme:
@@ -62,15 +61,8 @@ extra:
   # Do Not Modify!
   social:
   # soc icons start
-    -
-      icon: fontawesome/brands/github
-      link: https://github.com/hyaku-dl/urasunday
-    -
-      icon: fontawesome/brands/python
-      link: https://pypi.org/project/ura/
-    -
-      icon: fontawesome/brands/twitter
-      link: https://twitter.com/whi_nyaan
+  - icon: fontawesome/brands/github
+    link: https://github.com/manga-g/manga-g
   # soc icons end
 
 plugins:
@@ -82,41 +74,8 @@ plugins:
 
 nav:
   - Home: /
-
-  # Do Not Modify!
-  - Installation:
-  # nav inst start
-    - Index: docs/0/0/installation/index.html
-    - Installable:
-      - Index: docs/0/0/installation/installable/index.html
-      - Windows 7 and up: docs/0/0/installation/installable/windows/index.html
-      - Linux:
-        - Index: docs/0/0/installation/installable/linux/index.html
-        - Arch: docs/0/0/installation/portable/linux/arch/index.html
-        - Debian: docs/0/0/installation/portable/linux/debian/index.html
-    - Portable:
-      - Index: docs/0/0/installation/portable/index.html
-      - Windows 7 and up: docs/0/0/installation/portable/windows/index.html
-      - Linux:
-        - Index: docs/0/0/installation/portable/linux/index.html
-        - Arch: docs/0/0/installation/portable/linux/arch/index.html
-        - Debian: docs/0/0/installation/portable/linux/debian/index.html
-    - Programmatic:
-      - Index: docs/0/0/installation/programmatic/index.html
-      - Windows 7 and up: docs/0/0/installation/programmatic/windows/index.html
-      - MacOS: docs/0/0/installation/programmatic/macos/index.html
-      - Linux:
-        - Index: docs/0/0/installation/programmatic/linux/index.html
-        - Arch: docs/0/0/installation/programmatic/linux/arch/index.html
-        - Debian: docs/0/0/installation/programmatic/linux/debian/index.html
-  # nav inst end
-
   - License agreement: /license
   - Changelog: /changelog
-  - Notes:
-    - Notes: /notes
-    - Notes to self: /notes to self
-
   # Do Not Modify!
   - Documentation:
   # nav docs start

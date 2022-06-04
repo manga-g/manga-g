@@ -1,17 +1,15 @@
 md_vars:
   global:
-    project_name: MangaG
     repo_name: manga-g
+    project_name: MangaG
     formal_name: Manga-G
-    site: mg.test.whinyaan.xyz
-    scripts_url: mg.test.whinyaan.xyz/scripts
-    organization: 4cecoder
+    site: manga-g.pages.dev
+    organization: manga-g
     user: 4cecoder
     dc_acc: 4ce#6574
-    dc_link: 918988165379928135
-    dc_inv: JbAtUxGcJZ
-    mail_acc: whinyaan@pm.me
-    mail_link: mailto:whinyaan@pm.me
+    year: 2022
+    workflow: Go
+    workflow_file: go.yml
     desc: |-
       An awesome CLI program to read Manga via Terminal!
     long_desc: |-

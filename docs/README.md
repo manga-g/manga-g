@@ -24,7 +24,7 @@
     <a href="https://github.com/manga-g/manga-g/graphs/contributors">
         <img src="https://img.shields.io/github/contributors/manga-g/manga-g.svg?style=flat-square&logo=data:image/png;base64,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">
     </a>
-    <a href="https://mg.test.whinyaan.xyz/license.html">
+    <a href="https://manga-g.pages.dev/license.html">
         <img src="https://img.shields.io/badge/LICENSE-A31F34?style=flat-square&logoWidth=25&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAAByCAYAAAA4TL8fAAADvElEQVR4nO3bsYkdVxiG4c2EA6kCY5WgAt2AMuVbgntRC+rgcoeFTRbDcQ3/OxwxjJ8P/vTwBvOE8/J8PteuO47j35cTO47jubNvrfX5RNuvzW1/nWj7ubPt4+PjW21ba33Z2Xb1e9n5OHCn2oC74QHX24ALA27j48CdagPuhgdcbwMuDLiNjwN3qg24Gx5wvQ24MOA2Pg7cqTbgbnjA9TbgwoDb+Dhwp9qAu+EB19uACwNu4+PAnWoD7oYHXG8DLgy4jY8Dd6oNuBsecL0NuDDgNj4O3Kk24G54wPU24MKA2/g4cKfagLvhAdfbgAsDbuPjwJ1qA+6GB1xvAy4MuI2PA3eqDbgbHnC97bLg3t7evr+/v/+z69ZaX2vbWuuPnW1XP+B622XB2YUHXG4DzuYDLrcBZ/MBl9uAs/mAy23A2XzA5TbgbD7gchtwNh9wuQ04mw+43AaczQdcbgPO5gMutwFn8wGX24Cz+YDLbcDZfMDltsuCW2v9vdZ63Xh/nmj7dBzH6657PB4/attvGXC57crgfq69O/M/3OfN39yztv2WAZfbgGttwAGX2oBrbcABl9qAa23AAZfagGttwAGX2oBrbcABl9qAa23AAZfagGttwAGX2oBrbcABl9qAa23AAZfagGttwAGX2oBrbcABl9qAa23AAZfagGttwAGX2oBrbcABl9qAa23AAZfagGttwAGX2oBrbcABl9qAa23AAZfagGttwAGX2oBrbcABl9qAa23AAZfagGttwAGX2oBrbcABl9qAa23AAZfagGttwAGX2oBrbcABl9qAa23AAZfagGttwAGX2oBrbcABl9qAa23AAZfagGttwAGX2oBrbcABl9qAa23AAZfagGttwAGX2oBrbcABl9qAa23AAZfagGttwAGX2oBrbcABl9qAa23AXRXc4/H4cRzH665ba32qbcDlNuCuCu7KAy63AQfcfMDlNuCAmw+43AYccPMBl9uAA24+4HIbcMDNB1xuAw64+YDLbcABNx9wuQ044OYDLrcBB9x8wOU24ICbD7jcBhxw8wGX24ADbj7gchtwwM0HXG4DDrj5gMttwAE3H3C5DTjg5gMutwEH3HzA5TbggJsPuNwGHHDzAZfbgANuPuByG3DAzQdcbgMOuPmAy23AATcfcLkNOODmAy63AQfcfMDlNuCAmw+43AYccPMBl9uAA24+4HIbcMDNB1xuAw64+YDLbcABNx9wuQ044OYDLrcBB9x8wOU24ICbD7jcBhxw8wGX2/7X4P4DxDPxnlw4RDoAAAAASUVORK5CYII=">
     </a>
 </p>
@@ -33,8 +33,8 @@
     <a href="https://github.com/manga-g/manga-g/releases">
         <img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/manga-g/manga-g?include_prereleases&style=flat-square">
     </a>
-    <a href="https://github.com/manga-g/manga-g/releases">
-        <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/manga-g/manga-g/Build?label=Build&style=flat-square">
+    <a href="https://github.com/manga-g/manga-g/actions/workflows/go.yml">
+        <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/manga-g/manga-g/Go?style=flat-square">
     </a>
 </p>
 
@@ -45,23 +45,17 @@
 </p>
 
 <p align="center">
-    <a target="_blank" href="https://discord.com/invite/JbAtUxGcJZ">
-        <img src="https://inviter.whinyaan.xyz/JbAtUxGcJZ?color[background]=00000000&color[serverName]=d64f50&color[header]=9383e2&color[presenceText]=684fe2">
-    </a>
-</p>
-
-<p align="center">
     <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.github.com%2Fmanga-g%2Fmanga-g&text=Read%20manga%20in%20your%20terminal%20using%20Manga-G%21&hashtags=manga%2Cdownloader%2Ccli">
         <img src="https://img.shields.io/badge/Tweet-1DA1F2?style=flat-square&logoWidth=15&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAQMAAABKLAcXAAAABlBMVEUAAAD///+l2Z/dAAAAAXRSTlMAQObYZgAAAQVJREFUOI3d0sFpxDAQheF/2YMvATcQYtJHYFpJJ3ZpKsUl+KjDopeDRsoMLCTn9e3DkuY9W/BCzyNi1RFkuviekurtBN4AblJbT+AD4C5pL8AGsEjSAWwHsA5ZATZJArDT1d4BuwCT9KiAVZcuwBqwT2noBEzFVQDT6ToAUwXNeWpdjT74QJKq60pqv1olXXuU5rsl6Z70mfSVZM91/aXtPzpTzieaqUtKXfy3BjHUL8WeZEljBGlfUiOekuWX0J6pdm2h7JznWkK9WalXGJV6zDFwaA0xfWkbWkIUX1mHLAz3giVumwPid7indqR2nssbeNkjHjlzEbf1pWXqFiIDS+OFnh/ebN/K7DRXlwAAAABJRU5ErkJggg==">
     </a>
 </p>
 
 <p align="center">
-    <a href="https://github.com/manga-g/manga-g/tree/main/doc"><b>Explore the docs »</b></a>
+    <a href="https://github.com/4cecoder/manga-g/tree/main/doc"><b>Explore the docs »</b></a>
     <br />
-    <a href="https://github.com/manga-g/manga-g/issues">Report Bug</a>
+    <a href="https://github.com/4cecoder/manga-g/issues">Report Bug</a>
     ·
-    <a href="https://github.com/manga-g/manga-g/issues/new/choose">Request Feature</a>
+    <a href="https://github.com/4cecoder/manga-g/issues/new/choose">Request Feature</a>
 </p>
 
 <!-- About section. Preferrably 2-5 sentences long. -->
@@ -75,11 +69,11 @@ An awesome CLI program to read Manga via Terminal!
 
 Github: [github.com/manga-g/manga-g](https://github.com/manga-g/manga-g)
 
-Website: [mg.test.whinyaan.xyz](https://mg.test.whinyaan.xyz)
+Website: [manga-g.pages.dev](https://manga-g.pages.dev)
 
 ---
 
-To be updated, be sure to watch this repository and join the [Discord Support Server](https://discord.com/invite/JbAtUxGcJZ).
+To be updated, be sure to watch this repository and join the [Discord Support Server](https://discord.com/invite/${dc_inv}).
 
 For the terms of usage and legals, visit [LICENSE](license) and [terms of usage & disclaimer](tou_disc).
 
@@ -87,7 +81,7 @@ For the terms of usage and legals, visit [LICENSE](license) and [terms of usage 
 
 Since people are looking for the download first, here you go:
 
-Follow [this link](https://mg.test.whinyaan.xyz/installation) to install Manga-G on your machine.
+Follow [this link](https://manga-g.pages.dev/installation) to install Manga-G on your machine.
 
 ## **About**
 
@@ -122,16 +116,17 @@ Downloading:
 ./MangaG <url> [OPTIONS]
 ```
 
-For programmatic use, visit the [documentation](https://mg.test.whinyaan.xyz/docs/0/0)
+For programmatic use, visit the [documentation](https://manga-g.pages.dev/docs/0/0)
 
-<!-- License section. Leave unchanged except when updating the year, using a different license, or changing the style altogether. -->
+<!--
+    License section.
+    Do not modify.
+-->
 ## **License**
 
 ### <a target="_blank" href="https://choosealicense.com/licenses/mit/">MIT</a>
 
-Copyright for portions of project [Manga-G](https://github.com/manga-g/Manga-G) are held .
-
-All other copyright for project [Manga-G](https://github.com/manga-g/Manga-G) are held by [Github Account [manga-g](https://github.com/manga-g) Owner, 2022].
+Copyright (c) 2021 Github Account [4cecoder](https://github.com/4cecoder) Owner
 
 Check the [license](license) for more details.
 
@@ -185,7 +180,7 @@ Have a similar project to this application too? Do not hesitate to make a pull r
 
 But she's just starting, so expect more!
 
-Want help in your projects too? Inquire through Discord(<a target="_blank" href="https://discord.com/users/867696753434951732">whi_ne | whinyaan.xyz#5135</a>) or through e-mail(<a target="_blank" href="mailto:whinyaan@protonmail.com">whinyaan@protonmail.com</a>). Price starts at 40 USD. For commisioning projects, price starts at 20 USD.
+Want help in your projects too? Inquire through Discord(<a target="_blank" href="https://discord.com/users/867696753434951732">whi_ne (w17e) | whinyaan.xyz#5135</a>) or through e-mail(<a target="_blank" href="mailto:whinyaan@protonmail.com">whinyaan@protonmail.com</a>). Price starts at 50 USD. For commisioning projects, price starts at 30 USD.
 
 ### MIT Logo
 

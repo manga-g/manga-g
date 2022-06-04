@@ -1,3 +1,13 @@
+---
+op:
+    "docs/README.md":
+        vars:
+            rd: ""
+    "docs/README cp.md":
+        vars:
+            rd: ""
+---
+
 <div align="center">
   <a href="https://github.com/4cecoder/manga-g">
     <img src="assets/images/banner.png" alt="banner" width="700" height="350">
@@ -33,8 +43,8 @@
     <a href="https://github.com/${organization}/${repo_name}/releases">
         <img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/${organization}/${repo_name}?include_prereleases&style=flat-square">
     </a>
-    <a href="https://github.com/${organization}/${repo_name}/releases">
-        <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/${organization}/${repo_name}/Build?label=Build&style=flat-square">
+    <a href="https://github.com/${organization}/${repo_name}/actions/workflows/${workflow_file}">
+        <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/${organization}/${repo_name}/${workflow}?style=flat-square">
     </a>
 </p>
 
@@ -42,12 +52,6 @@
     <img src="https://img.shields.io/badge/os-0078d7?style=flat-square&logoWidth=15&logo=data:image/png;base64,${win_b64}">
     <img src="https://img.shields.io/badge/os-8E8E93?style=flat-square&logoWidth=15&logo=data:image/png;base64,${macos_b64}">
     <img src="https://img.shields.io/badge/os-A38000?style=flat-square&logoWidth=15&logo=data:image/png;base64,${linux_b64}">
-</p>
-
-<p align="center">
-    <a target="_blank" href="https://discord.com/invite/${dc_inv}">
-        <img src="https://inviter.whinyaan.xyz/${dc_inv}?color[background]=00000000&color[serverName]=d64f50&color[header]=9383e2&color[presenceText]=684fe2">
-    </a>
 </p>
 
 <p align="center">
@@ -124,7 +128,10 @@ Downloading:
 
 For programmatic use, visit the [documentation](https://${site}/docs/${v_u}/${v_d})
 
-<!-- License section. Leave unchanged except when updating the year, using a different license, or changing the style altogether. -->
+<!--
+    License section.
+    Do not modify.
+-->
 ## **License**
 
 ### <a target="_blank" href="https://choosealicense.com/licenses/mit/">MIT</a>
@@ -183,7 +190,7 @@ Have a similar project to this application too? Do not hesitate to make a pull r
 
 But she's just starting, so expect more!
 
-Want help in your projects too? Inquire through Discord(<a target="_blank" href="https://discord.com/users/867696753434951732">whi_ne | whinyaan.xyz#5135</a>) or through e-mail(<a target="_blank" href="mailto:whinyaan@protonmail.com">whinyaan@protonmail.com</a>). Price starts at 40 USD. For commisioning projects, price starts at 20 USD.
+Want help in your projects too? Inquire through Discord(<a target="_blank" href="https://discord.com/users/867696753434951732">whi_ne (w17e) | whinyaan.xyz#5135</a>) or through e-mail(<a target="_blank" href="mailto:whinyaan@protonmail.com">whinyaan@protonmail.com</a>). Price starts at 50 USD. For commisioning projects, price starts at 30 USD.
 
 ### MIT Logo
 

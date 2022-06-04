@@ -1,7 +1,0 @@
-variables:
-  global: {}
-  local: {}
-
-matrix: {}
-
-scripts: {}

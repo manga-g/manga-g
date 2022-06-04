@@ -134,23 +134,17 @@ def set_ver():
     with open("version", "w") as f:
         f.write(" ".join([str(i) for i in vls]))
 
-def gen_script():
-    from scripts.scripts import main
-    main()
-
 def main():
     match inquirer.list_input(
         message="What action do you want to take",
         choices=[
             ["Generate documentation", "docs"],
-            ["Generate scripts", "gs"],
             ["Push to github", "gh"],
             ["Bump a version", "bump"],
             ["Set the version manually", "set_ver"]
         ]
     ):
         case "docs":
-            gen_script()
             from scripts import md_vars
             md_vars.main()
             run("mkdocs build")
@@ -159,10 +153,7 @@ def main():
                 default=False
             ):
                 push()
-        case "gs":
-            gen_script()
         case "gh":
-            gen_script()
             push()
         case "bump":
             bump()
@@ -187,15 +178,23 @@ if __name__ == "__main__":
 
             md_vars.main(True)
     else:
+        import httpx
         import inquirer
-        import msgpack
         import yaml
+
+        from scripts.req import req
+
+        try:
+            VLS = req.get("https://raw.githubusercontent.com/manga-g/manga-g/main/version").text
+            with open("version", "w") as f:
+                f.write(VLS)
+        except httpx.ConnectTimeout:
+            print("Could not connect to github, Defaulting to local version")
+            with open("version", "r") as f:
+                VLS = [int(i) for i in f.read().split(" ")]
 
         from scripts.settings import stg
         from scripts.utils import ddir, rv
-
-        with open("version", "r") as f:
-            VLS = [int(i) for i in f.read().split(" ")]
 
         YML = stg(None, "dev.yml")
         GLOBAL = partial(ddir, ddir(YML, "md_vars/global"))
