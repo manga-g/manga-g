@@ -34,16 +34,12 @@ theme:
 
   palette:
     -
-      scheme: slate
-      primary: deep purple
-      accent: deep purple
+      scheme: wh_dark
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode
     -
-      scheme: default
-      primary: deep purple
-      accent: deep purple
+      scheme: wh_white
       toggle:
         icon: material/toggle-switch-off-outline
         name: Switch to dark mode
@@ -64,6 +60,12 @@ extra:
   - icon: fontawesome/brands/github
     link: https://github.com/manga-g/manga-g
   # soc icons end
+
+extra_css:
+  - assets/stylesheets/style.css
+
+extra_javascript:
+  - assets/javascripts/main.js
 
 plugins:
   - search

@@ -1,4 +1,5 @@
 # User
+.aliases
 
 # Python
 venv/
@@ -64,4 +65,3 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-

@@ -176,7 +176,8 @@ if __name__ == "__main__":
         elif sys.argv[1] == "docs":
             from scripts import md_vars
 
-            md_vars.main(True)
+            md_vars.main()
+            run("mkdocs serve")
     else:
         import httpx
         import inquirer
