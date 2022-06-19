@@ -7,8 +7,8 @@ generated:
     folders: []
   mako:
     files:
-    - docs/docs/0/0/index.md
     - docs/changelog.md
+    - docs/docs/0/0/index.md
     folders: []
   pdoc:
     files: []

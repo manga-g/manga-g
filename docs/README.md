@@ -73,11 +73,15 @@ Website: [manga-g.pages.dev](https://manga-g.pages.dev)
 
 ---
 
+<img style="float: left;width:20%;margin:0 1em 0 0" src="assets/images/sakurai/upscaled/noo.png">
+
 To be updated, be sure to watch this repository and join the [Discord Support Server](https://discord.com/invite/${dc_inv}).
 
 For the terms of usage and legals, visit [LICENSE](license) and [terms of usage & disclaimer](tou_disc).
 
 ## **Downloads**
+
+<img style="float: right;width:20%;margin:-2em 0 0" src="assets/images/sakurai/upscaled/uhm.png">
 
 Since people are looking for the download first, here you go:
 
@@ -98,6 +102,8 @@ Manga-G leverages Golang's multithreading to be able to hit multiple manga sites
 - MacOS
 - Linux; and
 - Others
+
+<img style="float: right;width:40%;margin:0 0 0 2em" src="assets/images/sakurai/upscaled/ha.png">
 
 <!-- Mention examples of application of this repository. -->
 ## **Usage**
@@ -147,6 +153,8 @@ Check the [license](license) for more details.
 - [Warp](https://warp.dev)
 - [Goland](https://www.jetbrains.com/go/)
 
+<img style="float: left;width:40%;margin:0 2em 0;padding:4em 0 0" src="assets/images/sakurai/upscaled/cover.png">
+
 ## **Related Projects**
 
 Like this application? Consider using related projects:
@@ -168,11 +176,16 @@ Have a similar project to this application too? Do not hesitate to make a pull r
 
 - To the sole sponsor of this project:
 
-<a href="https://youtu.be/Zb63UgDv1fs">
-  <img src="https://static01.eu/1prospekte.de/images/uploads/080221/ja-21-orangen-zitronen-limonaden-2C-cola-2C-cola-mix-oder-cola-44259.jpg"/>
-</a>
+    <div style="display: grid;grid-template-columns: 30% auto;">
+    <img style="" src="assets/images/sakurai/upscaled/eh.png">
+    <a href="https://youtu.be/Zb63UgDv1fs">
+    <img src="https://static01.eu/1prospekte.de/images/uploads/080221/ja-21-orangen-zitronen-limonaden-2C-cola-2C-cola-mix-oder-cola-44259.jpg"/>
+    </a>
+    </div>
 
 - To everyone who supported this project from its humble beginnings to its release!
+
+<img style="float: right;width:20%;margin:0 2em 0 0" src="assets/images/sakurai/upscaled/smug.png">
 
 ### README
 
