@@ -1,14 +1,14 @@
 generated:
   docs:
     files:
-    - docs/docs/0/0/installation.md
     - docs/README.md
+    - docs/docs/0/0/installation.md
     - docs/license.md
     folders: []
   mako:
     files:
-    - docs/changelog.md
     - docs/docs/0/0/index.md
+    - docs/changelog.md
     folders: []
   pdoc:
     files: []
