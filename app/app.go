@@ -7,8 +7,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-
-	"manga-g/ui"
 )
 
 // GetInput Function to get user input from the command line
@@ -78,7 +76,7 @@ func (app *MG) FindMangaTitle(html string) string {
 // InitMangaG initializes the MangaG struct.
 func InitMangaG() {
 	MangaG := new(MG)
-	style := ui.InitStyle()
+	// style := ui.InitStyle()
 
 	//ui.Render(style, "Starting Manga-G...")
 	fmt.Println("Starting Manga-G...")
