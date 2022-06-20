@@ -80,19 +80,27 @@ func InitMangaG() {
 	MangaG := new(MG)
 	style := ui.InitStyle()
 
-	ui.Render(style, "Starting Manga-G...")
+	//ui.Render(style, "Starting Manga-G...")
+	fmt.Println("Starting Manga-G...")
 	if MangaG.Connected() {
-		ui.Render(style, "Enter a URL for a Manga's first page to download:")
+		//ui.Render(style, "Enter a URL for a Manga's first page to download:")
+		fmt.Println("Enter a URL for a Manga's first page to download:")
 		MangaUrl := MangaG.GetInput()
 		if MangaG.ValidateUrl(MangaUrl) {
 			DoStuff(MangaG, MangaUrl)
 		} else {
-			ui.Render(style, "Invalid URL please try again.")
-			ui.Render(style, "Example: https://www.mangaeden.com/en/en-manga/one-piece/")
-			ui.Render(style, "Exiting...")
+			//ui.Render(style, "Invalid URL please try again.")
+			//ui.Render(style, "Example: https://www.mangaeden.com/en/en-manga/one-piece/")
+			//ui.Render(style, "Exiting...")
+			fmt.Println("Invalid URL please try again.")
+			fmt.Println("Example: https://www.mangaeden.com/en/en-manga/one-piece/")
+			fmt.Println("Exiting...")
+
 		}
 	} else {
-		ui.Render(style, "Could not connect to the internet.")
-		ui.Render(style, "Exiting...")
+		//ui.Render(style, "Could not connect to the internet.")
+		fmt.Println("Could not connect to the internet.")
+		//ui.Render(style, "Exiting...")
+		fmt.Println("Exiting...")
 	}
 }

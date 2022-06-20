@@ -1,10 +1,11 @@
 package main
 
 import (
-	"manga-g/ui"
+	"manga-g/app"
 )
 
 // Entrypoint for the program.
 func main() {
-	ui.StartProgram()
+	app.InitMangaG()
+	// ui.StartProgram()
 }
