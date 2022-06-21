@@ -1,8 +1,7 @@
 //go:build darwin || freebsd || netbsd || openbsd || dragonfly
 // +build darwin freebsd netbsd openbsd dragonfly
 
-// nolint:revive
-package tea
+package cancelreader
 
 import (
 	"errors"
@@ -14,14 +13,14 @@ import (
 	"golang.org/x/sys/unix"
 )
 
-// newkqueueCancelReader returns a reader and a cancel function. If the input reader
-// is an *os.File, the cancel function can be used to interrupt a blocking call
-// read call. In this case, the cancel function returns true if the call was
-// cancelled successfully. If the input reader is not a *os.File, the cancel
-// function does nothing and always returns false. The BSD and macOS
-// implementation is based on the kqueue mechanism.
-func newCancelReader(reader io.Reader) (cancelReader, error) {
-	file, ok := reader.(*os.File)
+// NewReader returns a reader and a cancel function. If the input reader is a
+// File, the cancel function can be used to interrupt a blocking read call.
+// In this case, the cancel function returns true if the call was canceled
+// successfully. If the input reader is not a File, the cancel function
+// does nothing and always returns false. The BSD and macOS implementation is
+// based on the kqueue mechanism.
+func NewReader(reader io.Reader) (CancelReader, error) {
+	file, ok := reader.(File)
 	if !ok {
 		return newFallbackCancelReader(reader)
 	}
@@ -53,22 +52,22 @@ func newCancelReader(reader io.Reader) (cancelReader, error) {
 }
 
 type kqueueCancelReader struct {
-	file               *os.File
-	cancelSignalReader *os.File
-	cancelSignalWriter *os.File
+	file               File
+	cancelSignalReader File
+	cancelSignalWriter File
 	cancelMixin
 	kQueue       int
 	kQueueEvents [2]unix.Kevent_t
 }
 
 func (r *kqueueCancelReader) Read(data []byte) (int, error) {
-	if r.isCancelled() {
-		return 0, errCanceled
+	if r.isCanceled() {
+		return 0, ErrCanceled
 	}
 
 	err := r.wait()
 	if err != nil {
-		if errors.Is(err, errCanceled) {
+		if errors.Is(err, ErrCanceled) {
 			// remove signal from pipe
 			var b [1]byte
 			_, errRead := r.cancelSignalReader.Read(b[:])
@@ -84,7 +83,7 @@ func (r *kqueueCancelReader) Read(data []byte) (int, error) {
 }
 
 func (r *kqueueCancelReader) Cancel() bool {
-	r.setCancelled()
+	r.setCanceled()
 
 	// send cancel signal
 	_, err := r.cancelSignalWriter.Write([]byte{'c'})
@@ -139,7 +138,7 @@ func (r *kqueueCancelReader) wait() error {
 	case uint64(r.file.Fd()):
 		return nil
 	case uint64(r.cancelSignalReader.Fd()):
-		return errCanceled
+		return ErrCanceled
 	}
 
 	return fmt.Errorf("unknown error")

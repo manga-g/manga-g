@@ -1,7 +1,7 @@
 //go:build windows
 // +build windows
 
-package tea
+package cancelreader
 
 import (
 	"fmt"
@@ -16,20 +16,19 @@ import (
 
 var fileShareValidFlags uint32 = 0x00000007
 
-// newCancelReader returns a reader and a cancel function. If the input reader
-// is an *os.File with the same file descriptor as os.Stdin, the cancel function
-// can be used to interrupt a blocking call read call. In this case, the cancel
-// function returns true if the call was cancelled successfully. If the input
-// reader is not a *os.File with the same file descriptor as os.Stdin, the
-// cancel function does nothing and always returns false. The Windows
-// implementation is based on WaitForMultipleObject with overlapping reads from
-// CONIN$.
-func newCancelReader(reader io.Reader) (cancelReader, error) {
-	if f, ok := reader.(*os.File); !ok || f.Fd() != os.Stdin.Fd() {
+// NewReader returns a reader and a cancel function. If the input reader is a
+// File with the same file descriptor as os.Stdin, the cancel function can
+// be used to interrupt a blocking read call. In this case, the cancel function
+// returns true if the call was canceled successfully. If the input reader is
+// not a File with the same file descriptor as os.Stdin, the cancel
+// function does nothing and always returns false. The Windows implementation
+// is based on WaitForMultipleObject with overlapping reads from CONIN$.
+func NewReader(reader io.Reader) (CancelReader, error) {
+	if f, ok := reader.(File); !ok || f.Fd() != os.Stdin.Fd() {
 		return newFallbackCancelReader(reader)
 	}
 
-	// it is neccessary to open CONIN$ (NOT windows.STD_INPUT_HANDLE) in
+	// it is necessary to open CONIN$ (NOT windows.STD_INPUT_HANDLE) in
 	// overlapped mode to be able to use it with WaitForMultipleObjects.
 	conin, err := windows.CreateFile(
 		&(utf16.Encode([]rune("CONIN$\x00"))[0]), windows.GENERIC_READ|windows.GENERIC_WRITE,
@@ -74,8 +73,8 @@ type winCancelReader struct {
 }
 
 func (r *winCancelReader) Read(data []byte) (int, error) {
-	if r.isCancelled() {
-		return 0, errCanceled
+	if r.isCanceled() {
+		return 0, ErrCanceled
 	}
 
 	err := r.wait()
@@ -83,8 +82,8 @@ func (r *winCancelReader) Read(data []byte) (int, error) {
 		return 0, err
 	}
 
-	if r.isCancelled() {
-		return 0, errCanceled
+	if r.isCanceled() {
+		return 0, ErrCanceled
 	}
 
 	// windows.Read does not work on overlapping windows.Handles
@@ -97,7 +96,7 @@ func (r *winCancelReader) Read(data []byte) (int, error) {
 // available. In this case, graceful cancelation is not possible and Cancel()
 // returns false.
 func (r *winCancelReader) Cancel() bool {
-	r.setCancelled()
+	r.setCanceled()
 
 	select {
 	case r.blockingReadSignal <- struct{}{}:
@@ -140,7 +139,7 @@ func (r *winCancelReader) wait() error {
 	switch {
 	case windows.WAIT_OBJECT_0 <= event && event < windows.WAIT_OBJECT_0+2:
 		if event == windows.WAIT_OBJECT_0+1 {
-			return errCanceled
+			return ErrCanceled
 		}
 
 		if event == windows.WAIT_OBJECT_0 {
@@ -159,7 +158,7 @@ func (r *winCancelReader) wait() error {
 	}
 }
 
-// readAsync is neccessary to read from a windows.Handle in overlapping mode.
+// readAsync is necessary to read from a windows.Handle in overlapping mode.
 func (r *winCancelReader) readAsync(data []byte) (int, error) {
 	hevent, err := windows.CreateEvent(nil, 0, 0, nil)
 	if err != nil {
@@ -206,7 +205,7 @@ func prepareConsole(input windows.Handle) (reset func() error, err error) {
 	newMode |= windows.ENABLE_INSERT_MODE
 	newMode |= windows.ENABLE_QUICK_EDIT_MODE
 
-	// Enabling virutal terminal input is necessary for processing certain
+	// Enabling virtual terminal input is necessary for processing certain
 	// types of input like X10 mouse events and arrows keys with the current
 	// bytes-based input reader. It does, however, prevent cancelReader from
 	// being able to cancel input. The planned solution for this is to read

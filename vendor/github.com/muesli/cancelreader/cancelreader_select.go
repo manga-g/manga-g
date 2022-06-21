@@ -1,8 +1,7 @@
 //go:build solaris || darwin || freebsd || netbsd || openbsd || dragonfly
 // +build solaris darwin freebsd netbsd openbsd dragonfly
 
-// nolint:revive
-package tea
+package cancelreader
 
 import (
 	"errors"
@@ -15,14 +14,14 @@ import (
 )
 
 // newSelectCancelReader returns a reader and a cancel function. If the input
-// reader is an *os.File, the cancel function can be used to interrupt a
+// reader is a File, the cancel function can be used to interrupt a
 // blocking call read call. In this case, the cancel function returns true if
-// the call was cancelled successfully. If the input reader is not a *os.File or
+// the call was canceled successfully. If the input reader is not a File or
 // the file descriptor is 1024 or larger, the cancel function does nothing and
 // always returns false. The generic unix implementation is based on the posix
 // select syscall.
-func newSelectCancelReader(reader io.Reader) (cancelReader, error) {
-	file, ok := reader.(*os.File)
+func newSelectCancelReader(reader io.Reader) (CancelReader, error) {
+	file, ok := reader.(File)
 	if !ok || file.Fd() >= unix.FD_SETSIZE {
 		return newFallbackCancelReader(reader)
 	}
@@ -39,15 +38,15 @@ func newSelectCancelReader(reader io.Reader) (cancelReader, error) {
 }
 
 type selectCancelReader struct {
-	file               *os.File
-	cancelSignalReader *os.File
-	cancelSignalWriter *os.File
+	file               File
+	cancelSignalReader File
+	cancelSignalWriter File
 	cancelMixin
 }
 
 func (r *selectCancelReader) Read(data []byte) (int, error) {
-	if r.isCancelled() {
-		return 0, errCanceled
+	if r.isCanceled() {
+		return 0, ErrCanceled
 	}
 
 	for {
@@ -57,7 +56,7 @@ func (r *selectCancelReader) Read(data []byte) (int, error) {
 				continue // try again if the syscall was interrupted
 			}
 
-			if errors.Is(err, errCanceled) {
+			if errors.Is(err, ErrCanceled) {
 				// remove signal from pipe
 				var b [1]byte
 				_, readErr := r.cancelSignalReader.Read(b[:])
@@ -74,7 +73,7 @@ func (r *selectCancelReader) Read(data []byte) (int, error) {
 }
 
 func (r *selectCancelReader) Cancel() bool {
-	r.setCancelled()
+	r.setCanceled()
 
 	// send cancel signal
 	_, err := r.cancelSignalWriter.Write([]byte{'c'})
@@ -102,7 +101,7 @@ func (r *selectCancelReader) Close() error {
 	return nil
 }
 
-func waitForRead(reader *os.File, abort *os.File) error {
+func waitForRead(reader, abort File) error {
 	readerFd := int(reader.Fd())
 	abortFd := int(abort.Fd())
 
@@ -126,7 +125,7 @@ func waitForRead(reader *os.File, abort *os.File) error {
 	}
 
 	if fdSet.IsSet(abortFd) {
-		return errCanceled
+		return ErrCanceled
 	}
 
 	if fdSet.IsSet(readerFd) {

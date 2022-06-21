@@ -9,6 +9,7 @@ import (
 
 const url = "https://manganato.com/search/story/"
 
+// NatoSearch a function to search the manga in the Nato website
 func NatoSearch(app *app.MG, query string) string {
 
 	html := app.StringifyHtml(url + query)

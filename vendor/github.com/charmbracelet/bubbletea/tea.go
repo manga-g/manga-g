@@ -11,7 +11,6 @@ package tea
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -23,6 +22,7 @@ import (
 
 	"github.com/containerd/console"
 	isatty "github.com/mattn/go-isatty"
+	"github.com/muesli/cancelreader"
 	te "github.com/muesli/termenv"
 	"golang.org/x/term"
 )
@@ -82,20 +82,28 @@ type Program struct {
 	// treated as bits. These options can be set via various ProgramOptions.
 	startupOptions startupOptions
 
+	ctx context.Context
 	mtx *sync.Mutex
 
-	msgs chan Msg
+	msgs         chan Msg
+	errs         chan error
+	readLoopDone chan struct{}
 
-	output          io.Writer // where to send output. this will usually be os.Stdout.
-	input           io.Reader // this will usually be os.Stdin.
-	renderer        renderer
-	altScreenActive bool
+	output       io.Writer // where to send output. this will usually be os.Stdout.
+	input        io.Reader // this will usually be os.Stdin.
+	cancelReader cancelreader.CancelReader
+
+	renderer           renderer
+	altScreenActive    bool
+	altScreenWasActive bool // was the altscreen active before releasing the terminal?
 
 	// CatchPanics is incredibly useful for restoring the terminal to a usable
 	// state after a panic occurs. When this is set, Bubble Tea will recover
 	// from panics, print the stack trace, and disable raw mode. This feature
 	// is on by default.
 	CatchPanics bool
+
+	ignoreSignals bool
 
 	killc chan bool
 
@@ -263,14 +271,11 @@ func NewProgram(model Model, opts ...ProgramOption) *Program {
 
 // StartReturningModel initializes the program. Returns the final model.
 func (p *Program) StartReturningModel() (Model, error) {
-	var (
-		cmds = make(chan Cmd)
-		errs = make(chan error)
-	)
+	cmds := make(chan Cmd)
+	p.errs = make(chan error)
 
 	// Channels for managing goroutine lifecycles.
 	var (
-		readLoopDone   = make(chan struct{})
 		sigintLoopDone = make(chan struct{})
 		cmdLoopDone    = make(chan struct{})
 		resizeLoopDone = make(chan struct{})
@@ -279,7 +284,7 @@ func (p *Program) StartReturningModel() (Model, error) {
 		waitForGoroutines = func(withReadLoop bool) {
 			if withReadLoop {
 				select {
-				case <-readLoopDone:
+				case <-p.readLoopDone:
 				case <-time.After(500 * time.Millisecond):
 					// The read loop hangs, which means the input
 					// cancelReader's cancel function has returned true even
@@ -293,7 +298,8 @@ func (p *Program) StartReturningModel() (Model, error) {
 		}
 	)
 
-	ctx, cancelContext := context.WithCancel(context.Background())
+	var cancelContext context.CancelFunc
+	p.ctx, cancelContext = context.WithCancel(context.Background())
 	defer cancelContext()
 
 	switch {
@@ -344,10 +350,16 @@ func (p *Program) StartReturningModel() (Model, error) {
 			close(sigintLoopDone)
 		}()
 
-		select {
-		case <-ctx.Done():
-		case <-sig:
-			p.msgs <- quitMsg{}
+		for {
+			select {
+			case <-p.ctx.Done():
+				return
+			case <-sig:
+				if !p.ignoreSignals {
+					p.msgs <- quitMsg{}
+					return
+				}
+			}
 		}
 	}()
 
@@ -390,7 +402,7 @@ func (p *Program) StartReturningModel() (Model, error) {
 			defer close(initSignalDone)
 			select {
 			case cmds <- initCmd:
-			case <-ctx.Done():
+			case <-p.ctx.Done():
 			}
 		}()
 	} else {
@@ -404,57 +416,32 @@ func (p *Program) StartReturningModel() (Model, error) {
 	// Render the initial view.
 	p.renderer.write(model.View())
 
-	cancelReader, err := newCancelReader(p.input)
-	if err != nil {
-		return model, err
-	}
-
-	defer cancelReader.Close() // nolint:errcheck
-
 	// Subscribe to user input.
 	if p.input != nil {
-		go func() {
-			defer close(readLoopDone)
-
-			for {
-				if ctx.Err() != nil {
-					return
-				}
-
-				msgs, err := readInputs(cancelReader)
-				if err != nil {
-					if !errors.Is(err, io.EOF) && !errors.Is(err, errCanceled) {
-						errs <- err
-					}
-
-					return
-				}
-
-				for _, msg := range msgs {
-					p.msgs <- msg
-				}
-			}
-		}()
+		if err := p.initCancelReader(); err != nil {
+			return model, err
+		}
 	} else {
-		defer close(readLoopDone)
+		defer close(p.readLoopDone)
 	}
+	defer p.cancelReader.Close() // nolint:errcheck
 
 	if f, ok := p.output.(*os.File); ok && isatty.IsTerminal(f.Fd()) {
 		// Get the initial terminal size and send it to the program.
 		go func() {
 			w, h, err := term.GetSize(int(f.Fd()))
 			if err != nil {
-				errs <- err
+				p.errs <- err
 			}
 
 			select {
-			case <-ctx.Done():
+			case <-p.ctx.Done():
 			case p.msgs <- WindowSizeMsg{w, h}:
 			}
 		}()
 
 		// Listen for window resizes.
-		go listenForResize(ctx, f, p.msgs, errs, resizeLoopDone)
+		go listenForResize(p.ctx, f, p.msgs, p.errs, resizeLoopDone)
 	} else {
 		close(resizeLoopDone)
 	}
@@ -465,7 +452,7 @@ func (p *Program) StartReturningModel() (Model, error) {
 
 		for {
 			select {
-			case <-ctx.Done():
+			case <-p.ctx.Done():
 
 				return
 			case cmd := <-cmds:
@@ -481,7 +468,7 @@ func (p *Program) StartReturningModel() (Model, error) {
 				go func() {
 					select {
 					case p.msgs <- cmd():
-					case <-ctx.Done():
+					case <-p.ctx.Done():
 					}
 				}()
 			}
@@ -493,9 +480,9 @@ func (p *Program) StartReturningModel() (Model, error) {
 		select {
 		case <-p.killc:
 			return nil, nil
-		case err := <-errs:
+		case err := <-p.errs:
 			cancelContext()
-			waitForGoroutines(cancelReader.Cancel())
+			waitForGoroutines(p.cancelReader.Cancel())
 			p.shutdown(false)
 			return model, err
 
@@ -505,7 +492,7 @@ func (p *Program) StartReturningModel() (Model, error) {
 			switch msg := msg.(type) {
 			case quitMsg:
 				cancelContext()
-				waitForGoroutines(cancelReader.Cancel())
+				waitForGoroutines(p.cancelReader.Cancel())
 				p.shutdown(false)
 				return model, nil
 
@@ -536,6 +523,10 @@ func (p *Program) StartReturningModel() (Model, error) {
 
 			case hideCursorMsg:
 				hideCursor(p.output)
+
+			case execMsg:
+				// NB: this blocks.
+				p.exec(msg.cmd, msg.fn)
 			}
 
 			// Process internal messages for the renderer.
@@ -563,9 +554,6 @@ func (p *Program) Start() error {
 //
 // If the program is not running this this will be a no-op, so it's safe to
 // send messages if the program is unstarted, or has exited.
-//
-// This method is currently provisional. The method signature may alter
-// slightly, or it may be removed in a future version of this package.
 func (p *Program) Send(msg Msg) {
 	p.msgs <- msg
 }
@@ -577,18 +565,12 @@ func (p *Program) Send(msg Msg) {
 //
 // If the program is not running this will be a no-op, so it's safe to call
 // if the program is unstarted or has already exited.
-//
-// This method is currently provisional. The method signature may alter
-// slightly, or it may be removed in a future version of this package.
 func (p *Program) Quit() {
 	p.Send(Quit())
 }
 
 // Kill stops the program immediately and restores the former terminal state.
 // The final render that you would normally see when quitting will be skipped.
-//
-// This method is currently provisional. The method signature may alter
-// slightly, or it may be removed in a future version of this package.
 func (p *Program) Kill() {
 	p.killc <- true
 	p.shutdown(true)
@@ -607,7 +589,7 @@ func (p *Program) shutdown(kill bool) {
 	p.ExitAltScreen()
 	p.DisableMouseCellMotion()
 	p.DisableMouseAllMotion()
-	_ = p.restoreTerminal()
+	_ = p.restoreTerminalState()
 }
 
 // EnterAltScreen enters the alternate screen buffer, which consumes the entire
@@ -622,8 +604,7 @@ func (p *Program) EnterAltScreen() {
 		return
 	}
 
-	fmt.Fprintf(p.output, te.CSI+te.AltScreenSeq)
-	moveCursor(p.output, 0, 0)
+	enterAltScreen(p.output)
 
 	p.altScreenActive = true
 	if p.renderer != nil {
@@ -642,7 +623,7 @@ func (p *Program) ExitAltScreen() {
 		return
 	}
 
-	fmt.Fprintf(p.output, te.CSI+te.ExitAltScreenSeq)
+	exitAltScreen(p.output)
 
 	p.altScreenActive = false
 	if p.renderer != nil {
@@ -689,4 +670,40 @@ func (p *Program) DisableMouseAllMotion() {
 	p.mtx.Lock()
 	defer p.mtx.Unlock()
 	fmt.Fprintf(p.output, te.CSI+te.DisableMouseAllMotionSeq)
+}
+
+// ReleaseTerminal restores the original terminal state and cancels the input
+// reader. You can return control to the Program with RestoreTerminal.
+func (p *Program) ReleaseTerminal() error {
+	p.ignoreSignals = true
+	p.cancelInput()
+	p.altScreenWasActive = p.altScreenActive
+	if p.altScreenActive {
+		p.ExitAltScreen()
+		time.Sleep(time.Millisecond * 10) // give the terminal a moment to catch up
+	}
+	return p.restoreTerminalState()
+}
+
+// RestoreTerminal reinitializes the Program's input reader, restores the
+// terminal to the former state when the program was running, and repaints.
+// Use it to reinitialize a Program after running ReleaseTerminal.
+func (p *Program) RestoreTerminal() error {
+	p.ignoreSignals = false
+
+	if err := p.initTerminal(); err != nil {
+		return err
+	}
+
+	if err := p.initCancelReader(); err != nil {
+		return err
+	}
+
+	if p.altScreenWasActive {
+		p.EnterAltScreen()
+	}
+
+	go p.Send(repaintMsg{})
+
+	return nil
 }
