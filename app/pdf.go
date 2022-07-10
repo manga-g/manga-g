@@ -1,6 +1,32 @@
 package app
 
-// come on and put some comments in this file
-// I'm not even sure if this is even a good idea
-// who wants some vape juice?
-// but it's going to be pretty 360 no scope any day now
+import (
+    "path/filepath"
+
+    pdfcpu "github.com/pdfcpu/pdfcpu/pkg/api"
+)
+
+// PackToPDF packs chapter to .pdf
+func PackToPDF(images []string, destination string) (string, error) {
+    destination += ".pdf"
+
+    err := RemoveIfExists(destination)
+    if err != nil {
+        return "", err
+    }
+
+    // Create parent directory since pdfcpu have some troubles when it doesn't exist
+    if exists, err := Afero.Exists(filepath.Dir(destination)); err != nil {
+        return "", err
+    } else if !exists {
+        if err := Afero.MkdirAll(filepath.Dir(destination), 0777); err != nil {
+            return "", err
+        }
+    }
+
+    if err := pdfcpu.ImportImagesFile(images, destination, nil, nil); err != nil {
+        return "", err
+    }
+
+    return destination, nil
+}

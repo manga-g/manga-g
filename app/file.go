@@ -7,7 +7,11 @@ import (
     "os"
     "regexp"
     "strings"
+
+    "github.com/spf13/afero"
 )
+
+var Afero = afero.Afero{Fs: afero.NewOsFs()}
 
 // CreateEmptyFile a function to create an empty file
 func (app *MG) CreateEmptyFile(fileName string) (*os.File, error) {
@@ -103,4 +107,20 @@ func (app *MG) SaveImage(url string, filename string) {
 func (app *MG) TitleToDirName(title string) string {
     reg, _ := regexp.Compile("[^a-zA-Z\\d]+")
     return reg.ReplaceAllString(title, "")
+}
+func RemoveIfExists(path string) error {
+    exists, err := Afero.Exists(path)
+
+    if err != nil {
+        return err
+    }
+
+    if exists {
+        err = Afero.Remove(path)
+        if err != nil {
+            return err
+        }
+    }
+
+    return nil
 }
