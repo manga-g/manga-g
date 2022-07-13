@@ -76,7 +76,7 @@ RULES_MDV = {
             "prerel": not docs.VLS[-2] == 3,
             **{f"{i}_b64": b64(f"{i}.png") for i in icons},
             **dict(
-                zip([f'v_{i}' for i in ["d", "u", "m", "p", "pri", "prv"]], docs.VLS)
+                zip([f'v_{i}' for i in ["m", "i", "p", "pri", "prv"]], docs.VLS)
             ),
             **R_GLOBAL
         },

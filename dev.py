@@ -163,8 +163,8 @@ def main():
             pass
 
 if __name__ == "__main__":
-    if len(sys.argv) >= 2:
-        if sys.argv[1] == "req":
+    match sys.argv[-1]:
+        case"req":
             run(f'pip install --require-virtualenv pyyaml')
             import yaml
             with open('dev.yml', 'r') as f:
@@ -173,36 +173,36 @@ if __name__ == "__main__":
             for c in y["env"]["dev"]["req"]:
                 ls.append(f'-r {y["requirements"][c]}')
             run(f'pip install --require-virtualenv {" ".join(ls)}')
-        elif sys.argv[1] == "docs":
+        case "docs":
             from scripts import md_vars
 
             md_vars.main()
             run("mkdocs serve")
-    else:
-        import httpx
-        import inquirer
-        import yaml
+        case _:
+            import httpx
+            import inquirer
+            import yaml
 
-        from scripts.req import req
+            from scripts.req import req
 
-        try:
-            VLS = req.get("https://raw.githubusercontent.com/manga-g/manga-g/main/version").text
-            with open("version", "w") as f:
-                f.write(VLS)
-        except httpx.ConnectTimeout:
-            print("Could not connect to github, Defaulting to local version")
-            with open("version", "r") as f:
-                VLS = [int(i) for i in f.read().split(" ")]
+            try:
+                VLS = req.get("https://raw.githubusercontent.com/manga-g/manga-g/main/version").text
+                with open("version", "w") as f:
+                    f.write(VLS)
+            except httpx.ConnectTimeout:
+                print("Could not connect to github, Defaulting to local version")
+                with open("version", "r") as f:
+                    VLS = [int(i) for i in f.read().split(" ")]
 
-        from scripts.settings import stg
-        from scripts.utils import ddir, rv
+            from scripts.settings import stg
+            from scripts.utils import ddir, rv
 
-        YML = stg(None, "dev.yml")
-        GLOBAL = partial(ddir, ddir(YML, "md_vars/global"))
-        LICENSE = partial(ddir, ddir(YML, "license"))
+            YML = stg(None, "dev.yml")
+            GLOBAL = partial(ddir, ddir(YML, "md_vars/global"))
+            LICENSE = partial(ddir, ddir(YML, "license"))
 
-        FN = GLOBAL("formal_name")
-        ORG = GLOBAL("organization")
-        USER = GLOBAL("user")
+            FN = GLOBAL("formal_name")
+            ORG = GLOBAL("organization")
+            USER = GLOBAL("user")
 
-        main()
+            main()

@@ -4,6 +4,9 @@ md_vars:
     project_name: MangaG
     formal_name: Manga-G
     site: manga-g.pages.dev
+    http: https
+    # site: 127.0.0.1:8000
+    # http: http
     organization: manga-g
     user: 4cecoder
     dc_acc: 4ce#6574
@@ -28,6 +31,13 @@ rules:
       - "src='/assets"
     "](https://${site}/assets":
       - "](/assets"
+
+    # 'src="http://${site}/assets':
+    #   - 'src="/assets'
+    # "src='http://${site}/assets":
+    #   - "src='/assets"
+    # "](http://${site}/assets":
+    #   - "](/assets"
 
 requirements:
   dev: dev_req.txt

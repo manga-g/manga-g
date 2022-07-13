@@ -30,18 +30,8 @@ Types of changes:
 
 ## **Summary**
 
-This commits aims to customize the site's theme.
+This commit brought the following changes to the documentation:
 
-In any case, this is just a preliminary commit to test out the new theme and iron out the inconsistencies it brought.
-
-## **Plans**
-
-I would first like to focus my attention on the following:
-
-- Tackling [#31](https://github.com/manga-g/manga-g/issues/31) (Site recommendation)
-- Syncing README from site branch to main branch; and
-- Syncing version file from main branch to site branch
-
-Afterwards, I will focus on the documentation, issues, and dealing with the users. This includes resolving issues except to that of the application.
-
-Documentation of the development utilities is also on its way.
+- Sakurai images are now converted to `.webp`, reducing the load times by up to 6x.
+- Added favicon and logo, as requested.
+- Fixed the installation link.

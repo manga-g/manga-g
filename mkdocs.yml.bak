@@ -15,8 +15,8 @@ theme:
   include_search_page: false
   search_index_only: true
   language: en
-  favicon: assets/favicon.png
-  logo: images/icons/logo.svg
+  favicon: assets/images/icons/console/favicon.ico
+  logo: assets/images/icons/console/favicon.gif
 
   font:
     text: Roboto

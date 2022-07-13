@@ -2,8 +2,8 @@ generated:
   docs:
     files:
     - docs/README.md
-    - docs/docs/0/0/installation.md
     - docs/license.md
+    - docs/docs/0/0/installation.md
     folders: []
   mako:
     files:

@@ -11,7 +11,6 @@ var style = getComputedStyle(document.body)
 style.getProperty = style.getPropertyValue
 style.setProperty = function (name, value) {
     document.documentElement.style.setProperty(name, value);
-    console.log(name, style.getProperty(name));
 }
 
 function* objkv(obj) {
@@ -81,7 +80,6 @@ types.forEach((i) => {
 
     // lightness
     for (let [k, v] of objkv(tsLight)) {
-        console.log(k, v)
         for (let [vk, vv] of objkv(v)) {
             var lpl = lp + parseFloat(vv);
             style.setProperty(`--${i}-color-${k}-${vk}-l`, lpl);
@@ -89,3 +87,26 @@ types.forEach((i) => {
         }
     }
 });
+
+const body = document.querySelector("body");
+document.querySelector("#banner").outerHTML = `<img id="banner" src="${bannerTheme(body.getAttribute('data-md-color-scheme'))}">`;
+const banner = document.querySelector("#banner")
+const bodySetAttribute = body.setAttribute;
+
+function bannerTheme(theme) {
+    if (theme == "wh_dark") {
+        console.log("dark");
+        return 'assets/images/icons/console/wh.gif';
+    } else if (theme == "wh_white") {
+        console.log("white");
+        return 'assets/images/icons/console/bl.gif';
+    }
+}
+
+body.setAttribute = (key, value) => {
+    if (key == "data-md-color-scheme") {
+        banner.src = bannerTheme(value)
+        console.log(bannerTheme(value))
+        bodySetAttribute.call(body, key, value);
+    }
+};

@@ -1,7 +1,11 @@
 <div align="center">
-  <a href="https://github.com/4cecoder/manga-g">
-    <img src="assets/images/banner.png" alt="banner" width="700" height="350">
-  </a>
+    <a href="https://github.com/manga-g/manga-g">
+        <picture id="banner">
+            <source media="(prefers-color-scheme: dark)" srcset="assets/images/icons/console/wh.gif">
+            <source media="(prefers-color-scheme: light)" srcset="assets/images/icons/console/bl.gif">
+            <img src="assets/images/icons/console/bl.gif">
+        </picture>
+    </a>
 </div>
 
 <br />
@@ -85,7 +89,7 @@ For the terms of usage and legals, visit [LICENSE](license) and [terms of usage 
 
 Since people are looking for the download first, here you go:
 
-Follow [this link](https://manga-g.pages.dev/installation) to install Manga-G on your machine.
+Follow [this link](https://manga-g.pages.dev/docs/0/0/installation) to install Manga-G on your machine.
 
 ## **About**
 
@@ -122,7 +126,7 @@ Downloading:
 ./MangaG <url> [OPTIONS]
 ```
 
-For programmatic use, visit the [documentation](https://manga-g.pages.dev/docs/0/0)
+For programmatic use, visit the [documentation](https://manga-g.pages.dev/docs/${v_u}/${v_d})
 
 <!--
     License section.
