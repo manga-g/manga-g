@@ -30,7 +30,7 @@ https://go.dev/doc/install
 
 ### This command gets the Manga-G code "FROM UP OFF DA HUB"
 
-## `git clone https://github.com/4cecoder/manga-g`
+## `git clone https://github.com/manga-g/manga-g`
 
 ### This command takes you into the project folder
 
