@@ -37,14 +37,18 @@ func StringToInt(str string) int {
 	return i
 }
 
-type MangaInfo []struct {
+type MangaList []struct {
 	ID     string `json:"id"`
 	Title  string `json:"title"`
 	Author string `json:"author"`
 }
+type MangaChapters []struct {
+}
+type MangaImages []struct {
+}
 
 // create a function to parse json into struct
-func ParseMangaSearch(results string, manga *MangaInfo) MangaInfo {
+func ParseMangaSearch(results string, manga *MangaList) MangaList {
 
 	err := json.Unmarshal([]byte(results), &manga)
 	if err != nil {

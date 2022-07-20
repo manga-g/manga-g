@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"github.com/manga-g/manga-g/app"
-	_ "github.com/manga-g/manga-g/app"
 )
 
 // Entrypoint for the program.
@@ -15,7 +14,7 @@ func main() {
 	query := app.GetInput()
 	apiUrl += "nato/search?q=" + query
 	res, _ := app.CustomRequest(apiUrl)
-	var mangaList app.MangaInfo
+	var mangaList app.MangaList
 	app.ParseMangaSearch(res, &mangaList)
 	titles := []string{}
 	for i, manga := range mangaList {
