@@ -19,7 +19,7 @@ func main() {
 
 	mangaSaveDir := os.Getenv("MANGA_SAVE_DIR")
 	if mangaSaveDir == "" {
-		mangaSaveDir = "./"
+		mangaSaveDir = "."
 	}
 	fmt.Print("Search for manga: ")
 	query := app.GetInput()
