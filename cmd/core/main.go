@@ -19,6 +19,13 @@ func main() {
 
 	mangaSaveDir := os.Getenv("MANGA_SAVE_DIR")
 	if mangaSaveDir == "" {
+		fmt.Println("MANGA_SAVE_DIR is not set in env")
+		currentDirectory, err := os.Getwd()
+		if err != nil {
+			fmt.Println("Error getting current directory:", err)
+			os.Exit(1)
+		}
+		fmt.Println("Using default" + currentDirectory)
 		mangaSaveDir = "."
 	}
 	fmt.Print("Search for manga: ")
