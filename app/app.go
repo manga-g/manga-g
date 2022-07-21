@@ -1,7 +1,6 @@
 package app
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/url"
 	"strconv"
@@ -35,25 +34,4 @@ func StringToInt(str string) int {
 		return 0
 	}
 	return i
-}
-
-type MangaList []struct {
-	ID     string `json:"id"`
-	Title  string `json:"title"`
-	Author string `json:"author"`
-}
-type MangaChapters []struct {
-}
-type MangaImages []struct {
-}
-
-// create a function to parse json into struct
-func ParseMangaSearch(results string, manga *MangaList) MangaList {
-
-	err := json.Unmarshal([]byte(results), &manga)
-	if err != nil {
-		fmt.Println("Error parsing json:", err)
-	}
-
-	return *manga
 }
