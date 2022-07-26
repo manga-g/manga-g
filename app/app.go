@@ -1,18 +1,26 @@
 package app
 
 import (
+	"bufio"
 	"fmt"
 	"net/url"
+	"os"
 	"strconv"
 )
 
 // GetInput Function to get user input from the command line
 func GetInput() string {
 	var input string
-	_, err := fmt.Scanln(&input)
+	in := bufio.NewReader(os.Stdin)
+
+	input, err := in.ReadString('\n')
 	if err != nil {
+		fmt.Println("Error reading input:", err)
 		return ""
 	}
+
+	// serialize the input
+	input = url.QueryEscape(input)
 	return input
 }
 

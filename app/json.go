@@ -6,9 +6,16 @@ import (
 )
 
 func ParseMangaSearch(results string, manga *MangaList) {
-	err := json.Unmarshal([]byte(results), &manga)
-	if err != nil {
-		fmt.Println("Error parsing json:", err)
+	if results != "" {
+		err := json.Unmarshal([]byte(results), &manga)
+		if err != nil {
+			fmt.Println(results)
+			fmt.Println("Error parsing json:", err)
+			panic(err)
+		}
+	}
+	if results == "" {
+		panic("No results found")
 	}
 }
 

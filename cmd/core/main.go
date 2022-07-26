@@ -33,12 +33,13 @@ func main() {
 
 	//port := "3000"
 	//basedApiUrl := "http://localhost:" + port + "/"
-	basedApiUrl := "http://manga-api.bytecats.codes"
+	basedApiUrl := "http://manga-api.bytecats.codes/"
 	mangaSaveDir := "./"
 	fmt.Print("Search for manga: ")
 	query := app.GetInput()
 	apiSearch := basedApiUrl + "mk/search?q=" + query
 	res, _ := app.CustomRequest(apiSearch)
+	// wait for the results to be ready
 	var mangaList app.MangaList
 	app.ParseMangaSearch(res, &mangaList)
 	fmt.Println("Found", len(mangaList), "manga")
