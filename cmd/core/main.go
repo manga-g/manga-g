@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/url"
 	"strconv"
 	"strings"
 
@@ -37,6 +38,8 @@ func main() {
 	mangaSaveDir := "./"
 	fmt.Print("Search for manga: ")
 	query := app.GetInput()
+	query = url.QueryEscape(query)
+	fmt.Println("Searching for:", query)
 	apiSearch := basedApiUrl + "mk/search?q=" + query
 	res, _ := app.CustomRequest(apiSearch)
 	// wait for the results to be ready

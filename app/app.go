@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+	"strings"
 )
 
 // GetInput Function to get user input from the command line
@@ -18,9 +19,8 @@ func GetInput() string {
 		fmt.Println("Error reading input:", err)
 		return ""
 	}
+	input = strings.Replace(input, "\n", "", -1)
 
-	// serialize the input
-	input = url.QueryEscape(input)
 	return input
 }
 
