@@ -89,7 +89,7 @@ func SaveImage(url string, filename string) {
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
-
+			fmt.Println("Error closing body:", err)
 		}
 	}(results.Body)
 

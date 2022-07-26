@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 
@@ -11,23 +10,31 @@ import (
 
 // Entrypoint for the program.
 func main() {
-	basedApiUrl := os.Getenv("BASED_API_URL")
-	if basedApiUrl == "" {
-		fmt.Println("BASED_API_URL is not set in env")
-		os.Exit(1)
-	}
+	//gotenv.Load()
+	//basedApiUrl := os.Getenv("BASED_API_URL")
+	//fmt.Println("BASED_API_URL:", basedApiUrl)
+	//if basedApiUrl == "" {
+	//    fmt.Println("BASED_API_URL is not set in env")
+	//    os.Exit(1)
+	//}
 
-	mangaSaveDir := os.Getenv("MANGA_SAVE_DIR")
-	if mangaSaveDir == "" {
-		fmt.Println("MANGA_SAVE_DIR is not set in env")
-		currentDirectory, err := os.Getwd()
-		if err != nil {
-			fmt.Println("Error getting current directory:", err)
-			os.Exit(1)
-		}
-		fmt.Println("Using default" + currentDirectory)
-		mangaSaveDir = "."
-	}
+	//mangaSaveDir := os.Getenv("MANGA_SAVE_DIR")
+	//fmt.Println("MANGA_SAVE_DIR:", mangaSaveDir)
+	//if mangaSaveDir == "" {
+	//    fmt.Println("MANGA_SAVE_DIR is not set in env")
+	//    currentDirectory, err := os.Getwd()
+	//    if err != nil {
+	//        fmt.Println("Error getting current directory:", err)
+	//        os.Exit(1)
+	//    }
+	//    fmt.Println("Using default" + currentDirectory)
+	//    mangaSaveDir = "."
+	//}
+
+	//port := "3000"
+	//basedApiUrl := "http://localhost:" + port + "/"
+	basedApiUrl := "http://manga-api.bytecats.codes"
+	mangaSaveDir := "./"
 	fmt.Print("Search for manga: ")
 	query := app.GetInput()
 	apiSearch := basedApiUrl + "mk/search?q=" + query
@@ -62,7 +69,7 @@ func main() {
 	var mangaChapters app.MangaChapters
 	app.ParseChapters(res, &mangaChapters)
 	var chapterTitles []string
-	for i, chapter := range mangaChapters.Data {
+	for i, chapter := range mangaChapters.Chapters {
 		chapterTitles = append(chapterTitles, fmt.Sprintf("%d. %s", i+1, chapter))
 	}
 	for _, title := range chapterTitles {
@@ -76,13 +83,15 @@ func main() {
 		fmt.Println("Invalid choice")
 		return
 	}
-	chapterNumberChoice := mangaChapters.Data[chapterChoiceInt-1]
-	// use replace to get rid of any non-numeric characters in the ChapterNumberChoice string
-	chapterNumberChoice = strings.Replace(chapterNumberChoice, "Chapter ", "", -1)
+	chapterId := mangaChapters.ChapterID[chapterChoiceInt-1]
+	chapterNumber := strings.Replace(chapterId, "chapter-", "", -1)
 
-	fmt.Println("Trying to load images for chapter: " + chapterNumberChoice)
+	fmt.Println("Chapter number:", chapterNumber)
 
-	imagesUrl := basedApiUrl + "mk/images?id=" + mangaId + "&chapterNumber=" + chapterNumberChoice
+	fmt.Println("Trying to load images for " + chapterNumber)
+	// keep only the number at the end of the string
+
+	imagesUrl := basedApiUrl + "mk/images?id=" + mangaId + "&chapterNumber=" + chapterNumber
 	fmt.Println("Loading images...")
 	fmt.Println(imagesUrl)
 	res, _ = app.CustomRequest(imagesUrl)
@@ -92,18 +101,24 @@ func main() {
 	for _, image := range mangaImages {
 		images = append(images, image.ImageUrl)
 	}
+
 	app.NewDir(mangaSaveDir + "/" + "manga")
+
 	mangaName := strings.Replace(mangaList[mangaChoiceInt-1].Title, " ", "_", -1)
+	mangaName = strings.Replace(mangaName, ":", "", -1)
+	mangaName = strings.Replace(mangaName, " ", "_", -1)
+
 	app.NewDir(mangaSaveDir + "/" + "manga/" + mangaName)
-	app.NewDir(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumberChoice)
+	app.NewDir(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
 
 	fmt.Println("Downloading", len(images), "pages")
 	fmt.Println(images)
 	for _, image := range images {
 		imageName := strings.Split(image, "/")
 		imageName = strings.Split(imageName[len(imageName)-1], ".")
-		app.SaveImage(image, "manga/"+mangaName+"/"+chapterNumberChoice+"/"+imageName[0]+"."+imageName[1])
-
+		imageName[0] = strings.Replace(imageName[0], " ", "_", -1)
+		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + imageName[0] + "." + imageName[1]
+		app.SaveImage(image, imageFullDir)
 	}
 	fmt.Println("Done")
 }

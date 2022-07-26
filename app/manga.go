@@ -14,9 +14,11 @@ type MangaChapters struct {
 	LastUpdateDatetime string   `json:"lastUpdateDatetime"`
 	ViewCount          string   `json:"viewCount"`
 	Author             string   `json:"author"`
-	Data               []string `json:"data"`
+	Chapters           []string `json:"chapters"`
 	LinkInfo           []string `json:"linkInfo"`
 	DateInfo           []string `json:"dateInfo"`
+	ChapterID          []string `json:"chapterId"`
+	Description        string   `json:"description"`
 }
 
 type MangaImages []struct {

@@ -8,6 +8,7 @@ require (
 	github.com/charmbracelet/lipgloss v0.5.0
 	github.com/pdfcpu/pdfcpu v0.3.13
 	github.com/spf13/afero v1.8.2
+	github.com/subosito/gotenv v1.4.0
 )
 
 require (

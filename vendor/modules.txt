@@ -67,6 +67,9 @@ github.com/rivo/uniseg
 ## explicit; go 1.13
 github.com/spf13/afero
 github.com/spf13/afero/mem
+# github.com/subosito/gotenv v1.4.0
+## explicit; go 1.18
+github.com/subosito/gotenv
 # golang.org/x/image v0.0.0-20210220032944-ac19c3e999fb
 ## explicit; go 1.12
 golang.org/x/image/ccitt
