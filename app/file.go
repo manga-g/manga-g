@@ -119,3 +119,16 @@ func RemoveIfExists(path string) error {
 	}
 	return nil
 }
+
+// create a function to get all file names from a directory and return them as a slice of strings
+func GetFileNames(dir string) ([]string, error) {
+	files, err := Afero.ReadDir(dir)
+	if err != nil {
+		return nil, err
+	}
+	var fileNames []string
+	for _, file := range files {
+		fileNames = append(fileNames, file.Name())
+	}
+	return fileNames, nil
+}

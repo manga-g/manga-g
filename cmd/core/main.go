@@ -116,7 +116,7 @@ func main() {
 	app.NewDir(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
 
 	fmt.Println("Downloading", len(images), "pages")
-	fmt.Println(images)
+	//fmt.Println(images)
 	for _, image := range images {
 		imageName := strings.Split(image, "/")
 		imageName = strings.Split(imageName[len(imageName)-1], ".")
@@ -124,5 +124,7 @@ func main() {
 		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + imageName[0] + "." + imageName[1]
 		app.SaveImage(image, imageFullDir)
 	}
+	//pdfDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/"
+
 	fmt.Println("Done")
 }
