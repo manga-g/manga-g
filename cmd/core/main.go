@@ -38,6 +38,16 @@ func main() {
 	mangaSaveDir := "./"
 	fmt.Print("Search for manga: ")
 	query := app.GetInput()
+	//if there is no input, loop the request 3 times
+	if query == "" {
+		for n := 0; n < 3; n++ {
+			fmt.Print("Search for manga: ")
+			query = app.GetInput()
+			if query != "" {
+				break
+			}
+		}
+	}
 	query = url.QueryEscape(query)
 	fmt.Println("Searching for:", query)
 	apiSearch := basedApiUrl + "mk/search?q=" + query
@@ -60,6 +70,16 @@ func main() {
 	SelectMessage := "Select a title: (1 - " + strconv.Itoa(number) + ") "
 	fmt.Print(SelectMessage)
 	mangaChoice := app.GetInput()
+	//if there is no input, loop the request 3 times
+	if mangaChoice == "" {
+		for n := 0; n < 3; n++ {
+			fmt.Print(SelectMessage)
+			mangaChoice = app.GetInput()
+			if mangaChoice != "" {
+				break
+			}
+		}
+	}
 	mangaChoiceInt := app.StringToInt(mangaChoice)
 	if mangaChoiceInt > number {
 		fmt.Println("Invalid choice")
@@ -82,6 +102,16 @@ func main() {
 
 	fmt.Print("Select a chapter: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
 	chapterChoice := app.GetInput()
+	//if there is no input, loop the request 3 times
+	if chapterChoice == "" {
+		for n := 0; n < 3; n++ {
+			fmt.Print("Select a chapter: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
+			chapterChoice = app.GetInput()
+			if chapterChoice != "" {
+				break
+			}
+		}
+	}
 	chapterChoiceInt := app.StringToInt(chapterChoice)
 	if chapterChoiceInt > len(chapterTitles) {
 		fmt.Println("Invalid choice")
