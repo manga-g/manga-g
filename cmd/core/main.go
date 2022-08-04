@@ -41,7 +41,7 @@ func main() {
 	//if there is no input, loop the request 3 times
 	if query == "" {
 		for n := 0; n < 3; n++ {
-			fmt.Print("Search for manga: ")
+			fmt.Println("You should choose the number corresponding to the manga you want to read.\nTry again,please :)\n" + "Search for manga: ")
 			query = app.GetInput()
 			if query != "" {
 				break
@@ -73,7 +73,7 @@ func main() {
 	//if there is no input, loop the request 3 times
 	if mangaChoice == "" {
 		for n := 0; n < 3; n++ {
-			fmt.Print(SelectMessage)
+			fmt.Println("You should choose the number corresponding to the manga you want to read.\nTry again,please :)" + SelectMessage)
 			mangaChoice = app.GetInput()
 			if mangaChoice != "" {
 				break
@@ -105,7 +105,7 @@ func main() {
 	//if there is no input, loop the request 3 times
 	if chapterChoice == "" {
 		for n := 0; n < 3; n++ {
-			fmt.Print("Select a chapter: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
+			fmt.Println("You should choose the number corresponding to the chapter you want to read.\nTry again,please :)" + "Select a chapter: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
 			chapterChoice = app.GetInput()
 			if chapterChoice != "" {
 				break
