@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 
@@ -36,6 +38,13 @@ func main() {
 	//basedApiUrl := "http://localhost:" + port + "/"
 	basedApiUrl := "http://manga-api.bytecats.codes/"
 	mangaSaveDir := "./"
+	_, err := http.Get(basedApiUrl)
+	if err == nil {
+		fmt.Println("Online Manga is ready!")
+	} else {
+		fmt.Println("Online Manga isn't offline at the moment ;(")
+		os.Exit(1)
+	}
 	fmt.Print("Search for manga: ")
 	query := app.GetInput()
 	//if there is no input, loop the request 3 times
@@ -93,8 +102,14 @@ func main() {
 	var mangaChapters app.MangaChapters
 	app.ParseChapters(res, &mangaChapters)
 	var chapterTitles []string
-	for i, chapter := range mangaChapters.Chapters {
-		chapterTitles = append(chapterTitles, fmt.Sprintf("%d. %s", i+1, chapter))
+	//for i, chapter := range mangaChapters.Chapters {
+	//	chapterTitles = append(chapterTitles, fmt.Sprintf("%d. %s", i+1, chapter))
+	//}
+	n := 1
+	for i := len(mangaChapters.Chapters); i >= 1; i-- {
+		chapter := mangaChapters.Chapters[i-1]
+		chapterTitles = append(chapterTitles, fmt.Sprintf("%d. %s", n+1, chapter))
+		n++
 	}
 	for _, title := range chapterTitles {
 		fmt.Println(title)
