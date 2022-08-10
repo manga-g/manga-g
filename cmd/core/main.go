@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 
@@ -36,12 +38,19 @@ func main() {
 	//basedApiUrl := "http://localhost:" + port + "/"
 	basedApiUrl := "http://manga-api.bytecats.codes/"
 	mangaSaveDir := "./"
+	_, err := http.Get(basedApiUrl)
+	if err == nil {
+		fmt.Println("Online Manga is ready!")
+	} else {
+		fmt.Println("Online Manga isn't offline at the moment ;(")
+		os.Exit(1)
+	}
 	fmt.Print("Search for manga: ")
 	query := app.GetInput()
 	//if there is no input, loop the request 3 times
 	if query == "" {
 		for n := 0; n < 3; n++ {
-			fmt.Print("Search for manga: ")
+			fmt.Println("You should choose the number corresponding to the manga you want to read.\nTry again,please :)\n" + "Search for manga: ")
 			query = app.GetInput()
 			if query != "" {
 				break
@@ -73,7 +82,7 @@ func main() {
 	//if there is no input, loop the request 3 times
 	if mangaChoice == "" {
 		for n := 0; n < 3; n++ {
-			fmt.Print(SelectMessage)
+			fmt.Println("You should choose the number corresponding to the manga you want to read.\nTry again,please :)" + SelectMessage)
 			mangaChoice = app.GetInput()
 			if mangaChoice != "" {
 				break
@@ -93,8 +102,14 @@ func main() {
 	var mangaChapters app.MangaChapters
 	app.ParseChapters(res, &mangaChapters)
 	var chapterTitles []string
-	for i, chapter := range mangaChapters.Chapters {
-		chapterTitles = append(chapterTitles, fmt.Sprintf("%d. %s", i+1, chapter))
+	//for i, chapter := range mangaChapters.Chapters {
+	//	chapterTitles = append(chapterTitles, fmt.Sprintf("%d. %s", i+1, chapter))
+	//}
+	n := 1
+	for i := len(mangaChapters.Chapters); i >= 1; i-- {
+		chapter := mangaChapters.Chapters[i-1]
+		chapterTitles = append(chapterTitles, fmt.Sprintf("%d. %s", n+1, chapter))
+		n++
 	}
 	for _, title := range chapterTitles {
 		fmt.Println(title)
@@ -105,7 +120,7 @@ func main() {
 	//if there is no input, loop the request 3 times
 	if chapterChoice == "" {
 		for n := 0; n < 3; n++ {
-			fmt.Print("Select a chapter: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
+			fmt.Println("You should choose the number corresponding to the chapter you want to read.\nTry again,please :)" + "Select a chapter: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
 			chapterChoice = app.GetInput()
 			if chapterChoice != "" {
 				break

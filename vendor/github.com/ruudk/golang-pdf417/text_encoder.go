@@ -157,7 +157,7 @@ func encodeinterim(encoder TextEncoder, data string) []int {
 	for i := 0; i < len(data); i++ {
 		char := string(data[i])
 
-		if (existsInSubmode(encoder, char, submode) == false) {
+		if !existsInSubmode(encoder, char, submode) {
 			prevSubmode := submode
 
 			submode = getSubmode(encoder, char)

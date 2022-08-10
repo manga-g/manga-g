@@ -36,7 +36,7 @@ type Barcode struct {
 }
 
 func (c *Barcode) Metadata() barcode.Metadata {
-	return barcode.Metadata{"Pdf417", 2}
+	return barcode.Metadata{CodeKind: "Pdf417", Dimensions: 2}
 }
 
 func (c *Barcode) Content() string {
@@ -60,7 +60,7 @@ func (c *Barcode) Bounds() image.Rectangle {
 func (c *Barcode) At(x, y int) color.Color {
 	grid := c.PixelGrid()
 
-	if grid[y] != nil && grid[y][x] == true {
+	if grid[y] != nil && grid[y][x] {
 		return color.Black
 	}
 
