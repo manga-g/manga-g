@@ -93,8 +93,11 @@ func main() {
 	var mangaChapters app.MangaChapters
 	app.ParseChapters(res, &mangaChapters)
 	var chapterTitles []string
-	for i, chapter := range mangaChapters.Chapters {
-		chapterTitles = append(chapterTitles, fmt.Sprintf("%d. %s", i+1, chapter))
+	n := 0
+	for i := len(mangaChapters.Chapters); i >= 1; i-- {
+		chapter := mangaChapters.Chapters[i-1]
+		chapterTitles = append(chapterTitles, fmt.Sprintf("%d. %s", n+1, chapter))
+		n++
 	}
 	for _, title := range chapterTitles {
 		fmt.Println(title)
