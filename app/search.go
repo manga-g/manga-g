@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -32,10 +33,7 @@ func MkSearch(basedApiUrl string, query string) {
 	SelectMessage := "Select a title: (1 - " + strconv.Itoa(number) + ") "
 	fmt.Print(SelectMessage)
 	mangaChoice := GetInput()
-	//if there is no input, loop the request 3 times
-	if mangaChoice == "" {
-		Retry(mangaChoice)
-	}
+	QueryCheck(mangaChoice)
 
 	mangaChoiceInt := StringToInt(mangaChoice)
 	if mangaChoiceInt > number {
@@ -63,9 +61,7 @@ func MkSearch(basedApiUrl string, query string) {
 
 	fmt.Print("Select a chapter: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
 	chapterChoice := GetInput()
-	if chapterChoice == "" {
-		Retry(chapterChoice)
-	}
+	QueryCheck(chapterChoice)
 
 	chapterChoiceInt := StringToInt(chapterChoice)
 	if chapterChoiceInt > len(chapterTitles) {
@@ -108,5 +104,6 @@ func MkSearch(basedApiUrl string, query string) {
 }
 
 func ComicSearch() {
-	// TODO: implement
+	fmt.Println("Not implemented")
+	os.Exit(1)
 }

@@ -17,6 +17,17 @@ func Connected() (ok bool) {
 	return true
 }
 
+// CheckApi checks if the api is alive
+func CheckApi(basedApiUrl string) {
+	_, err := http.Get(basedApiUrl + "/hc")
+	if err == nil {
+		fmt.Println("Online Manga is ready!")
+	} else {
+		fmt.Println("Online Manga is offline at the moment ;(\nBe back online ASAP =)")
+		os.Exit(1)
+	}
+}
+
 // RandomizeUserAgent randomize the user agent
 func RandomizeUserAgent() string {
 	return "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"
@@ -49,14 +60,4 @@ func CustomRequest(url string) (string, error) {
 		return "Error reading body:", err
 	}
 	return string(body), nil
-}
-
-func CheckApi(basedApiUrl string) {
-	_, err := http.Get(basedApiUrl)
-	if err == nil {
-		fmt.Println("Online Manga is ready!")
-	} else {
-		fmt.Println("Online Manga is offline at the moment ;(\nBe back online ASAP =)")
-		os.Exit(1)
-	}
 }
