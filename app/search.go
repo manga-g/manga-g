@@ -7,21 +7,24 @@ import (
 )
 
 func MkSearch(basedApiUrl string, query string) {
-	mangaSaveDir := "./"
-	fmt.Println("Searching for:", query)
-	apiSearch := basedApiUrl + "mk/search?q=" + query
-	res, _ := CustomRequest(apiSearch)
-	// wait for the results to be ready
 	var mangaList MangaList
-	ParseMangaSearch(res, &mangaList)
-	fmt.Println("Found", len(mangaList), "manga")
 	var titles []string
+	var chapterTitles []string
+	var mangaChapters MangaChapters
+	var mangaImages MangaImages
+	var images []string
+
+	mangaSaveDir := "./"
+	apiSearch := basedApiUrl + "mk/search?q=" + query
+	results, _ := CustomRequest(apiSearch)
+
+	fmt.Println("Searching for:", query)
+	ParseMangaSearch(results, &mangaList)
+	fmt.Println("Found", len(mangaList), "manga")
 	for i, manga := range mangaList {
 		titles = append(titles, fmt.Sprintf("%d. %s", i+1, manga.Title))
 	}
-
 	number := len(titles)
-
 	for _, title := range titles {
 		fmt.Println(title)
 	}
@@ -43,10 +46,10 @@ func MkSearch(basedApiUrl string, query string) {
 	chapterUrl := basedApiUrl + "mk/chapters?q=" + mangaId
 	fmt.Println("Checking ID:" + mangaId)
 	fmt.Println("Loading chapters...")
-	res, _ = CustomRequest(chapterUrl)
-	var mangaChapters MangaChapters
-	ParseChapters(res, &mangaChapters)
-	var chapterTitles []string
+
+	results, _ = CustomRequest(chapterUrl)
+	ParseChapters(results, &mangaChapters)
+
 	n := 0
 	for i := len(mangaChapters.Chapters); i >= 1; i-- {
 		chapter := mangaChapters.Chapters[i-1]
@@ -60,36 +63,27 @@ func MkSearch(basedApiUrl string, query string) {
 
 	fmt.Print("Select a chapter: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
 	chapterChoice := GetInput()
-	//if there is no input, loop the request 3 times
 	if chapterChoice == "" {
-		for n := 0; n < 3; n++ {
-			fmt.Println("You should choose the number corresponding to the chapter you want to read.\nTry again,please :)" + "Select a chapter: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
-			chapterChoice = GetInput()
-			if chapterChoice != "" {
-				break
-			}
-		}
+		Retry(chapterChoice)
 	}
+
 	chapterChoiceInt := StringToInt(chapterChoice)
 	if chapterChoiceInt > len(chapterTitles) {
 		fmt.Println("Invalid choice")
 		return
 	}
+
 	chapterId := mangaChapters.ChapterID[chapterChoiceInt-1]
 	chapterNumber := strings.Replace(chapterId, "chapter-", "", -1)
-
 	fmt.Println("Chapter number:", chapterNumber)
 
 	fmt.Println("Trying to load images for " + chapterNumber)
 	// keep only the number at the end of the string
-
 	imagesUrl := basedApiUrl + "mk/images?id=" + mangaId + "&chapterNumber=" + chapterNumber
 	fmt.Println("Loading images...")
 	fmt.Println(imagesUrl)
-	res, _ = CustomRequest(imagesUrl)
-	var mangaImages MangaImages
-	ParseImages(res, &mangaImages)
-	var images []string
+	results, _ = CustomRequest(imagesUrl)
+	ParseImages(results, &mangaImages)
 	for _, image := range mangaImages {
 		images = append(images, image.ImageUrl)
 	}
@@ -104,7 +98,6 @@ func MkSearch(basedApiUrl string, query string) {
 	NewDir(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
 
 	fmt.Println("Downloading", len(images), "pages")
-	//fmt.Println(images)
 	for _, image := range images {
 		imageName := strings.Split(image, "/")
 		imageName = strings.Split(imageName[len(imageName)-1], ".")
@@ -112,4 +105,8 @@ func MkSearch(basedApiUrl string, query string) {
 		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + imageName[0] + "." + imageName[1]
 		SaveImage(image, imageFullDir)
 	}
+}
+
+func ComicSearch() {
+	// TODO: implement
 }
