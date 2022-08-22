@@ -11,7 +11,7 @@ func Init(basedApiUrl string) {
 	fmt.Println("Enter your choice: (1-3)")
 	fmt.Println("1.) Search Manga")
 	fmt.Println("2.) Search Comics")
-	fmt.Println("3.) Search Exit")
+	fmt.Println("3.) Exit")
 	menuChoice := GetInput()
 	QueryCheck(menuChoice)
 	if menuChoice == "1" {
