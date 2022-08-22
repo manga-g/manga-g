@@ -6,5 +6,7 @@ import (
 
 // Entrypoint for the program.
 func main() {
-	app.Init()
+	basedApiUrl := "http://manga-api.bytecats.codes/"
+
+	app.Init(basedApiUrl)
 }
