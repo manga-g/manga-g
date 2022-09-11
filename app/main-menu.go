@@ -29,7 +29,7 @@ func StartMenu(basedApiUrl string) {
 			}
 			if query != "<" {
 				QueryCheck(query)
-				//query = url.QueryEscape(query)
+				query = url.QueryEscape(query)
 				MkSearch(basedApiUrl, query)
 				started = false
 			}
