@@ -12,11 +12,9 @@ import (
 // GetInput Function to get user input from the command line
 func GetInput() string {
 	var input string
-	in := bufio.NewScanner(os.Stdin)
+	in := bufio.NewReader(os.Stdin)
 
-	in.Scan()
-	err := in.Err()
-	input = in.Text()
+	input, err := in.ReadString('\n')
 	if err != nil {
 		fmt.Println("Error reading input:", err)
 		return ""
@@ -49,13 +47,10 @@ func StringToInt(str string) int {
 // Retry if there is no input, loop the request 3 times
 func Retry(query string) {
 	for n := 0; n < 3; n++ {
-		fmt.Print("\nYou should choose the number corresponding to the manga you want to read.\nTry again,please :)\n" + "Search for manga: ")
+		fmt.Println("You should choose the number corresponding to the manga you want to read.\nTry again,please :)\n" + "Search for manga: ")
 		query = GetInput()
 		if query != "" {
 			break
-		}
-		if n == 2 {
-			os.Exit(0)
 		}
 	}
 }

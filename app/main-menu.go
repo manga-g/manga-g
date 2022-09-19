@@ -13,7 +13,7 @@ func DisplayOptions() {
 	fmt.Println("3.) Exit")
 }
 func StartMenu(basedApiUrl string) {
-	tries := 0
+
 	for started := true; started == true; {
 		if !started {
 			break
@@ -54,11 +54,7 @@ func StartMenu(basedApiUrl string) {
 			os.Exit(0)
 		default:
 			if backToMenu == false {
-				if tries == 3 {
-					os.Exit(0)
-				}
 				fmt.Println("Invalid Option")
-				tries++
 			}
 		}
 	}
