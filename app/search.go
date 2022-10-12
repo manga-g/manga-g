@@ -77,7 +77,7 @@ func MkSearch(basedApiUrl string, query string) {
 	// keep only the number at the end of the string
 	imagesUrl := basedApiUrl + "mk/images?id=" + mangaId + "&chapterNumber=" + chapterNumber
 	fmt.Println("Loading images...")
-	fmt.Println(imagesUrl)
+	//	fmt.Println(imagesUrl)
 	results, _ = CustomRequest(imagesUrl)
 	ParseImages(results, &mangaImages)
 	for _, image := range mangaImages {
