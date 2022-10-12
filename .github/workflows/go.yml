@@ -16,10 +16,8 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
-        go-version: 1.18
+        go-version: 1.19
 
     - name: Build
-      run: go build -v ./...
+      run: go build -v ./cmd/manga-g/main.go
 
-    - name: Test
-      run: go test -v ./...
