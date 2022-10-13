@@ -71,10 +71,17 @@ func NewDir(dir string) {
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		err := os.Mkdir(dir, 0755)
 		if err != nil {
-			println("Error creating directory: " + err.Error())
+			fmt.Println("Error creating directory: " + err.Error())
 		}
 	} else if err != nil {
 		fmt.Printf("Error creating directory: %s\n", err)
+	}
+}
+
+func ExitIfExists(dir string) {
+	if _, err := os.Stat(dir); !os.IsNotExist(err) {
+		fmt.Println("Oops, seems like you already have this chapter installed :)")
+		os.Exit(0)
 	}
 }
 
