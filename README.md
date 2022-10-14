@@ -11,5 +11,5 @@
 [![GitHub issues](https://img.shields.io/github/issues/manga-g/manga-g)](https://github.com/manga-g/manga-g/issues)
 [![GitHub license](https://img.shields.io/github/license/manga-g/manga-g)](https://github.com/manga-g/manga-g)
 
-check some mangos
+reading some mangos from the terminal
 </div>
