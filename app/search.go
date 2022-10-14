@@ -64,6 +64,7 @@ func MkSearch(basedApiUrl string, query string) {
 	QueryCheck(chapterChoice)
 
 	chapterChoiceInt := StringToInt(chapterChoice)
+	chapterChoiceInt = 99 - chapterChoiceInt
 	if chapterChoiceInt > len(chapterTitles) {
 		fmt.Println("Invalid choice")
 		return
@@ -73,10 +74,8 @@ func MkSearch(basedApiUrl string, query string) {
 	chapterNumber := strings.Replace(chapterId, "chapter-", "", -1)
 	fmt.Println("Chapter number:", chapterNumber)
 
-	fmt.Println("Trying to load images for " + chapterNumber)
 	// keep only the number at the end of the string
 	imagesUrl := basedApiUrl + "mk/images?id=" + mangaId + "&chapterNumber=" + chapterNumber
-	fmt.Println("Loading images...")
 	//	fmt.Println(imagesUrl)
 	results, _ = CustomRequest(imagesUrl)
 	ParseImages(results, &mangaImages)
@@ -91,14 +90,17 @@ func MkSearch(basedApiUrl string, query string) {
 	mangaName = strings.Replace(mangaName, " ", "_", -1)
 
 	NewDir(mangaSaveDir + "/" + "manga/" + mangaName)
+	ExitIfExists(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
 	NewDir(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
 
+	fmt.Println("Trying to load images for " + chapterNumber)
+	fmt.Println("Loading images...")
 	fmt.Println("Downloading", len(images), "pages")
-	for _, image := range images {
+	for imageNumber, image := range images {
 		imageName := strings.Split(image, "/")
 		imageName = strings.Split(imageName[len(imageName)-1], ".")
 		imageName[0] = strings.Replace(imageName[0], " ", "_", -1)
-		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + imageName[0] + "." + imageName[1]
+		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + strconv.Itoa(imageNumber) + "." + imageName[1]
 		SaveImage(image, imageFullDir)
 	}
 }
