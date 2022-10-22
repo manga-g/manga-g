@@ -59,18 +59,18 @@ func MkSearch(basedApiUrl string, query string) {
 		fmt.Println(title)
 	}
 
-	fmt.Print("Select a chapter: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
-	chapterChoice := GetInput()
-	QueryCheck(chapterChoice)
+	fmt.Print("Select a result: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
+	resultChoice := GetInput()
+	QueryCheck(resultChoice)
 
-	chapterChoiceInt := StringToInt(chapterChoice)
-	chapterChoiceInt = 99 - chapterChoiceInt
-	if chapterChoiceInt > len(chapterTitles) {
+	chapterChoiceInt := StringToInt(resultChoice)
+	chapterChoiceInt = len(mangaChapters.ChapterID) - chapterChoiceInt
+	if chapterChoiceInt > len(chapterTitles) || chapterChoiceInt < 1 {
 		fmt.Println("Invalid choice")
 		return
 	}
 
-	chapterId := mangaChapters.ChapterID[chapterChoiceInt-1]
+	chapterId := mangaChapters.ChapterID[chapterChoiceInt]
 	chapterNumber := strings.Replace(chapterId, "chapter-", "", -1)
 	fmt.Println("Chapter number:", chapterNumber)
 
