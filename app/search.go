@@ -93,15 +93,23 @@ func MkSearch(basedApiUrl string, query string) {
 	ExitIfExists(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
 	NewDir(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
 
-	fmt.Println("Trying to load images for Chapter" + chapterNumber)
+	fmt.Println("Trying to load pages for Chapter" + chapterNumber)
 	fmt.Println("Downloading", len(images), "pages")
 	for imageNumber, image := range images {
 		imageName := strings.Split(image, "/")
 		imageName = strings.Split(imageName[len(imageName)-1], ".")
 		imageName[0] = strings.Replace(imageName[0], " ", "_", -1)
 		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + strconv.Itoa(imageNumber+1) + "." + imageName[1]
+		// progress bar based on imageNumber and len(images) (total number of images)
+		ProgressBar(imageNumber, len(images))
+
 		SaveImage(image, imageFullDir)
 	}
+}
+func ProgressBar(imageNumber int, lenImages int) {
+	// progress bar based on imageNumber and len(images) (total number of images)
+	// fmt.Printf("\r%d%%", (imageNumber*100)/lenImages)
+	fmt.Printf("\r%d%%", (imageNumber*100)/lenImages)
 }
 
 func ComicSearch() {
