@@ -10,7 +10,7 @@ import (
 func Retry(query string) {
 	var n = 0
 	for ; n < 3; n++ {
-		fmt.Println("You should choose the number corresponding to the manga you want to read.\nTry again,please :)\n" + "Search for manga: ")
+		fmt.Println("Hint: Choose manga by corresponding number.\nPlease try again\n" + "Search for manga: ")
 		query = GetInput()
 		if query != "" {
 			break
