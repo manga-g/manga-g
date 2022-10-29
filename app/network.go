@@ -5,12 +5,22 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 )
 
 // Connected tests if the connection is alive
 func Connected() (ok bool) {
-	_, err := http.Get("http://clients3.google.com/generate_204")
+	_, err := http.Get("https://clients3.google.com/generate_204")
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+// ValidateUrl checks if url is valid
+func ValidateUrl(UrlToCheck string) bool {
+	_, err := url.ParseRequestURI(UrlToCheck)
 	if err != nil {
 		return false
 	}

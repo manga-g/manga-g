@@ -6,12 +6,15 @@ import (
 	"os"
 )
 
+// DisplayOptions displays Menu options
 func DisplayOptions() {
 	fmt.Println("Enter your choice: (1-3)")
 	fmt.Println("1.) Search Manga")
 	fmt.Println("2.) Search Comics")
 	fmt.Println("3.) Exit")
 }
+
+// StartMenu starts the menu loop
 func StartMenu(basedApiUrl string) {
 
 	for started := true; started == true; {

@@ -29,23 +29,34 @@ func DeleteFile(file string) {
 	}
 }
 
+// SaveHtml save html to file
 func SaveHtml(url string, fileName string) {
 	// get the html from the url
 
 	// save it to a file
+	file := CreateFile(fileName)
+	// turn result into a string
+	// write the string to the file
+	res, reqErr := CustomRequest(url)
+	if reqErr != nil {
+		fmt.Println("Error getting html from url", reqErr)
+		return
+	}
+	_, fileErr := file.WriteString(res)
+
+	if fileErr != nil {
+		fmt.Println("Error writing to file", fileErr)
+		return
+	}
+}
+
+func CreateFile(fileName string) *os.File {
 	file, err := os.Create(fileName)
 	if err != nil {
 		fmt.Println("Error creating file", err)
-		return
+		return nil
 	}
-	// turn result into a string
-	// write the string to the file
-	res, _ := CustomRequest(url)
-	_, err2 := file.WriteString(res)
-	if err2 != nil {
-		fmt.Println("Error writing to file", err2)
-		return
-	}
+	return file
 }
 
 // LoadHtml load html from file to string
@@ -66,6 +77,7 @@ func LoadHtml(file string) string {
 	return string(bytes)
 }
 
+// NewDir creates a new directory
 func NewDir(dir string) {
 	// if directory doesn't exist, create it
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
@@ -78,9 +90,10 @@ func NewDir(dir string) {
 	}
 }
 
+// ExitIfExists exits the program if the file already exists
 func ExitIfExists(dir string) {
 	if _, err := os.Stat(dir); !os.IsNotExist(err) {
-		fmt.Println("Oops, seems like you already have this chapter installed :)")
+		fmt.Println("Manga-G detected that you already have this manga downloaded. Exiting...")
 		os.Exit(0)
 	}
 }
@@ -127,7 +140,7 @@ func RemoveIfExists(path string) error {
 	return nil
 }
 
-// create a function to get all file names from a directory and return them as a slice of strings
+// GetFileNames returns a slice of strings containing all the file names in a directory
 func GetFileNames(dir string) ([]string, error) {
 	files, err := Afero.ReadDir(dir)
 	if err != nil {

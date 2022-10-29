@@ -93,14 +93,13 @@ func MkSearch(basedApiUrl string, query string) {
 	ExitIfExists(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
 	NewDir(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
 
-	fmt.Println("Trying to load images for " + chapterNumber)
-	fmt.Println("Loading images...")
+	fmt.Println("Trying to load images for Chapter" + chapterNumber)
 	fmt.Println("Downloading", len(images), "pages")
 	for imageNumber, image := range images {
 		imageName := strings.Split(image, "/")
 		imageName = strings.Split(imageName[len(imageName)-1], ".")
 		imageName[0] = strings.Replace(imageName[0], " ", "_", -1)
-		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + strconv.Itoa(imageNumber) + "." + imageName[1]
+		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + strconv.Itoa(imageNumber+1) + "." + imageName[1]
 		SaveImage(image, imageFullDir)
 	}
 }

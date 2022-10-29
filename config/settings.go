@@ -1,5 +1,7 @@
-package app
+package config
 
+// TODO: implement better settings management (json, .env, etc)
+// TODO: make settings functions more like micromans settings
 func LoadSettings() {
 	//gotenv.Load()
 	//basedApiUrl := os.Getenv("BASED_API_URL")
