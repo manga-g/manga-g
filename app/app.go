@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+// TODO: define manga-g app object as a struct
+
 // Retry if there is no input, loop the request 3 times
 func Retry(query string) {
 	var n = 0
