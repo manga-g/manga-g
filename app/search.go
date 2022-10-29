@@ -100,12 +100,12 @@ func MkSearch(basedApiUrl string, query string) {
 		imageName = strings.Split(imageName[len(imageName)-1], ".")
 		imageName[0] = strings.Replace(imageName[0], " ", "_", -1)
 		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + strconv.Itoa(imageNumber+1) + "." + imageName[1]
-		// progress bar based on imageNumber and len(images) (total number of images)
 		ProgressBar(imageNumber, len(images))
-
 		SaveImage(image, imageFullDir)
 	}
 }
+
+// ProgressBar is a simple progress bar
 func ProgressBar(imageNumber int, lenImages int) {
 	// progress bar based on imageNumber and len(images) (total number of images)
 	// fmt.Printf("\r%d%%", (imageNumber*100)/lenImages)
