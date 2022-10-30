@@ -12,4 +12,7 @@
 [![GitHub license](https://img.shields.io/github/license/manga-g/manga-g)](https://github.com/manga-g/manga-g)
 
 reading some mangos from the terminal
+### Install Command
+`go install github.com/manga-g/manga-g/cmd/manga-g@latest`
+
 </div>
