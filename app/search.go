@@ -94,7 +94,7 @@ func MkSearch(basedApiUrl string, query string) {
 	ExitIfExists(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
 	NewDir(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
 
-	fmt.Println("Trying to load pages for Chapter" + chapterNumber)
+	fmt.Println("Trying to load pages for Chapter " + chapterNumber)
 	fmt.Println("Downloading", len(images), "pages")
 	for imageNumber, image := range images {
 		imageName := strings.Split(image, "/")
@@ -112,7 +112,10 @@ func ProgressBar(imageNumber int, lenImages int) {
 	//	fmt.Printf("\r%d%%", (imageNumber*100)/lenImages)
 
 	// add purple color progress bar that prints equal symbols that is animated until finished
-	fmt.Printf("\r\033[35m%s\033[0m", strings.Repeat("=", (imageNumber*100)/lenImages))
+	// and as a counter that prints the number of images downloaded
+	// and has percentage counter that prints the percentage of images downloaded
+
+	fmt.Printf("\r\033[35m[%s%s]\033[0m %d/%d (%d%%)", strings.Repeat("=", imageNumber), strings.Repeat(" ", lenImages-imageNumber), imageNumber, lenImages, (imageNumber*100)/lenImages)
 
 }
 

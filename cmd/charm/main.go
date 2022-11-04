@@ -2,8 +2,16 @@ package main
 
 import "fmt"
 
-// Entrypoint for the program.
+// make a model for the tui
+type model struct {
+	// add a string to the model
+	text string
+}
+
 func main() {
-	//ui.StartProgram()
-	fmt.Println("insert charm gui here")
+
+	m := new(model)
+	m.text = "Hello, World!"
+
+	fmt.Println(m.text)
 }
