@@ -100,23 +100,16 @@ func MkSearch(basedApiUrl string, query string) {
 		imageName := strings.Split(image, "/")
 		imageName = strings.Split(imageName[len(imageName)-1], ".")
 		imageName[0] = strings.Replace(imageName[0], " ", "_", -1)
-		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + strconv.Itoa(imageNumber+1) + "." + imageName[1]
 		ProgressBar(imageNumber, len(images))
+		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + strconv.Itoa(imageNumber+1) + "." + imageName[1]
 		SaveImage(image, imageFullDir)
 	}
 }
 
 // ProgressBar is a simple progress bar
 func ProgressBar(imageNumber int, lenImages int) {
-	// progress bar based on imageNumber and len(images) (total number of images)
-	//	fmt.Printf("\r%d%%", (imageNumber*100)/lenImages)
-
-	// add purple color progress bar that prints equal symbols that is animated until finished
-	// and as a counter that prints the number of images downloaded
-	// and has percentage counter that prints the percentage of images downloaded
-
-	fmt.Printf("\r\033[35m[%s%s]\033[0m %d/%d (%d%%)", strings.Repeat("=", imageNumber), strings.Repeat(" ", lenImages-imageNumber), imageNumber, lenImages, (imageNumber*100)/lenImages)
-
+	// fancy rainbow multicolored progress bar with percentage at the end
+	fmt.Printf("\r\033[38;5;%dm[%-50s]\033[0m %d%%", 1+imageNumber%255, strings.Repeat("=", imageNumber/2), imageNumber*100/lenImages)
 }
 
 // ComicSearch makes a search request to the api at comic endpoint
