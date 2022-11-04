@@ -6,10 +6,12 @@ import (
 
 // TODO: define manga-g app object as a struct
 
+// EndMessage prints a message when the app is finished
 func EndMessage() {
 	fmt.Println("\nManga-g has completed.\nStart program again to search for another manga.")
 }
 
+// Init app
 func Init(basedApiUrl string) {
 	CheckApi(basedApiUrl)
 	StartMenu(basedApiUrl)

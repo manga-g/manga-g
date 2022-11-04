@@ -50,6 +50,7 @@ func SaveHtml(url string, fileName string) {
 	}
 }
 
+// CreateFile creates a file
 func CreateFile(fileName string) *os.File {
 	file, err := os.Create(fileName)
 	if err != nil {

@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// MkSearch makes a search request to the api at mk endpoint
 func MkSearch(basedApiUrl string, query string) {
 	var mangaList MangaList
 	var titles []string
@@ -115,6 +116,7 @@ func ProgressBar(imageNumber int, lenImages int) {
 
 }
 
+// ComicSearch makes a search request to the api at comic endpoint
 func ComicSearch() {
 	fmt.Println("Not implemented")
 	os.Exit(1)
