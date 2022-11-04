@@ -5,6 +5,15 @@ import (
 	"fmt"
 )
 
+// ParseData generic parsing function
+func ParseData(results string, data *MangaImages) {
+	err := json.Unmarshal([]byte(results), &data)
+	if err != nil {
+		fmt.Println("Error parsing json:", err)
+	}
+}
+
+// ParseMangaSearch parses a list of manga search results from json to struct
 func ParseMangaSearch(results string, manga *MangaList) {
 	if results != "" {
 		err := json.Unmarshal([]byte(results), &manga)
@@ -20,15 +29,9 @@ func ParseMangaSearch(results string, manga *MangaList) {
 }
 
 func ParseChapters(results string, chapters *MangaChapters) {
-	err := json.Unmarshal([]byte(results), &chapters)
-	if err != nil {
-		fmt.Println("Error parsing json:", err)
-	}
+	ParseChapters(results, chapters)
 }
 
 func ParseImages(results string, images *MangaImages) {
-	err := json.Unmarshal([]byte(results), &images)
-	if err != nil {
-		fmt.Println("Error parsing json:", err)
-	}
+	ParseData(results, images)
 }

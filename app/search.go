@@ -108,8 +108,11 @@ func MkSearch(basedApiUrl string, query string) {
 // ProgressBar is a simple progress bar
 func ProgressBar(imageNumber int, lenImages int) {
 	// progress bar based on imageNumber and len(images) (total number of images)
-	// fmt.Printf("\r%d%%", (imageNumber*100)/lenImages)
-	fmt.Printf("\r%d%%", (imageNumber*100)/lenImages)
+	//	fmt.Printf("\r%d%%", (imageNumber*100)/lenImages)
+
+	// add purple color progress bar that prints equal symbols that is animated until finished
+	fmt.Printf("\r\033[35m%s\033[0m", strings.Repeat("=", (imageNumber*100)/lenImages))
+
 }
 
 func ComicSearch() {
