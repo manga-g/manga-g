@@ -6,6 +6,16 @@ import (
 
 // TODO: define manga-g app object as a struct
 
+func EndMessage() {
+	fmt.Println("\nManga-g has completed.\nStart program again to search for another manga.")
+}
+
+func Init(basedApiUrl string) {
+	CheckApi(basedApiUrl)
+	StartMenu(basedApiUrl)
+	EndMessage()
+}
+
 // Retry if there is no input, loop the request 3 times
 func Retry(query string) {
 	var n = 0

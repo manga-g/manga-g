@@ -4,5 +4,5 @@
 # Required for Manga-G
 BASED_API_URL=
 
-#example MANGA_SAVE_DIR=~/Desktop
+# example MANGA_SAVE_DIR=~/Desktop
 MANGA_SAVE_DIR=
