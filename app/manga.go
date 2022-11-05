@@ -1,5 +1,13 @@
 package app
 
+// Type to hold all the information about a manga for api
+type Manga struct {
+	SelectedMangaID string
+	SearchList      *MangaList
+	ChapterList     *MangaChapters
+	ImageList       *MangaImages
+}
+
 // MangaList holds list of manga for search results
 type MangaList []struct {
 	ID                 string `json:"id"`
