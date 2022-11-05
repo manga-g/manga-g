@@ -99,7 +99,7 @@ func ExitIfExists(dir string) {
 	}
 }
 
-// SaveImage save image to file
+// SaveImage to file
 func SaveImage(url string, filename string) {
 
 	// fmt.Println("got page for filename:", filename)
@@ -121,10 +121,13 @@ func SaveImage(url string, filename string) {
 	}
 }
 
+// TitleToDirName converts a title to a directory name
 func TitleToDirName(title string) string {
 	reg, _ := regexp.Compile("[^a-zA-Z\\d]+")
 	return reg.ReplaceAllString(title, "")
 }
+
+// RemoveIfExists removes a file if it exists
 func RemoveIfExists(path string) error {
 	exists, err := Afero.Exists(path)
 

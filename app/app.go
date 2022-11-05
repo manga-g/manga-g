@@ -29,6 +29,8 @@ func Retry(query string) {
 		}
 	}
 }
+
+// QueryCheck checks if the query is empty
 func QueryCheck(query string) {
 	if query == "" || query == " " {
 		Retry(query)

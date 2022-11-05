@@ -25,10 +25,12 @@ func ParseMangaSearch(results string, manga *MangaList) {
 	ParseData(results, manga)
 }
 
+// ParseChapters parses a list of manga chapters from json to struct
 func ParseChapters(results string, chapters *MangaChapters) {
 	ParseData(results, chapters)
 }
 
+// ParseImages parses a list of manga images from json to struct
 func ParseImages(results string, images *MangaImages) {
 	ParseData(results, images)
 }
