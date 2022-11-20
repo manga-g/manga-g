@@ -11,7 +11,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/manga-g/manga-g)](https://github.com/manga-g/manga-g/issues)
 [![GitHub license](https://img.shields.io/github/license/manga-g/manga-g)](https://github.com/manga-g/manga-g)
 
-reading some mangos from the terminal
+reading some mangos from the termuwu
 ### Install Command
 `go install github.com/manga-g/manga-g/cmd/manga-g@latest`
 
