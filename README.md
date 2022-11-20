@@ -14,5 +14,8 @@
 reading some mangos from the termuwu
 ### Install Command
 `go install github.com/manga-g/manga-g/cmd/manga-g@latest`
+### Run command
+`manga-g`
+### <a href="https://discord.gg/CneHhKZdAB">Support Hotline</a>
 
 </div>
