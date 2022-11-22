@@ -1,6 +1,6 @@
 package app
 
-// Type to hold all the information about a manga for api
+// Manga Type to hold all the information about a manga for api
 type Manga struct {
 	SelectedMangaID string
 	SearchList      *MangaList

@@ -4,10 +4,10 @@ go 1.18
 
 require (
 	github.com/ayntgl/orchid v0.0.0-20221009144403-7564203b834c
+	github.com/byte-cats/filechick v0.0.0-20221122010631-00d122319fbf
 	github.com/charmbracelet/bubbletea v0.22.1
 	github.com/charmbracelet/lipgloss v0.5.0
 	github.com/gdamore/tcell/v2 v2.5.3
-	github.com/spf13/afero v1.9.2
 )
 
 require (
@@ -22,7 +22,8 @@ require (
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/termenv v0.12.0 // indirect
 	github.com/rivo/uniseg v0.3.4 // indirect
+	github.com/spf13/afero v1.9.3 // indirect
 	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 	golang.org/x/term v0.0.0-20220722155259-a9ba230a4035 // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/text v0.4.0 // indirect
 )

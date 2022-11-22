@@ -2,6 +2,8 @@ package app
 
 import (
 	"fmt"
+
+	"github.com/byte-cats/filechick"
 )
 
 // TODO: define manga-g app object as a struct
@@ -23,7 +25,7 @@ func Retry(query string) {
 	var n = 0
 	for ; n < 3; n++ {
 		fmt.Println("Hint: Choose manga by corresponding number.\nPlease try again\n" + "Search for manga: ")
-		query = GetInput()
+		query = filechick.GetInput()
 		if query != "" {
 			break
 		}

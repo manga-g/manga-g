@@ -5,6 +5,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/byte-cats/filechick"
 )
 
 // MkSearch makes a search request to the api at mk endpoint
@@ -33,10 +35,10 @@ func MkSearch(basedApiUrl string, query string) {
 
 	SelectMessage := "Select a title: (1 - " + strconv.Itoa(number) + ") "
 	fmt.Print(SelectMessage)
-	mangaChoice := GetInput()
+	mangaChoice := filechick.GetInput()
 	QueryCheck(mangaChoice)
 
-	mangaChoiceInt := StringToInt(mangaChoice)
+	mangaChoiceInt := filechick.StringToInt(mangaChoice)
 	if mangaChoiceInt > number {
 		fmt.Println("Invalid choice")
 		return
@@ -61,10 +63,10 @@ func MkSearch(basedApiUrl string, query string) {
 	}
 
 	fmt.Print("Select a result: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
-	resultChoice := GetInput()
+	resultChoice := filechick.GetInput()
 	QueryCheck(resultChoice)
 
-	chapterChoiceInt := StringToInt(resultChoice)
+	chapterChoiceInt := filechick.StringToInt(resultChoice)
 	chapterChoiceInt = len(mangaChapters.ChapterID) - chapterChoiceInt
 	if chapterChoiceInt > len(chapterTitles) || chapterChoiceInt < 1 {
 		fmt.Println("Invalid choice")
@@ -84,15 +86,15 @@ func MkSearch(basedApiUrl string, query string) {
 		images = append(images, image.ImageUrl)
 	}
 
-	NewDir(mangaSaveDir + "/" + "manga")
+	filechick.NewDir(mangaSaveDir + "/" + "manga")
 
 	mangaName := strings.Replace(mangaList[mangaChoiceInt-1].Title, " ", "_", -1)
 	mangaName = strings.Replace(mangaName, ":", "", -1)
 	mangaName = strings.Replace(mangaName, " ", "_", -1)
 
-	NewDir(mangaSaveDir + "/" + "manga/" + mangaName)
-	ExitIfExists(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
-	NewDir(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
+	filechick.NewDir(mangaSaveDir + "/" + "manga/" + mangaName)
+	filechick.ExitIfExists(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
+	filechick.NewDir(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
 
 	fmt.Println("Trying to load pages for Chapter " + chapterNumber)
 	fmt.Println("Downloading", len(images), "pages")
@@ -102,7 +104,7 @@ func MkSearch(basedApiUrl string, query string) {
 		imageName[0] = strings.Replace(imageName[0], " ", "_", -1)
 		ProgressBar(imageNumber, len(images))
 		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + strconv.Itoa(imageNumber+1) + "." + imageName[1]
-		SaveImage(image, imageFullDir)
+		filechick.SaveImage(image, imageFullDir)
 	}
 }
 

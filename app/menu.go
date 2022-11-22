@@ -4,13 +4,15 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+
+	"github.com/byte-cats/filechick"
 )
 
 // DisplayOptions displays Menu options
 func DisplayOptions() {
 	fmt.Println("Enter your choice: (1-2)")
 	fmt.Println("1.) Search Manga")
-	//fmt.Println("2.) Search Comics")
+	// fmt.Println("2.) Search Comics")
 	fmt.Println("2.) Exit")
 }
 
@@ -23,10 +25,10 @@ func StartMenu(basedApiUrl string) {
 		}
 		DisplayOptions()
 		backToMenu := false
-		switch menuChoice := GetInput(); menuChoice {
+		switch menuChoice := filechick.GetInput(); menuChoice {
 		case "1":
 			fmt.Print("Search for manga: ")
-			query := GetInput()
+			query := filechick.GetInput()
 			if query == "<" {
 				backToMenu = true
 			}
@@ -37,9 +39,9 @@ func StartMenu(basedApiUrl string) {
 				started = false
 			}
 
-		//case "2":
+		// case "2":
 		//	fmt.Print("Search for comic: ")
-		//	query := GetInput()
+		//	query := filechick.GetInput()
 		//	if query == "<" {
 		//		backToMenu = true
 		//	}

@@ -1,7 +1,7 @@
 package config
 
 // TODO: implement better settings management (json, .env, etc)
-// TODO: make settings functions more like micromans settings
+// TODO: make settings functions more like micro-man's settings
 
 // func LoadSettings() {
 // gotenv.Load()
