@@ -2,7 +2,6 @@ package app
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 
@@ -115,7 +114,7 @@ func ProgressBar(imageNumber int, lenImages int) {
 }
 
 // ComicSearch makes a search request to the api at comic endpoint
-func ComicSearch() {
-	fmt.Println("Not implemented")
-	os.Exit(1)
-}
+// func ComicSearch() {
+// 	fmt.Println("Not implemented")
+// 	os.Exit(1)
+// }
