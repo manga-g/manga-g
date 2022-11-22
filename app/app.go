@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/byte-cats/filechick"
+	"github.com/manga-g/manga-g/config"
 )
 
 // TODO: define manga-g app object as a struct
@@ -14,7 +15,10 @@ func EndMessage() {
 }
 
 // Init app
-func Init(basedApiUrl string) {
+func Init() {
+	settings := config.NewSettings()
+	basedApiUrl := settings.ApiUrl
+	settings.SetApiUrl(basedApiUrl)
 	CheckApi(basedApiUrl)
 	StartMenu(basedApiUrl)
 	EndMessage()

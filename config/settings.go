@@ -3,6 +3,27 @@ package config
 // TODO: implement better settings management (json, .env, etc)
 // TODO: make settings functions more like micro-man's settings
 
+type Settings struct {
+	ApiUrl            string
+	DownloadDirectory string
+}
+
+func NewSettings() *Settings {
+	return &Settings{
+		`http://manga-api.bytecats.codes/`,
+		`./downloads/`,
+	}
+}
+
+func (s *Settings) SetApiUrl(url string) {
+	s.ApiUrl = url
+}
+
+func GevEnvVar(key string) string {
+	// use viper
+	return ""
+}
+
 // func LoadSettings() {
 // gotenv.Load()
 // basedApiUrl := os.Getenv("BASED_API_URL")
