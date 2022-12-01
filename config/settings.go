@@ -1,17 +1,23 @@
 package config
 
-// TODO: implement better settings management (json, .env, etc)
-// TODO: make settings functions more like micro-man's settings
+import (
+	"fmt"
+	"runtime"
+
+	"github.com/spf13/viper"
+)
 
 type Settings struct {
 	ApiUrl            string
+	ConfigPath        string
 	DownloadDirectory string
 }
 
 func NewSettings() *Settings {
 	return &Settings{
 		`http://manga-api.bytecats.codes/`,
-		`./downloads/`,
+		`.config/manga-g/config.yml`,
+		`.downloads/`,
 	}
 }
 
@@ -19,33 +25,57 @@ func (s *Settings) SetApiUrl(url string) {
 	s.ApiUrl = url
 }
 
-func GevEnvVar(key string) string {
+func GetEnvVar(key string) string {
 	// use viper
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	viper.SetConfigType("yaml")
+	err := viper.ReadInConfig()
+	if err != nil {
+		fmt.Print("Error reading config file, %s", err)
+	}
+	return viper.GetString(key)
+}
+
+// SetDownloadPath detect user system mac, linux, windows and set the default download path
+func SetDownloadPath(settings *Settings) {
+	if runtime.GOOS == "windows" {
+		settings.DownloadDirectory = GetEnvVar("windows_download_path")
+	}
+	if runtime.GOOS == "linux" {
+		settings.DownloadDirectory = GetEnvVar("linux_download_path")
+	}
+	if runtime.GOOS == "darwin" {
+		settings.DownloadDirectory = GetEnvVar("mac_download_path")
+	}
+}
+
+func SetConfigPath() string {
+	if runtime.GOOS == "windows" {
+		return GetEnvVar("windows_config_path")
+	}
+	if runtime.GOOS == "linux" {
+		return GetEnvVar("linux_config_path")
+	}
+	if runtime.GOOS == "darwin" {
+		return GetEnvVar("mac_config_path")
+	}
 	return ""
 }
 
-// func LoadSettings() {
-// gotenv.Load()
-// basedApiUrl := os.Getenv("BASED_API_URL")
-// fmt.Println("BASED_API_URL:", basedApiUrl)
-// if basedApiUrl == "" {
-//    fmt.Println("BASED_API_URL is not set in env")
-//    os.Exit(1)
-// }
+// Generate default yaml config file for the app settings
+func GenerateConfig() {
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	viper.SetConfigType("yaml")
+	viper.Set("api_url", "http://manga-api.bytecats.codes/")
+	viper.Set("windows_download_path", "C:\\Users\\username\\Downloads\\")
+	viper.Set("linux_download_path", "/home/username/Downloads/")
+	viper.Set("mac_download_path", "/Users/username/Downloads/")
 
-// mangaSaveDir := os.Getenv("MANGA_SAVE_DIR")
-// fmt.Println("MANGA_SAVE_DIR:", mangaSaveDir)
-// if mangaSaveDir == "" {
-//    fmt.Println("MANGA_SAVE_DIR is not set in env")
-//    currentDirectory, err := os.Getwd()
-//    if err != nil {
-//        fmt.Println("Error getting current directory:", err)
-//        os.Exit(1)
-//    }
-//    fmt.Println("Using default" + currentDirectory)
-//    mangaSaveDir = "."
-// }
+	viper.Set("config_path", "~/.config/manga-g/config.yaml")
+	viper.Set("config_dir", "~/.config/manga-g/")
+	viper.Set("config_name", "config.yaml")
 
-// port := "3000"
-// basedApiUrl := "http://localhost:" + port + "/"
-// }
+	viper.WriteConfig()
+}

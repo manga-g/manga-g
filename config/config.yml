@@ -1,0 +1,16 @@
+config:
+  api_url: http://manga-api.bytecats.codes
+
+  linux_download_path: ~/Downloads/manga
+  windows_download_path: C:\Users\%USERNAME%\Downloads\manga
+  mac_download_path: ~/Downloads/manga
+
+  win_config_path: config/manga-g/config.yml
+  linux_config_path: .config/manga-g/config.yml
+  mac_config_path: .config/manga-g/config.yml
+
+    # Path to the folder where you want to store the downloaded manga
+    # You can use %USERNAME% to get the current user's name
+    # You can use ~ to get the home directory
+    # You can use / to get the root directory
+  # Windows: You can use \ to get the root directory

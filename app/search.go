@@ -17,6 +17,9 @@ func MkSearch(basedApiUrl string, query string) {
 	var mangaImages MangaImages
 	var images []string
 
+	// detect user home directory
+	// get full path for manga downloads from config
+
 	mangaSaveDir := "./"
 	apiSearch := basedApiUrl + "mk/search?q=" + query
 	results, _ := CustomRequest(apiSearch)

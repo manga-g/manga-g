@@ -1,8 +1,0 @@
-# needs to be saved as .env file in the project root directory
-# or it will not be loaded
-
-# Required for Manga-G
-BASED_API_URL=
-
-# example MANGA_SAVE_DIR=~/Desktop
-MANGA_SAVE_DIR=

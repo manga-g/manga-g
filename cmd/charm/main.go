@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/manga-g/manga-g/app"
 )
 
 /*
@@ -16,61 +15,68 @@ use enter to select
 use tab to switch between search and manga list
 create input box used for search
 input box will be displayed at the top of the screen
+create a list of manga
+list will be displayed below the input box
+create a list of chapters
+list will be displayed below the manga list
+download the selected chapter into a folder named after the manga and chapter number in the download folder
 */
 
 // Model create a model for the program
 type Model struct {
-	search   string
-	manga    app.Manga
+	// search   string
+	// manga    app.Manga
+
+	choices  []string // items on the to-do list
+	cursor   int      // which to-do list item our cursor is pointing at
 	selected int
-}
-
-// View create a view for the program
-func View(m Model) string {
-	// display the search box
-	if m.search != "" {
-		return fmt.Sprintf("Search: %s", m.search)
-	}
-	// 	 display the manga list
-	// 	 return fmt.Sprintf("Manga: %s", m.manga.Name)
-	// 	 display the chapter list
-	// 	 return fmt.Sprintf("Chapters: %s", m.manga.Chapters)
-	//
-	// 	 display the image list
-	// 	 return fmt.Sprintf("Images: %s", m.manga.Chapters)
-	//
-	// 	 display the chapter list
-	// 	 return fmt.Sprintf("Chapters: %s", m.manga.Chapters)
-	//
-	// 	 display the image list
-	// 	 return fmt.Sprintf("Images: %s", m.manga.Chapters)
-
-	return ""
 }
 
 // Update create an update function for the program
 func Update(msg tea.Msg, m Model) (Model, tea.Cmd) {
-	// handle user input
 	switch msg := msg.(type) {
+
+	// Is it a key press?
 	case tea.KeyMsg:
+
+		// Cool, what was the actual key pressed?
 		switch msg.String() {
-		case "q", "ctrl+c":
+
+		// These keys should exit the program.
+		case "ctrl+c", "q":
 			return m, tea.Quit
+
+		case "j":
+			if m.cursor < len(m.choices)-1 {
+				m.cursor++
+			}
+
+		case "k":
+			if m.cursor > 0 {
+				m.cursor--
+			}
+
+		case "enter":
+			m.selected = m.cursor
+			if m.selected == 0 {
+				// nothing
+
+			} else if m.selected == 1 {
+				// search for manga
+
+			}
+
 		}
-	}
 
-	// handle api data
-	// basedApiUrl := "http://manga-api.bytecats.codes/"
-	// app.Init(basedApiUrl)
-
-	// handle search
-	if m.search != "" {
-		// handle search input
-		// handle search results
-		// handle manga selection
 	}
 
 	return m, nil
+}
+
+// View create a view for the program
+func View(m Model) string {
+
+	return ""
 }
 
 // main entry point for the program
@@ -78,8 +84,12 @@ func main() {
 
 	// create a model
 	model := new(Model)
-	model.search = ""
-	model.manga = app.Manga{}
+	// model.search = ""
+	// model.manga = app.Manga{}
+
+	model.choices = []string{"Search", "Manga"}
+	model.cursor = 0
+
 	model.selected = 0
 
 	// create a program
@@ -89,4 +99,5 @@ func main() {
 	if err := program.Start(); err != nil {
 		fmt.Println("failed to start program", err)
 	}
+
 }

@@ -7,8 +7,6 @@ import (
 	"github.com/manga-g/manga-g/config"
 )
 
-// TODO: define manga-g app object as a struct
-
 // EndMessage prints a message when the app is finished
 func EndMessage() {
 	fmt.Println("\nManga-g has completed.\nStart program again to search for another manga.")
@@ -17,10 +15,10 @@ func EndMessage() {
 // Init app
 func Init() {
 	settings := config.NewSettings()
-	basedApiUrl := settings.ApiUrl
-	settings.SetApiUrl(basedApiUrl)
-	CheckApi(basedApiUrl)
-	StartMenu(basedApiUrl)
+	settings.SetApiUrl(config.GetEnvVar("api_url"))
+	config.SetDownloadPath(settings)
+	CheckApi(settings.ApiUrl)
+	StartMenu(settings.ApiUrl)
 	EndMessage()
 }
 
