@@ -71,3 +71,5 @@ manga/
 #Manga binary
 manga-g
 
+#Config
+.env

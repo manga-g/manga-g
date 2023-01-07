@@ -15,19 +15,19 @@ func EndMessage() {
 // Init app
 func Init() {
 	settings := config.NewSettings()
-	settings.SetApiUrl(config.GetEnvVar("api_url"))
-	config.SetDownloadPath(settings)
+	// settings.SetApiUrl(config.GetEnvVar("api_url"))
+	// config.SetDownloadPath(settings)
 	CheckApi(settings.ApiUrl)
 	StartMenu(settings.ApiUrl)
 	EndMessage()
 }
 
 // Retry if there is no input, loop the request 3 times
-func Retry(query string) {
+func Retry() {
 	var n = 0
 	for ; n < 3; n++ {
 		fmt.Println("Hint: Choose manga by corresponding number.\nPlease try again\n" + "Search for manga: ")
-		query = filechick.GetInput()
+		query := filechick.GetInput()
 		if query != "" {
 			break
 		}
@@ -37,6 +37,6 @@ func Retry(query string) {
 // QueryCheck checks if the query is empty
 func QueryCheck(query string) {
 	if query == "" || query == " " {
-		Retry(query)
+		Retry()
 	}
 }

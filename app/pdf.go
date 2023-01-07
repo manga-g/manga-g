@@ -1,15 +1,13 @@
 package app
 
-
 import (
-	"log"
 	"github.com/signintech/gopdf"
 )
 
 // createPDF creates a PDF from a list of image file paths, using the specified
 // page size, font path, font name, and font size. It saves the PDF to a file
 // named "compiled.pdf".
-func createPDF(imageFilePaths []string, pageSize gopdf.PageSize, fontPath, fontName string, fontSize float64) error {
+func createPDF(imageFilePaths []string, pageSize gopdf.Rect, fontPath, fontName string, fontSize float64) error {
 	pdf := gopdf.GoPdf{}
 	pdf.Start(gopdf.Config{PageSize: pageSize})
 

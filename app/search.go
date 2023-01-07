@@ -2,34 +2,78 @@ package app
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
 	"github.com/byte-cats/filechick"
 )
 
+type Api struct {
+	ApiUrl  string
+	SaveDir string
+}
+
+func NewApi() *Api {
+	return &Api{
+		ApiUrl:  os.Getenv("API_URL"),
+		SaveDir: os.Getenv("DEFAULT_DOWNLOAD_PATH"),
+	}
+}
+
+// Prolly is better to create a DTO for each function?
+
+type Results struct {
+	List          MangaList
+	Titles        []string
+	ChosenManga   int
+	Chapters      MangaChapters
+	ChapterTitles []string
+	ChosenChapter int
+	Images        MangaImages
+	ImageNames    []string
+}
+
+func NewResults(api *Api, query string) *Results {
+	mangaList, titles := api.GetMangas(query)
+	chosenManga, chapters := api.GetChapters(titles, mangaList)
+	chapterTitles := api.GetChapterTitles(chapters)
+	chosenChapter, images, imageNames := api.GetChapterImages(chapterTitles, chapters)
+	return &Results{
+		List:          mangaList,
+		Titles:        titles,
+		ChosenManga:   chosenManga,
+		Chapters:      chapters,
+		ChapterTitles: chapterTitles,
+		ChosenChapter: chosenChapter,
+		Images:        images,
+		ImageNames:    imageNames,
+	}
+}
+
 // MkSearch makes a search request to the api at mk endpoint
-func MkSearch(basedApiUrl string, query string) {
-	var mangaList MangaList
-	var titles []string
-	var chapterTitles []string
-	var mangaChapters MangaChapters
-	var mangaImages MangaImages
-	var images []string
+func MkSearch(query string) *Results {
+	api := NewApi()
+	results := NewResults(api, query)
+	return results
+}
 
-	// detect user home directory
-	// get full path for manga downloads from config
-
-	mangaSaveDir := "./"
-	apiSearch := basedApiUrl + "mk/search?q=" + query
-	results, _ := CustomRequest(apiSearch)
+func (a *Api) GetMangas(query string) (MangaList, []string) {
+	apiSearch := a.ApiUrl + "mk/search?q=" + query
+	mangaResults, _ := CustomRequest(apiSearch)
 
 	fmt.Println("Searching for:", query)
-	ParseMangaSearch(results, &mangaList)
-	fmt.Println("Found", len(mangaList), "manga")
+	var mangaList MangaList
+	ParseMangaSearch(mangaResults, &mangaList)
+	fmt.Println("Found ", len(mangaList), " manga")
+	var titles []string
 	for i, manga := range mangaList {
 		titles = append(titles, fmt.Sprintf("%d. %s", i+1, manga.Title))
 	}
+	return mangaList, titles
+}
+
+func (a *Api) GetChapters(titles []string, mangaList MangaList) (int, MangaChapters) {
 	number := len(titles)
 	for _, title := range titles {
 		fmt.Println(title)
@@ -40,20 +84,25 @@ func MkSearch(basedApiUrl string, query string) {
 	mangaChoice := filechick.GetInput()
 	QueryCheck(mangaChoice)
 
-	mangaChoiceInt := filechick.StringToInt(mangaChoice)
-	if mangaChoiceInt > number {
+	chosenManga := filechick.StringToInt(mangaChoice)
+	if chosenManga > number {
 		fmt.Println("Invalid choice")
-		return
+		os.Exit(1)
 	}
-	mangaId := mangaList[mangaChoiceInt-1].ID
-	chapterUrl := basedApiUrl + "mk/chapters?q=" + mangaId
+	mangaId := mangaList[chosenManga-1].ID
+	chapterUrl := a.ApiUrl + "mk/chapters?q=" + mangaId
 	fmt.Println("Checking ID:" + mangaId)
 	fmt.Println("Loading chapters...")
 
-	results, _ = CustomRequest(chapterUrl)
-	ParseChapters(results, &mangaChapters)
+	var mangaChapters MangaChapters
+	chapterResults, _ := CustomRequest(chapterUrl)
+	ParseChapters(chapterResults, &mangaChapters)
+	return chosenManga, mangaChapters
+}
 
+func (a *Api) GetChapterTitles(mangaChapters MangaChapters) []string {
 	n := 0
+	var chapterTitles []string
 	for i := len(mangaChapters.Chapters); i >= 1; i-- {
 		chapter := mangaChapters.Chapters[i-1]
 		chapterTitles = append(chapterTitles, fmt.Sprintf("%d. %s", n+1, chapter))
@@ -64,6 +113,10 @@ func MkSearch(basedApiUrl string, query string) {
 		fmt.Println(title)
 	}
 
+	return chapterTitles
+}
+
+func (a *Api) GetChapterImages(chapterTitles []string, mangaChapters MangaChapters) (int, MangaImages, []string) {
 	fmt.Print("Select a result: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
 	resultChoice := filechick.GetInput()
 	QueryCheck(resultChoice)
@@ -72,42 +125,44 @@ func MkSearch(basedApiUrl string, query string) {
 	chapterChoiceInt = len(mangaChapters.ChapterID) - chapterChoiceInt
 	if chapterChoiceInt > len(chapterTitles) || chapterChoiceInt < 1 {
 		fmt.Println("Invalid choice")
-		return
+		os.Exit(1)
 	}
-
 	chapterId := mangaChapters.ChapterID[chapterChoiceInt]
 	chapterNumber := strings.Replace(chapterId, "chapter-", "", -1)
 	fmt.Println("Chapter number:", chapterNumber)
 
 	// keep only the number at the end of the string
-	imagesUrl := basedApiUrl + "mk/images?id=" + mangaId + "&chapterNumber=" + chapterNumber
+	imagesUrl := a.ApiUrl + "mk/images?id=" + chapterId + "&chapterNumber=" + chapterNumber
 	//	fmt.Println(imagesUrl)
-	results, _ = CustomRequest(imagesUrl)
-	ParseImages(results, &mangaImages)
-	for _, image := range mangaImages {
-		images = append(images, image.ImageUrl)
+	var images MangaImages
+	var imageResults []string
+	result, _ := CustomRequest(imagesUrl)
+	ParseImages(result, &images)
+	for _, image := range images {
+		imageResults = append(imageResults, image.ImageUrl)
 	}
 
-	filechick.NewDir(mangaSaveDir + "/" + "manga")
+	filechick.NewDir(a.SaveDir)
 
-	mangaName := strings.Replace(mangaList[mangaChoiceInt-1].Title, " ", "_", -1)
-	mangaName = strings.Replace(mangaName, ":", "", -1)
-	mangaName = strings.Replace(mangaName, " ", "_", -1)
+	// mangaName := strings.Replace(results.List[results.ChosenManga-1].Title, " ", "_", -1)
+	// mangaName = strings.Replace(mangaName, ":", "", -1)
+	// mangaName = strings.Replace(mangaName, " ", "_", -1)
 
-	filechick.NewDir(mangaSaveDir + "/" + "manga/" + mangaName)
-	filechick.ExitIfExists(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
-	filechick.NewDir(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
+	// filechick.NewDir(a.SaveDir + "/" + mangaName)
+	// filechick.ExitIfExists(a.SaveDir + "/" + mangaName + "/" + chapterNumber)
+	// filechick.NewDir(a.SaveDir + "/" + mangaName + "/" + chapterNumber)
 
 	fmt.Println("Trying to load pages for Chapter " + chapterNumber)
-	fmt.Println("Downloading", len(images), "pages")
-	for imageNumber, image := range images {
+	fmt.Println("Downloading", len(imageResults), "pages")
+	for imageNumber, image := range imageResults {
 		imageName := strings.Split(image, "/")
 		imageName = strings.Split(imageName[len(imageName)-1], ".")
 		imageName[0] = strings.Replace(imageName[0], " ", "_", -1)
-		ProgressBar(imageNumber, len(images))
-		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + strconv.Itoa(imageNumber+1) + "." + imageName[1]
+		ProgressBar(imageNumber, len(imageResults))
+		imageFullDir := a.SaveDir + "manga/" + "yeah" + "/" + chapterNumber + "/" + strconv.Itoa(imageNumber+1) + "." + imageName[1]
 		filechick.SaveImage(image, imageFullDir)
 	}
+	return chapterChoiceInt, images, imageResults
 }
 
 // ProgressBar is a simple progress bar

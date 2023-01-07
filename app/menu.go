@@ -19,7 +19,7 @@ func DisplayOptions() {
 // StartMenu starts the menu loop
 func StartMenu(basedApiUrl string) {
 
-	for started := true; started == true; {
+	for started := true; started; {
 		if !started {
 			break
 		}
@@ -35,7 +35,8 @@ func StartMenu(basedApiUrl string) {
 			if query != "<" {
 				QueryCheck(query)
 				query = url.QueryEscape(query)
-				MkSearch(basedApiUrl, query)
+				results := MkSearch(query)
+				fmt.Println(results)
 				started = false
 			}
 
@@ -59,7 +60,7 @@ func StartMenu(basedApiUrl string) {
 			os.Exit(0)
 
 		default:
-			if backToMenu == false {
+			if !backToMenu {
 				fmt.Println("Invalid Option")
 			}
 		}

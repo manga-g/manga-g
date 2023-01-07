@@ -1,10 +1,6 @@
 package main
 
-import (
-	"fmt"
-
-	tea "github.com/charmbracelet/bubbletea"
-)
+import "github.com/manga-g/manga-g/ui"
 
 /*
 use cmd/manga-g/main.go as a reference for handling api data and user input
@@ -22,82 +18,6 @@ list will be displayed below the manga list
 download the selected chapter into a folder named after the manga and chapter number in the download folder
 */
 
-// Model create a model for the program
-type Model struct {
-	// search   string
-	// manga    app.Manga
-
-	choices  []string // items on the to-do list
-	cursor   int      // which to-do list item our cursor is pointing at
-	selected int
-}
-
-// Update create an update function for the program
-func Update(msg tea.Msg, m Model) (Model, tea.Cmd) {
-	switch msg := msg.(type) {
-
-	// Is it a key press?
-	case tea.KeyMsg:
-
-		// Cool, what was the actual key pressed?
-		switch msg.String() {
-
-		// These keys should exit the program.
-		case "ctrl+c", "q":
-			return m, tea.Quit
-
-		case "j":
-			if m.cursor < len(m.choices)-1 {
-				m.cursor++
-			}
-
-		case "k":
-			if m.cursor > 0 {
-				m.cursor--
-			}
-
-		case "enter":
-			m.selected = m.cursor
-			if m.selected == 0 {
-				// nothing
-
-			} else if m.selected == 1 {
-				// search for manga
-
-			}
-
-		}
-
-	}
-
-	return m, nil
-}
-
-// View create a view for the program
-func View(m Model) string {
-
-	return ""
-}
-
-// main entry point for the program
 func main() {
-
-	// create a model
-	model := new(Model)
-	// model.search = ""
-	// model.manga = app.Manga{}
-
-	model.choices = []string{"Search", "Manga"}
-	model.cursor = 0
-
-	model.selected = 0
-
-	// create a program
-	program := new(tea.Program)
-
-	// start the program
-	if err := program.Start(); err != nil {
-		fmt.Println("failed to start program", err)
-	}
-
+	ui.StartRenderingUI()
 }

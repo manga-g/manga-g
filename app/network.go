@@ -3,7 +3,6 @@ package app
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -12,25 +11,24 @@ import (
 // Connected tests if the connection is alive
 func Connected() (ok bool) {
 	_, err := http.Get("https://clients3.google.com/generate_204")
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 // ValidateUrl checks if url is valid
 func ValidateUrl(UrlToCheck string) bool {
 	_, err := url.ParseRequestURI(UrlToCheck)
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 // CheckApi checks if the api is alive
 func CheckApi(basedApiUrl string) {
-	_, err := http.Get(basedApiUrl + "/hc")
-	if err == nil {
+	resp, err := http.Get(basedApiUrl + "hc")
+	if err != nil {
+		fmt.Println("Online Manga is offline at the moment ;(\nBe back online ASAP =)")
+		// + logging to crashlog
+		os.Exit(1)
+	}
+	if resp.StatusCode == http.StatusOK {
 		fmt.Println("Online Manga is ready!")
 	} else {
 		fmt.Println("Online Manga is offline at the moment ;(\nBe back online ASAP =)")
@@ -65,7 +63,7 @@ func CustomRequest(url string) (string, error) {
 			fmt.Println("Error closing body:", err)
 		}
 	}(resp.Body)
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "Error reading body:", err
 	}
