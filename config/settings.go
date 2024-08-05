@@ -32,7 +32,7 @@ func GetEnvVar(key string) string {
 	viper.SetConfigType("yaml")
 	err := viper.ReadInConfig()
 	if err != nil {
-		fmt.Print("Error reading config file, %s", err)
+		fmt.Printf("Error reading config file: %s\n", err) // Changed Print to Printf for formatting
 	}
 	return viper.GetString(key)
 }

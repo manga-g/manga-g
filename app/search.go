@@ -2,122 +2,147 @@ package app
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/byte-cats/filechick"
 )
 
-// MkSearch makes a search request to the api at mk endpoint
+// MkSearch makes a search request to the API at the mk endpoint
 func MkSearch(basedApiUrl string, query string) {
 	var mangaList MangaList
-	var titles []string
 	var chapterTitles []string
 	var mangaChapters MangaChapters
 	var mangaImages MangaImages
 	var images []string
 
-	// detect user home directory
-	// get full path for manga downloads from config
-
 	mangaSaveDir := "./"
-	apiSearch := basedApiUrl + "mk/search?q=" + query
-	results, _ := CustomRequest(apiSearch)
+	apiSearch := fmt.Sprintf("%s/mk/search?q=%s", basedApiUrl, query) // Use fmt.Sprintf for better readability
+	results, err := CustomRequest(apiSearch)
+	if err != nil {
+		fmt.Println("Error fetching manga:", err)
+		return
+	}
 
 	fmt.Println("Searching for:", query)
 	ParseMangaSearch(results, &mangaList)
-	fmt.Println("Found", len(mangaList), "manga")
+	fmt.Printf("Found %d manga\n", len(mangaList))
+
+	titles := formatMangaTitles(mangaList) // Extracted formatting logic
+	printTitles(titles)
+
+	mangaChoiceInt := getUserChoice(len(titles)) // Extracted user choice logic
+	if mangaChoiceInt < 1 {
+		return
+	}
+
+	mangaId := mangaList[mangaChoiceInt-1].ID
+	chapterUrl := fmt.Sprintf("%s/mk/chapters?q=%s", basedApiUrl, mangaId)
+	fmt.Println("Loading chapters...")
+
+	results, err = CustomRequest(chapterUrl)
+	if err != nil {
+		fmt.Println("Error fetching chapters:", err)
+		return
+	}
+	ParseChapters(results, &mangaChapters)
+
+	chapterTitles = formatChapterTitles(mangaChapters) // Extracted formatting logic
+	printTitles(chapterTitles)
+
+	chapterChoiceInt := getUserChoice(len(chapterTitles)) // Extracted user choice logic
+	if chapterChoiceInt < 1 {
+		return
+	}
+
+	chapterId := mangaChapters.ChapterID[len(mangaChapters.ChapterID)-chapterChoiceInt]
+	chapterNumber := strings.TrimPrefix(chapterId, "chapter-")
+	fmt.Println("Chapter number:", chapterNumber)
+
+	imagesUrl := fmt.Sprintf("%s/mk/images?id=%s&chapterNumber=%s", basedApiUrl, mangaId, chapterNumber)
+	results, err = CustomRequest(imagesUrl)
+	if err != nil {
+		fmt.Println("Error fetching images:", err)
+		return
+	}
+	ParseImages(results, &mangaImages)
+
+	images = extractImageUrls(mangaImages)                            // Extracted image URL logic
+	mangaName := sanitizeMangaName(mangaList[mangaChoiceInt-1].Title) // Extracted sanitization logic
+
+	prepareDirectories(mangaSaveDir, mangaName, chapterNumber) // Extracted directory preparation logic
+
+	fmt.Println("Trying to load pages for Chapter " + chapterNumber)
+	fmt.Printf("Downloading %d pages\n", len(images))
+	downloadImages(images, mangaSaveDir, mangaName, chapterNumber) // Extracted download logic
+}
+
+// Helper functions
+
+func formatMangaTitles(mangaList MangaList) []string {
+	var titles []string
 	for i, manga := range mangaList {
 		titles = append(titles, fmt.Sprintf("%d. %s", i+1, manga.Title))
 	}
-	number := len(titles)
+	return titles
+}
+
+func printTitles(titles []string) {
 	for _, title := range titles {
 		fmt.Println(title)
 	}
+}
 
-	SelectMessage := "Select a title: (1 - " + strconv.Itoa(number) + ") "
-	fmt.Print(SelectMessage)
+func getUserChoice(max int) int {
+	fmt.Printf("Select a title: (1 - %d) ", max)
 	mangaChoice := filechick.GetInput()
 	QueryCheck(mangaChoice)
 
 	mangaChoiceInt := filechick.StringToInt(mangaChoice)
-	if mangaChoiceInt > number {
+	if mangaChoiceInt < 1 || mangaChoiceInt > max {
 		fmt.Println("Invalid choice")
-		return
+		return -1
 	}
-	mangaId := mangaList[mangaChoiceInt-1].ID
-	chapterUrl := basedApiUrl + "mk/chapters?q=" + mangaId
-	fmt.Println("Checking ID:" + mangaId)
-	fmt.Println("Loading chapters...")
+	return mangaChoiceInt
+}
 
-	results, _ = CustomRequest(chapterUrl)
-	ParseChapters(results, &mangaChapters)
-
-	n := 0
-	for i := len(mangaChapters.Chapters); i >= 1; i-- {
-		chapter := mangaChapters.Chapters[i-1]
-		chapterTitles = append(chapterTitles, fmt.Sprintf("%d. %s", n+1, chapter))
-		n++
-	}
-
-	for _, title := range chapterTitles {
-		fmt.Println(title)
-	}
-
-	fmt.Print("Select a result: (1 - " + strconv.Itoa(len(chapterTitles)) + ") ")
-	resultChoice := filechick.GetInput()
-	QueryCheck(resultChoice)
-
-	chapterChoiceInt := filechick.StringToInt(resultChoice)
-	chapterChoiceInt = len(mangaChapters.ChapterID) - chapterChoiceInt
-	if chapterChoiceInt > len(chapterTitles) || chapterChoiceInt < 1 {
-		fmt.Println("Invalid choice")
-		return
-	}
-
-	chapterId := mangaChapters.ChapterID[chapterChoiceInt]
-	chapterNumber := strings.Replace(chapterId, "chapter-", "", -1)
-	fmt.Println("Chapter number:", chapterNumber)
-
-	// keep only the number at the end of the string
-	imagesUrl := basedApiUrl + "mk/images?id=" + mangaId + "&chapterNumber=" + chapterNumber
-	//	fmt.Println(imagesUrl)
-	results, _ = CustomRequest(imagesUrl)
-	ParseImages(results, &mangaImages)
+func extractImageUrls(mangaImages MangaImages) []string {
+	var images []string
 	for _, image := range mangaImages {
 		images = append(images, image.ImageUrl)
 	}
+	return images
+}
 
-	filechick.NewDir(mangaSaveDir + "/" + "manga")
+func sanitizeMangaName(title string) string {
+	return strings.NewReplacer(" ", "_", ":", "").Replace(title) // More efficient sanitization
+}
 
-	mangaName := strings.Replace(mangaList[mangaChoiceInt-1].Title, " ", "_", -1)
-	mangaName = strings.Replace(mangaName, ":", "", -1)
-	mangaName = strings.Replace(mangaName, " ", "_", -1)
+func prepareDirectories(baseDir, mangaName, chapterNumber string) {
+	filechick.NewDir(baseDir + "/manga")
+	filechick.NewDir(baseDir + "/manga/" + mangaName)
+	filechick.ExitIfExists(baseDir + "/manga/" + mangaName + "/" + chapterNumber)
+	filechick.NewDir(baseDir + "/manga/" + mangaName + "/" + chapterNumber)
+}
 
-	filechick.NewDir(mangaSaveDir + "/" + "manga/" + mangaName)
-	filechick.ExitIfExists(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
-	filechick.NewDir(mangaSaveDir + "/" + "manga/" + mangaName + "/" + chapterNumber)
-
-	fmt.Println("Trying to load pages for Chapter " + chapterNumber)
-	fmt.Println("Downloading", len(images), "pages")
+func downloadImages(images []string, baseDir, mangaName, chapterNumber string) {
 	for imageNumber, image := range images {
 		imageName := strings.Split(image, "/")
-		imageName = strings.Split(imageName[len(imageName)-1], ".")
-		imageName[0] = strings.Replace(imageName[0], " ", "_", -1)
+		ext := strings.Split(imageName[len(imageName)-1], ".")[1]
+		imageFullDir := fmt.Sprintf("%s/manga/%s/%s/%d.%s", baseDir, mangaName, chapterNumber, imageNumber+1, ext)
 		ProgressBar(imageNumber, len(images))
-		imageFullDir := mangaSaveDir + "manga/" + mangaName + "/" + chapterNumber + "/" + strconv.Itoa(imageNumber+1) + "." + imageName[1]
 		filechick.SaveImage(image, imageFullDir)
 	}
 }
 
 // ProgressBar is a simple progress bar
 func ProgressBar(imageNumber int, lenImages int) {
-	// fancy rainbow multicolored progress bar with percentage at the end
 	fmt.Printf("\r\033[38;5;%dm[%-50s]\033[0m %d%%", 1+imageNumber%255, strings.Repeat("=", imageNumber/2), imageNumber*100/lenImages)
 }
 
-// ComicSearch makes a search request to the api at comic endpoint
-// func ComicSearch() {
-// 	fmt.Println("Not implemented")
-// 	os.Exit(1)
-// }
+func formatChapterTitles(mangaChapters MangaChapters) []string {
+	var titles []string
+	for i, chapter := range mangaChapters.Chapters {
+		titles = append(titles, fmt.Sprintf("%d. %s", i+1, chapter)) // Changed from chapter.Title to chapter
+	}
+	return titles
+}
