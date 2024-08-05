@@ -1,0 +1,13 @@
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    reviewers:
+      - "4cecoder"
+    allow:
+      - dependency-type: "direct"
