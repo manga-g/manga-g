@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"time"
 )
 
 // Connected tests if the connection is alive
@@ -40,24 +41,26 @@ func ApplyUserAgent(req *http.Request) {
 	req.Header.Set("User-Agent", RandomizeUserAgent())
 }
 
-// CustomRequest performs a custom HTTP GET request
+// CustomRequest performs a custom HTTP GET request with timeout and error handling
 func CustomRequest(url string) (string, error) {
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
-		return "Something went wrong with request", err
+		return "", fmt.Errorf("failed to create request: %w", err)
 	}
 	ApplyUserAgent(req)
 
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: 10 * time.Second, // Set a timeout for the request
+	}
 	resp, err := client.Do(req)
 	if err != nil {
-		return "Something went wrong with the request", err
+		return "", fmt.Errorf("failed to execute request: %w", err)
 	}
 	defer closeBody(resp.Body)
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "Error reading body:", err
+		return "", fmt.Errorf("error reading body: %w", err)
 	}
 	return string(body), nil
 }
