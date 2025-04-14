@@ -7,7 +7,7 @@ import (
 	"github.com/byte-cats/filechick"
 )
 
-// MkSearch makes a search request to the API at the mk endpoint
+// Search makes a search request to the MangaDex API
 func MkSearch(basedApiUrl string, query string) {
 	var mangaList MangaList
 	var chapterTitles []string
@@ -16,7 +16,11 @@ func MkSearch(basedApiUrl string, query string) {
 	var images []string
 
 	mangaSaveDir := "./"
-	apiSearch := fmt.Sprintf("%s/mk/search?q=%s", basedApiUrl, query) // Use fmt.Sprintf for better readability
+
+	// Update to use the correct MangaDex API v5 endpoint for manga search
+	apiSearch := fmt.Sprintf("%s/manga?title=%s&limit=20", basedApiUrl, query)
+	fmt.Println("Searching using API endpoint:", apiSearch)
+
 	results, err := CustomRequest(apiSearch)
 	if err != nil {
 		fmt.Println("Error fetching manga:", err)
@@ -36,7 +40,8 @@ func MkSearch(basedApiUrl string, query string) {
 	}
 
 	mangaId := mangaList[mangaChoiceInt-1].ID
-	chapterUrl := fmt.Sprintf("%s/mk/chapters?q=%s", basedApiUrl, mangaId)
+	// Update to use the correct MangaDex API v5 endpoint for chapters
+	chapterUrl := fmt.Sprintf("%s/manga/%s/feed?translatedLanguage[]=en&limit=100", basedApiUrl, mangaId)
 	fmt.Println("Loading chapters...")
 
 	results, err = CustomRequest(chapterUrl)
@@ -58,7 +63,9 @@ func MkSearch(basedApiUrl string, query string) {
 	chapterNumber := strings.TrimPrefix(chapterId, "chapter-")
 	fmt.Println("Chapter number:", chapterNumber)
 
-	imagesUrl := fmt.Sprintf("%s/mk/images?id=%s&chapterNumber=%s", basedApiUrl, mangaId, chapterNumber)
+	// Update to use the correct MangaDex API v5 endpoint for at-home server
+	// This endpoint provides the actual image URLs
+	imagesUrl := fmt.Sprintf("%s/at-home/server/%s", basedApiUrl, chapterId)
 	results, err = CustomRequest(imagesUrl)
 	if err != nil {
 		fmt.Println("Error fetching images:", err)
@@ -66,8 +73,21 @@ func MkSearch(basedApiUrl string, query string) {
 	}
 	ParseImages(results, &mangaImages)
 
-	images = extractImageUrls(mangaImages)                            // Extracted image URL logic
-	mangaName := sanitizeMangaName(mangaList[mangaChoiceInt-1].Title) // Extracted sanitization logic
+	images = extractImageUrls(mangaImages) // Extracted image URL logic
+
+	// Get the title from the new manga structure
+	var mangaTitle string
+	if title, ok := mangaList[mangaChoiceInt-1].Attributes.Title["en"]; ok {
+		mangaTitle = title
+	} else {
+		// Fallback to the first available title
+		for _, title := range mangaList[mangaChoiceInt-1].Attributes.Title {
+			mangaTitle = title
+			break
+		}
+	}
+
+	mangaName := sanitizeMangaName(mangaTitle) // Extracted sanitization logic
 
 	prepareDirectories(mangaSaveDir, mangaName, chapterNumber) // Extracted directory preparation logic
 
@@ -81,7 +101,18 @@ func MkSearch(basedApiUrl string, query string) {
 func formatMangaTitles(mangaList MangaList) []string {
 	var titles []string
 	for i, manga := range mangaList {
-		titles = append(titles, fmt.Sprintf("%d. %s", i+1, manga.Title))
+		// Get the title in the best available language (prefer English)
+		var title string
+		if t, ok := manga.Attributes.Title["en"]; ok {
+			title = t
+		} else {
+			// Fallback to the first available title
+			for _, t := range manga.Attributes.Title {
+				title = t
+				break
+			}
+		}
+		titles = append(titles, fmt.Sprintf("%d. %s", i+1, title))
 	}
 	return titles
 }

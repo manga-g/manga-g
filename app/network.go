@@ -50,7 +50,7 @@ func CustomRequest(url string) (string, error) {
 	ApplyUserAgent(req)
 
 	client := &http.Client{
-		Timeout: 10 * time.Second, // Set a timeout for the request
+		Timeout: 30 * time.Second, // Increased timeout for API requests
 	}
 	resp, err := client.Do(req)
 	if err != nil {
