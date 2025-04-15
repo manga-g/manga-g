@@ -66,9 +66,8 @@ func (m MangaList) GetTitle(index int) string {
 // MangaChapters holds data about manga chapters
 // Updated to match MangaDex API v5 format
 type MangaChapters struct {
-	Result   string `json:"result"`
-	Response string `json:"response"`
-	Data     []struct {
+	Result string `json:"result"`
+	Data   []struct {
 		ID         string `json:"id"`
 		Type       string `json:"type"`
 		Attributes struct {
@@ -81,11 +80,17 @@ type MangaChapters struct {
 			ReadableAt         string `json:"readableAt"`
 			CreatedAt          string `json:"createdAt"`
 			UpdatedAt          string `json:"updatedAt"`
+			Pages              int    `json:"pages"`
 		} `json:"attributes"`
+		Relationships []struct {
+			ID   string `json:"id"`
+			Type string `json:"type"`
+		} `json:"relationships"`
 	} `json:"data"`
-	Limit  int `json:"limit"`
-	Offset int `json:"offset"`
-	Total  int `json:"total"`
+	Limit    int    `json:"limit"`
+	Offset   int    `json:"offset"`
+	Total    int    `json:"total"`
+	Response string `json:"response,omitempty"`
 
 	// Compatibility with old code
 	Status             string   `json:"-"`

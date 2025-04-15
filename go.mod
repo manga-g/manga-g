@@ -10,8 +10,8 @@ require (
 	github.com/charmbracelet/lipgloss v0.9.1
 	github.com/gdamore/tcell/v2 v2.5.3
 	github.com/jung-kurt/gofpdf v1.16.2
-	github.com/signintech/gopdf v0.26.1
 	github.com/spf13/viper v1.14.0
+	golang.org/x/term v0.6.0
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gorm v1.25.12
 )
@@ -39,8 +39,6 @@ require (
 	github.com/muesli/termenv v0.15.2 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
-	github.com/phpdave11/gofpdi v1.0.14-0.20211212211723-1f10f9844311 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.6 // indirect
 	github.com/sahilm/fuzzy v0.1.1-0.20230530133925-c48e322e2a8f // indirect
 	github.com/spf13/afero v1.9.3 // indirect
@@ -50,7 +48,6 @@ require (
 	github.com/subosito/gotenv v1.4.1 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
-	golang.org/x/term v0.6.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
