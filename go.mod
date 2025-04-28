@@ -13,7 +13,7 @@ require (
 	github.com/spf13/viper v1.14.0
 	golang.org/x/term v0.28.0
 	gorm.io/driver/sqlite v1.5.7
-	gorm.io/gorm v1.25.12
+	gorm.io/gorm v1.26.0
 )
 
 require (
