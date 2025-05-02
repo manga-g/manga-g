@@ -2,6 +2,7 @@
   
 [![CodeQL](https://github.com/manga-g/manga-g/actions/workflows/codeql.yml/badge.svg)](https://github.com/manga-g/manga-g/actions/workflows/codeql.yml)
 [![Build](https://github.com/manga-g/manga-g/actions/workflows/go.yml/badge.svg?branch=main)](https://github.com/manga-g/manga-g/actions/workflows/go.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/manga-g/manga-g.svg)](https://pkg.go.dev/github.com/manga-g/manga-g)
 
 <a href="https://manga-g.pages.dev">![Cutie term](https://manga-g.pages.dev/assets/images/icons/console/wh.gif)</a>
 
