@@ -1,6 +1,8 @@
 module github.com/manga-g/manga-g
 
-go 1.18
+go 1.23.0
+
+toolchain go1.24.2
 
 require (
 	github.com/ayntgl/orchid v0.0.0-20221009144403-7564203b834c
