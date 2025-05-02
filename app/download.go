@@ -53,11 +53,12 @@ type Downloader struct {
 
 // NewDownloader creates a new Downloader instance with configuration.
 func NewDownloader(numWorkers int, stateFilePath, outputDirBase string, progressChan chan DownloadProgressInfo) *Downloader {
+	// Determine default paths if not provided
 	if stateFilePath == "" {
-		stateFilePath = "debug_downloads/download_state.json" // Default if empty
+		stateFilePath = "manga/download_state.json" // Default if empty
 	}
 	if outputDirBase == "" {
-		outputDirBase = "debug_downloads" // Default if empty
+		outputDirBase = "manga" // Default if empty
 	}
 	return &Downloader{
 		NumWorkers:    numWorkers,

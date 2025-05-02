@@ -127,4 +127,39 @@ The MangaDex API v5 endpoints used by this tool include:
 - **Manga Details**: `/manga/{id}`
 - **Manga Chapters**: `/manga/{id}/feed?translatedLanguage[]={lang}&limit={limit}`
 - **Chapter Details**: `/chapter/{id}`
-- **At-Home Server**: `/at-home/server/{id}` 
+- **At-Home Server**: `/at-home/server/{id}`
+
+#### 4. Download Chapter Images
+
+Downloads chapter images using the `mangadex-at-home` server information.
+
+- **Function**: `DownloadChapterImages(atHome *md.AtHomeServerResponse, outputDir string) error`
+- **Input**: `md.AtHomeServerResponse` (from `GetMangaChapterAtHome`), `outputDir` (base directory for saving)
+- **Output**: `error` (if any issues occur during download)
+- **Directory structure**: `manga/[Manga Title]/chapter_[hash]`
+- **Description**: Fetches each page image URL from `atHome.Chapter.DataSaver`, downloads the image, and saves it to the specified directory. Handles potential download errors.
+
+#### 5. Get Manga Volumes & Chapters
+
+Retrieves volume and chapter information for a specific manga.
+
+- **Command**: `go run main.go download --url <chapter_url>`
+- **Example**: `go run main.go download --url https://mangadex.org/chapter/some-chapter-uuid`
+- **Description**:
+  - Parses the chapter URL to get the chapter UUID.
+  - Fetches chapter details using the UUID.
+  - Retrieves the manga title using the manga UUID from the chapter details.
+  - Fetches the `mangadex-at-home` server information for the chapter.
+  - Downloads the chapter images.
+- **Output**:
+  - Logs download progress for each page.
+  - Images are saved to the `manga/[Manga Title]/chapter_[hash]` directory
+
+### State Management
+
+The download command uses a `download_state.json` file (in the `manga` directory by default) to keep track of downloaded chapters and pages. This allows the command to:
+
+- Keep track of downloaded chapters and pages
+- Resume downloads from where they left off
+- Prevent duplicate downloads
+- Provide detailed progress tracking 

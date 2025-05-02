@@ -181,10 +181,10 @@ func mockAtHomeServer(chapterID string) {
 
 // simulateMockDownload simulates downloading images in mock mode (internal helper)
 func simulateMockDownload(atHome AtHomeResponse) { // Use type directly
-	outputDir := fmt.Sprintf("debug_downloads/mock_chapter_%s", atHome.Chapter.Hash)
+	outputDir := fmt.Sprintf("manga/mock_chapter_%s", atHome.Chapter.Hash)
 	fmt.Printf("Mock Mode: Would download %d images to: %s\n", len(atHome.Chapter.Data), outputDir)
 
-	err := os.MkdirAll(outputDir, 0755)
+	err := os.MkdirAll(outputDir, os.ModePerm)
 	if err != nil {
 		fmt.Printf("Error creating directory: %v\n", err)
 		return
