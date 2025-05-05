@@ -13,7 +13,7 @@ require (
 	github.com/gdamore/tcell/v2 v2.8.1
 	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/spf13/viper v1.20.1
-	golang.org/x/term v0.28.0
+	golang.org/x/term v0.31.0
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gorm v1.25.12
 )
