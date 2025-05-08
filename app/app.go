@@ -648,7 +648,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		// Handle help toggle
-		if key.Matches(msg, m.keys.Help) {
+		if key.Matches(msg, m.keys.Help) && !(m.input.Focused() && msg.String() == "h") {
 			m.help.ShowAll = !m.help.ShowAll
 			return m, nil
 		}
