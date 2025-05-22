@@ -167,23 +167,8 @@ func (d *Downloader) monitorProgress() {
 	}
 }
 
-// DownloadChapter manages the multi-threaded download of chapter images.
-// Runs synchronously and returns an error on failure.
-func (d *Downloader) DownloadChapter(atHome *AtHomeResponse, mangaTitle string, chapterID string) error {
-	var downloadErr error // Use local error variable
-
-	// Try to load existing state for this specific chapter
-	state, found, err := d.loadState()
-	if err != nil {
-		downloadErr = fmt.Errorf("error loading download state: %w", err)
-		// Send error immediately if channel exists
-		if d.ProgressChan != nil {
-			d.ProgressChan <- DownloadProgressInfo{Error: downloadErr, Done: true, ChapterID: chapterID}
-		}
-		return downloadErr
-	}
-
-	// Initialize or resume state
+// initializeOrResumeState initializes or resumes the download state based on the found state and atHome response.
+func (d *Downloader) initializeOrResumeState(found bool, state DownloadState, atHome *AtHomeResponse, mangaTitle, chapterID string) {
 	d.mutex.Lock()
 	if found && state.ChapterID == chapterID && state.ChapterHash == atHome.Chapter.Hash {
 		d.state = state // Resume using loaded state
@@ -203,6 +188,26 @@ func (d *Downloader) DownloadChapter(atHome *AtHomeResponse, mangaTitle string, 
 		}
 	}
 	d.mutex.Unlock()
+}
+
+// DownloadChapter manages the multi-threaded download of chapter images.
+// Runs synchronously and returns an error on failure.
+func (d *Downloader) DownloadChapter(atHome *AtHomeResponse, mangaTitle string, chapterID string) error {
+	var downloadErr error // Use local error variable
+
+	// Try to load existing state for this specific chapter
+	state, found, err := d.loadState()
+	if err != nil {
+		downloadErr = fmt.Errorf("error loading download state: %w", err)
+		// Send error immediately if channel exists
+		if d.ProgressChan != nil {
+			d.ProgressChan <- DownloadProgressInfo{Error: downloadErr, Done: true, ChapterID: chapterID}
+		}
+		return downloadErr
+	}
+
+	// Initialize or resume state
+	d.initializeOrResumeState(found, state, atHome, mangaTitle, chapterID)
 
 	// Setup directory
 	sanitizedTitle := d.state.MangaTitle
@@ -294,7 +299,6 @@ func (d *Downloader) DownloadChapter(atHome *AtHomeResponse, mangaTitle string, 
 			d.state.CompletedFiles++
 		}
 	}
-	d.state.CompletedFiles = d.state.CompletedFiles
 	err = d.saveState()
 	if err != nil {
 		fmt.Printf("Warning: Error saving final download state: %v\n", err)

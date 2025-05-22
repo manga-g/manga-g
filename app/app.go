@@ -465,91 +465,106 @@ func min(a, b int) int {
 	return b
 }
 
+// createChapterItems creates chapter items from mangaChapters
+func (m Model) createChapterItems(mangaChapters MangaChapters) []Item {
+	var chapterItems []Item
+	for i, chapterID := range mangaChapters.ChapterID {
+		// Find the original data entry to get more details
+		var volume, chapter, translatedLanguage, publishAt string
+		for _, data := range mangaChapters.Data {
+			if data.ID == chapterID {
+				volume = data.Attributes.Volume
+				chapter = data.Attributes.Chapter
+				translatedLanguage = data.Attributes.TranslatedLanguage
+				publishAt = data.Attributes.PublishAt
+				break
+			}
+		}
+
+		// Create a better formatted title
+		title := mangaChapters.Chapters[i]
+		if title == "" {
+			title = fmt.Sprintf("Chapter %s", chapter)
+		}
+		if volume != "" && volume != "none" {
+			title = fmt.Sprintf("Vol. %s, %s", volume, title)
+		}
+
+		// Create a nice description
+		var descParts []string
+		if chapter != "" {
+			descParts = append(descParts, fmt.Sprintf("Chapter: %s", chapter))
+		}
+		if translatedLanguage != "" {
+			descParts = append(descParts, fmt.Sprintf("Language: %s", translatedLanguage))
+		}
+		if publishAt != "" {
+			// Try to parse the date for better formatting
+			if t, err := time.Parse(time.RFC3339, publishAt); err == nil {
+				descParts = append(descParts, fmt.Sprintf("Published: %s", t.Format("2006-01-02")))
+			} else {
+				descParts = append(descParts, fmt.Sprintf("Published: %s", publishAt))
+			}
+		}
+		desc := strings.Join(descParts, " | ")
+
+		chapterItems = append(chapterItems, Item{
+			id:    chapterID,
+			title: title,
+			desc:  desc,
+		})
+	}
+	return chapterItems
+}
+
+// fetchAndParseChapters is a new helper method to fetch and parse chapters
+func (m Model) fetchAndParseChapters(mangaId string) (MangaChapters, error) {
+	// Use the standard MangaDex v5 feed endpoint
+	chapterUrl := fmt.Sprintf("%s/manga/%s/feed?translatedLanguage[]=en&limit=100&order[chapter]=asc", m.basedApiUrl, mangaId)
+	log.Printf("Chapter URL: %s", chapterUrl)
+
+	results, err := CustomRequest(chapterUrl)
+	if err != nil {
+		log.Printf("ERROR: Failed to fetch chapters: %v", err)
+		return MangaChapters{}, fmt.Errorf("failed to load chapters: %w", err)
+	}
+
+	log.Printf("Received API response, length: %d bytes", len(results))
+
+	// Log a bit of the response to see if it's valid JSON
+	if len(results) > 0 {
+		snippet := results
+		if len(snippet) > 100 {
+			snippet = snippet[:100] + "..."
+		}
+		log.Printf("Response snippet: %s", snippet)
+	}
+
+	var mangaChapters MangaChapters
+	err = ParseData(results, &mangaChapters)
+	if err != nil {
+		log.Printf("ERROR: Failed to parse chapters: %v", err)
+		return MangaChapters{}, fmt.Errorf("failed to parse chapters: %w", err)
+	}
+
+	// Process the data to fill compatibility fields
+	mangaChapters.Process()
+	log.Printf("Successfully processed chapters, count: %d", len(mangaChapters.ChapterID))
+
+	return mangaChapters, nil
+}
+
 // loadChapters loads chapters for the selected manga
 func (m Model) loadChapters(mangaId string) tea.Cmd {
 	return func() tea.Msg {
 		log.Printf("loadChapters running for manga ID: %s", mangaId)
 
-		// Use the standard MangaDex v5 feed endpoint
-		chapterUrl := fmt.Sprintf("%s/manga/%s/feed?translatedLanguage[]=en&limit=100&order[chapter]=asc", m.basedApiUrl, mangaId)
-		log.Printf("Chapter URL: %s", chapterUrl)
-
-		results, err := CustomRequest(chapterUrl)
+		mangaChapters, err := m.fetchAndParseChapters(mangaId)
 		if err != nil {
-			log.Printf("ERROR: Failed to fetch chapters: %v", err)
-			return searchErrMsg{fmt.Errorf("failed to load chapters: %w", err)}
+			return searchErrMsg{err}
 		}
 
-		log.Printf("Received API response, length: %d bytes", len(results))
-
-		// Log a bit of the response to see if it's valid JSON
-		if len(results) > 0 {
-			snippet := results
-			if len(snippet) > 100 {
-				snippet = snippet[:100] + "..."
-			}
-			log.Printf("Response snippet: %s", snippet)
-		}
-
-		var mangaChapters MangaChapters
-		err = ParseData(results, &mangaChapters)
-		if err != nil {
-			log.Printf("ERROR: Failed to parse chapters: %v", err)
-			return searchErrMsg{fmt.Errorf("failed to parse chapters: %w", err)}
-		}
-
-		// Process the data to fill compatibility fields
-		mangaChapters.Process()
-		log.Printf("Successfully processed chapters, count: %d", len(mangaChapters.ChapterID))
-
-		// Create Item objects for chapters
-		var chapterItems []Item
-		for i, chapterID := range mangaChapters.ChapterID {
-			// Find the original data entry to get more details
-			var volume, chapter, translatedLanguage, publishAt string
-			for _, data := range mangaChapters.Data {
-				if data.ID == chapterID {
-					volume = data.Attributes.Volume
-					chapter = data.Attributes.Chapter
-					translatedLanguage = data.Attributes.TranslatedLanguage
-					publishAt = data.Attributes.PublishAt
-					break
-				}
-			}
-
-			// Create a better formatted title
-			title := mangaChapters.Chapters[i]
-			if title == "" {
-				title = fmt.Sprintf("Chapter %s", chapter)
-			}
-			if volume != "" && volume != "none" {
-				title = fmt.Sprintf("Vol. %s, %s", volume, title)
-			}
-
-			// Create a nice description
-			var descParts []string
-			if chapter != "" {
-				descParts = append(descParts, fmt.Sprintf("Chapter: %s", chapter))
-			}
-			if translatedLanguage != "" {
-				descParts = append(descParts, fmt.Sprintf("Language: %s", translatedLanguage))
-			}
-			if publishAt != "" {
-				// Try to parse the date for better formatting
-				if t, err := time.Parse(time.RFC3339, publishAt); err == nil {
-					descParts = append(descParts, fmt.Sprintf("Published: %s", t.Format("2006-01-02")))
-				} else {
-					descParts = append(descParts, fmt.Sprintf("Published: %s", publishAt))
-				}
-			}
-			desc := strings.Join(descParts, " | ")
-
-			chapterItems = append(chapterItems, Item{
-				id:    chapterID,
-				title: title,
-				desc:  desc,
-			})
-		}
+		chapterItems := m.createChapterItems(mangaChapters)
 
 		log.Printf("Created %d chapter items", len(chapterItems))
 		if len(chapterItems) > 0 {
@@ -597,6 +612,281 @@ func (m Model) fetchAtHomeInfoCmd(chapterID, mangaTitle string) tea.Cmd {
 	}
 }
 
+func (m Model) handleKeyMsg(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	log.Printf("KeyMsg received: Type=%v, String='%s', Rune='%c' | State=%d, InputFocused=%t",
+		msg.Type, msg.String(), msg.Runes, m.state, m.input.Focused())
+
+	// Handle special Tab key for focus switching immediately
+	if msg.Type == tea.KeyTab {
+		switch m.state {
+		case searchState:
+			// Toggle focus between input and list
+			if m.input.Focused() {
+				// Only blur input if we have items to navigate in list
+				if m.list.Items() != nil && len(m.list.Items()) > 0 {
+					m.input.Blur()
+				}
+			} else {
+				m.input.Focus()
+			}
+			return m, nil
+		}
+	}
+
+	// Handle help toggle
+	if key.Matches(msg, m.keys.Help) && !(m.input.Focused() && msg.String() == "h") {
+		m.help.ShowAll = !m.help.ShowAll
+		return m, nil
+	}
+	// Handle Quit globally
+	if key.Matches(msg, m.keys.Quit) {
+		return m, tea.Quit
+	}
+
+	// Check for Enter key on search input
+	if m.state == searchState && m.input.Focused() && key.Matches(msg, m.keys.Submit) {
+		m.lastQuery = m.input.Value() // Store query
+		m.input.Blur()                // Unfocus the input to allow navigation
+		return m, m.searchManga()     // Trigger search
+	}
+
+	// Skip further key handling if input is focused (Bubble Tea handles it)
+	// if m.input.Focused() && m.state == searchState {
+	// 	return m, nil // Let input handle other keys like backspace etc.
+	// }
+
+	// Press '/' to focus the search input again (like in many list applications)
+	if m.state == searchState && !m.input.Focused() && msg.String() == "/" {
+		m.input.Focus()
+		// Clear the input to start a new search or keep the existing text
+		// m.input.SetValue("") // Uncomment to clear the input on refocus
+		return m, nil
+	}
+
+	// State-specific key handling
+	switch m.state {
+	case searchState:
+		// Add navigation with j/k keys when list has items and input is not focused
+		if !m.input.Focused() && m.list.Items() != nil && len(m.list.Items()) > 0 {
+			switch msg.String() {
+			case "g":
+				m.list.Select(0) // Go to top
+				return m, nil
+			case "G":
+				m.list.Select(len(m.list.Items()) - 1) // Go to bottom
+				return m, nil
+			}
+		}
+	case mangaDetailsState: // This state might merge with chapterListState
+		if key.Matches(msg, m.keys.Back) {
+			m.state = searchState
+			m.list.Title = fmt.Sprintf("Search Results for \"%s\"", m.lastQuery)
+			// Reload previous search results? Need to store them.
+			return m, nil
+		}
+	case chapterListState:
+		// Add navigation with j/k keys
+		switch msg.String() {
+		case "g":
+			m.list.Select(0) // Go to top
+			return m, nil
+		case "G":
+			m.list.Select(len(m.list.Items()) - 1) // Go to bottom
+			return m, nil
+		}
+
+		if key.Matches(msg, m.keys.Select) {
+			selectedItem, ok := m.list.SelectedItem().(Item)
+			if ok {
+				// Check if already downloading
+				if _, exists := m.activeDownloads[selectedItem.id]; exists {
+					m.err = fmt.Errorf("chapter %s already downloading/downloaded", selectedItem.title)
+					return m, nil // Don't start again
+				}
+				m.selectedItem = selectedItem // Store selected chapter
+				// *** Initiate Download Fetch ***
+				cmd := m.fetchChapterServerCmd(selectedItem.id)
+				return m, cmd
+			}
+		} else if key.Matches(msg, m.keys.Back) {
+			m.state = searchState
+			m.err = nil
+			m.list.Title = fmt.Sprintf("Search Results for \"%s\"", m.lastQuery)
+			// TODO: Restore previous search list items if needed
+			return m, nil
+		}
+	}
+
+	// --- Explicit Handling for Search Result Selection ---
+	// This needs to run BEFORE the general component update delegation below
+	if m.state == searchState && !m.input.Focused() && key.Matches(msg, m.keys.Select) {
+		if m.list.Items() != nil && len(m.list.Items()) > 0 {
+			selectedItem, ok := m.list.SelectedItem().(Item)
+			if ok {
+				log.Printf("Selected manga (Explicit Handler): %s (ID: %s)", selectedItem.title, selectedItem.id)
+				m.lastMangaID = selectedItem.id
+				m.lastMangaTitle = selectedItem.title
+				m.state = loadingState
+				m.loadingMsg = fmt.Sprintf("Loading chapters for %s...", selectedItem.title)
+				log.Printf("State changed to loadingState (%d), calling loadChapters", m.state)
+				return m, m.loadChapters(selectedItem.id) // Return immediately after handling
+			}
+		}
+	}
+
+	return m, nil
+}
+
+func (m Model) handleSpinnerTickMsg(msg spinner.TickMsg) (Model, tea.Cmd) {
+	if m.state == loadingState {
+		var cmd tea.Cmd
+		m.spinner, cmd = m.spinner.Update(msg)
+		return m, cmd
+	}
+	return m, nil
+}
+
+func (m Model) handleProgressFrameMsg(msg progress.FrameMsg) (Model, tea.Cmd) {
+	progressCmds := make([]tea.Cmd, 0, len(m.progressModels))
+	for id, pm := range m.progressModels {
+		if info, ok := m.activeDownloads[id]; ok && !info.Done {
+			newPm, cmd := pm.Update(msg)
+			if newModel, ok := newPm.(progress.Model); ok {
+				m.progressModels[id] = newModel
+				progressCmds = append(progressCmds, cmd)
+			}
+		}
+	}
+	return m, tea.Batch(progressCmds...)
+}
+
+func (m Model) handleSearchErrMsg(msg searchErrMsg) (Model, tea.Cmd) {
+	log.Printf("ERROR: Received searchErrMsg: %v", msg.Error())
+	m.state = errorState
+	m.err = msg
+	log.Printf("Changed state to errorState (%d)", m.state)
+	return m, nil // Stop loading etc.
+}
+
+func (m Model) handleSearchResultsMsg(msg searchResultsMsg) (Model, tea.Cmd) {
+	m.state = searchState // Go back to search state to display results
+	m.list.Title = fmt.Sprintf("Search Results for \"%s\" (%d)", m.lastQuery, len(msg.items))
+	m.list.SetItems(msg.items)
+	m.input.Blur() // Ensure input is not focused
+	// Store raw results if needed later? m.mangaResults = msg.results
+	return m, nil
+}
+
+func (m Model) handleChaptersMsg(msg chaptersMsg) (Model, tea.Cmd) {
+	// Rebuild the list completely to ensure state is fresh
+	delegate := list.NewDefaultDelegate()
+	delegate.Styles.SelectedTitle = highlightTextStyle.Copy()
+	delegate.Styles.SelectedDesc = dimmedStyle.Copy()
+
+	listItems := make([]list.Item, len(msg.chapters))
+	for i, item := range msg.chapters {
+		listItems[i] = item
+	}
+
+	chapterList := list.New(listItems, delegate, m.width-4, m.height-10)
+	chapterList.Title = fmt.Sprintf("Chapters for %s (%d)", m.lastMangaTitle, len(msg.chapters))
+	chapterList.SetShowHelp(false)
+	chapterList.SetFilteringEnabled(false)
+	chapterList.DisableQuitKeybindings()
+
+	m.list = chapterList
+	m.state = chapterListState
+	m.mangaInfo = msg.manga
+	m.chapters = msg.chapters
+
+	if len(listItems) > 0 {
+		m.list.Select(0) // Select the first item
+	}
+
+	log.Printf("Successfully updated state to chapterListState (%d), set %d items", m.state, len(listItems))
+	return m, nil
+}
+
+func (m Model) handleAtHomeResponseMsg(msg atHomeResponseMsg, cmds []tea.Cmd) (Model, []tea.Cmd) {
+	// Received server info, start download
+	m.state = chapterListState // Stay in chapter list view
+	m.err = nil                // Clear any previous error
+	chapterID := msg.info.Chapter.Hash
+	chapterTitle := m.selectedItem.title // Get title from stored selected item
+
+	// Create and store the progress bar
+	prog := progress.New(
+		progress.WithDefaultGradient(),
+		progress.WithWidth(m.width-padding*2-4),
+		progress.WithoutPercentage(),
+	)
+	m.progressModels[chapterID] = prog
+
+	// Add to active downloads list
+	m.activeDownloads[chapterID] = DownloadProgressInfo{
+		ChapterID: chapterID,
+		Total:     len(msg.info.Chapter.Data), // Set total pages
+		Done:      false,
+		Error:     nil,
+	}
+
+	// Start the download command
+	cmd := m.downloadChapterCmd(msg.info, chapterTitle)
+	cmds = append(cmds, cmd)
+	// Also start the progress bar animation
+	cmds = append(cmds, func() tea.Msg { return progress.FrameMsg{} })
+
+	return m, cmds
+}
+
+func (m Model) handleDownloadProgressInfo(msg DownloadProgressInfo, cmds []tea.Cmd) (Model, []tea.Cmd) {
+	// Update active download info
+	if _, ok := m.activeDownloads[msg.ChapterID]; ok {
+		m.activeDownloads[msg.ChapterID] = msg
+	} else {
+		fmt.Printf("WARN: Progress received for untracked chapter %s\n", msg.ChapterID)
+		return m, cmds
+	}
+
+	// Update progress bar model
+	if prog, ok := m.progressModels[msg.ChapterID]; ok {
+		var progressCmd tea.Cmd
+		if msg.Done {
+			// Final update on completion/error
+			progressCmd = prog.SetPercent(1.0)
+			// TODO: Maybe remove from maps after a short delay?
+			// For now, keep it showing final state.
+		} else if msg.Total > 0 {
+			progressCmd = prog.SetPercent(float64(msg.Completed) / float64(msg.Total))
+		} else {
+			progressCmd = prog.SetPercent(0)
+		}
+		m.progressModels[msg.ChapterID] = prog
+		cmds = append(cmds, progressCmd)
+	}
+	return m, cmds
+}
+
+func (m Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (Model, tea.Cmd) {
+	// Update dimensions
+	m.width = msg.Width
+	m.height = msg.Height
+	h, v := listStyle.GetFrameSize() // Use a consistent style for frame size
+	listWidth := msg.Width - h
+	listHeight := msg.Height - v - 5 // Adjust height for input/help/progress
+	m.list.SetSize(listWidth, listHeight)
+	m.input.Width = listWidth - 2 // Make input slightly smaller than list
+	m.help.Width = msg.Width - h
+
+	// Update progress bar widths
+	for id := range m.progressModels {
+		prog := m.progressModels[id]
+		prog.Width = listWidth - 4 // Adjust width
+		m.progressModels[id] = prog
+	}
+	return m, nil // Return early after resize
+}
+
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 	var cmd tea.Cmd
@@ -608,276 +898,54 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
-		// Update dimensions
-		m.width = msg.Width
-		m.height = msg.Height
-		h, v := listStyle.GetFrameSize() // Use a consistent style for frame size
-		listWidth := msg.Width - h
-		listHeight := msg.Height - v - 5 // Adjust height for input/help/progress
-		m.list.SetSize(listWidth, listHeight)
-		m.input.Width = listWidth - 2 // Make input slightly smaller than list
-		m.help.Width = msg.Width - h
-
-		// Update progress bar widths
-		for id := range m.progressModels {
-			prog := m.progressModels[id]
-			prog.Width = listWidth - 4 // Adjust width
-			m.progressModels[id] = prog
-		}
-		return m, nil // Return early after resize
-
+		var updated Model
+		updated, cmd = m.handleWindowSizeMsg(msg)
+		return updated, cmd
 	case tea.KeyMsg:
-		log.Printf("KeyMsg received: Type=%v, String='%s', Rune='%c' | State=%d, InputFocused=%t",
-			msg.Type, msg.String(), msg.Runes, m.state, m.input.Focused())
+		// Call handleKeyMsg. It operates on a copy of m and returns an updated model and a command.
+		updatedModelFromKeyHandler, cmdFromKeyHandler := m.handleKeyMsg(msg)
+		m = updatedModelFromKeyHandler.(Model) // Update m with the model state after handleKeyMsg
+		cmds = append(cmds, cmdFromKeyHandler)
+		// After this, the original 'msg' (which is the tea.KeyMsg) will continue to be processed
+		// by the component update logic later in this Update function.
+		// No 'return' here, so execution flows down to the component update section.
 
-		// Handle special Tab key for focus switching immediately
-		if msg.Type == tea.KeyTab {
-			switch m.state {
-			case searchState:
-				// Toggle focus between input and list
-				if m.input.Focused() {
-					// Only blur input if we have items to navigate in list
-					if m.list.Items() != nil && len(m.list.Items()) > 0 {
-						m.input.Blur()
-					}
-				} else {
-					m.input.Focus()
-				}
-				return m, nil
-			}
-		}
-
-		// Handle help toggle
-		if key.Matches(msg, m.keys.Help) && !(m.input.Focused() && msg.String() == "h") {
-			m.help.ShowAll = !m.help.ShowAll
-			return m, nil
-		}
-		// Handle Quit globally
-		if key.Matches(msg, m.keys.Quit) {
-			return m, tea.Quit
-		}
-
-		// Check for Enter key on search input
-		if m.state == searchState && m.input.Focused() && key.Matches(msg, m.keys.Submit) {
-			m.lastQuery = m.input.Value() // Store query
-			m.input.Blur()                // Unfocus the input to allow navigation
-			return m, m.searchManga()     // Trigger search
-		}
-
-		// Skip further key handling if input is focused (Bubble Tea handles it)
-		if m.input.Focused() && m.state == searchState {
-			break // Let input handle other keys like backspace etc.
-		}
-
-		// Press '/' to focus the search input again (like in many list applications)
-		if m.state == searchState && !m.input.Focused() && msg.String() == "/" {
-			m.input.Focus()
-			// Clear the input to start a new search or keep the existing text
-			// m.input.SetValue("") // Uncomment to clear the input on refocus
-			return m, nil
-		}
-
-		// State-specific key handling
-		switch m.state {
-		case searchState:
-			// Add navigation with j/k keys when list has items and input is not focused
-			if !m.input.Focused() && m.list.Items() != nil && len(m.list.Items()) > 0 {
-				switch msg.String() {
-				case "j":
-					m.list.CursorDown()
-					return m, nil
-				case "k":
-					m.list.CursorUp()
-					return m, nil
-				case "g":
-					m.list.Select(0) // Go to top
-					return m, nil
-				case "G":
-					m.list.Select(len(m.list.Items()) - 1) // Go to bottom
-					return m, nil
-				}
-			}
-		case mangaDetailsState: // This state might merge with chapterListState
-			if key.Matches(msg, m.keys.Back) {
-				m.state = searchState
-				m.list.Title = fmt.Sprintf("Search Results for \"%s\"", m.lastQuery)
-				// Reload previous search results? Need to store them.
-				return m, nil
-			}
-		case chapterListState:
-			// Add navigation with j/k keys
-			switch msg.String() {
-			case "j":
-				m.list.CursorDown()
-				return m, nil
-			case "k":
-				m.list.CursorUp()
-				return m, nil
-			case "g":
-				m.list.Select(0) // Go to top
-				return m, nil
-			case "G":
-				m.list.Select(len(m.list.Items()) - 1) // Go to bottom
-				return m, nil
-			}
-
-			if key.Matches(msg, m.keys.Select) {
-				selectedItem, ok := m.list.SelectedItem().(Item)
-				if ok {
-					// Check if already downloading
-					if _, exists := m.activeDownloads[selectedItem.id]; exists {
-						m.err = fmt.Errorf("chapter %s already downloading/downloaded", selectedItem.title)
-						return m, nil // Don't start again
-					}
-					m.selectedItem = selectedItem // Store selected chapter
-					// *** Initiate Download Fetch ***
-					cmd = m.fetchChapterServerCmd(selectedItem.id)
-					return m, cmd
-				}
-			} else if key.Matches(msg, m.keys.Back) {
-				m.state = searchState
-				m.err = nil
-				m.list.Title = fmt.Sprintf("Search Results for \"%s\"", m.lastQuery)
-				// TODO: Restore previous search list items if needed
-				return m, nil
-			}
-		}
-
-		// --- Explicit Handling for Search Result Selection ---
-		// This needs to run BEFORE the general component update delegation below
-		if m.state == searchState && !m.input.Focused() && key.Matches(msg, m.keys.Select) {
-			if m.list.Items() != nil && len(m.list.Items()) > 0 {
-				selectedItem, ok := m.list.SelectedItem().(Item)
-				if ok {
-					log.Printf("Selected manga (Explicit Handler): %s (ID: %s)", selectedItem.title, selectedItem.id)
-					m.lastMangaID = selectedItem.id
-					m.lastMangaTitle = selectedItem.title
-					m.state = loadingState
-					m.loadingMsg = fmt.Sprintf("Loading chapters for %s...", selectedItem.title)
-					log.Printf("State changed to loadingState (%d), calling loadChapters", m.state)
-					return m, m.loadChapters(selectedItem.id) // Return immediately after handling
-				}
-			}
-		}
-
-	// --- Message Handling ---
 	case spinner.TickMsg:
-		if m.state == loadingState {
-			m.spinner, cmd = m.spinner.Update(msg)
-			cmds = append(cmds, cmd)
-		}
+		var updated Model
+		updated, cmd = m.handleSpinnerTickMsg(msg)
+		return updated, cmd
 
 	case progress.FrameMsg:
-		progressCmds := make([]tea.Cmd, 0, len(m.progressModels))
-		for id, pm := range m.progressModels {
-			if info, ok := m.activeDownloads[id]; ok && !info.Done {
-				newPm, cmd := pm.Update(msg)
-				if newModel, ok := newPm.(progress.Model); ok {
-					m.progressModels[id] = newModel
-					progressCmds = append(progressCmds, cmd)
-				}
-			}
-		}
-		return m, tea.Batch(progressCmds...)
+		var updated Model
+		updated, cmd = m.handleProgressFrameMsg(msg)
+		return updated, cmd
 
 	case searchErrMsg:
-		log.Printf("ERROR: Received searchErrMsg: %v", msg.Error())
-		m.state = errorState
-		m.err = msg
-		log.Printf("Changed state to errorState (%d)", m.state)
-		return m, nil // Stop loading etc.
+		var updated Model
+		updated, cmd = m.handleSearchErrMsg(msg)
+		return updated, cmd
 
 	case searchResultsMsg:
-		m.state = searchState // Go back to search state to display results
-		m.list.Title = fmt.Sprintf("Search Results for \"%s\" (%d)", m.lastQuery, len(msg.items))
-		m.list.SetItems(msg.items)
-		m.input.Blur() // Ensure input is not focused
-		// Store raw results if needed later? m.mangaResults = msg.results
-		return m, nil
+		var updated Model
+		updated, cmd = m.handleSearchResultsMsg(msg)
+		return updated, cmd
 
 	case chaptersMsg:
-		log.Printf("Received chaptersMsg with %d chapters", len(msg.chapters))
-
-		// Rebuild the list completely to ensure state is fresh
-		delegate := list.NewDefaultDelegate()
-		delegate.Styles.SelectedTitle = highlightTextStyle.Copy()
-		delegate.Styles.SelectedDesc = dimmedStyle.Copy()
-
-		listItems := make([]list.Item, len(msg.chapters))
-		for i, item := range msg.chapters {
-			listItems[i] = item
-		}
-
-		chapterList := list.New(listItems, delegate, m.width-4, m.height-10)
-		chapterList.Title = fmt.Sprintf("Chapters for %s (%d)", m.lastMangaTitle, len(msg.chapters))
-		chapterList.SetShowHelp(false)
-		chapterList.SetFilteringEnabled(false)
-		chapterList.DisableQuitKeybindings()
-
-		m.list = chapterList
-		m.state = chapterListState
-		m.mangaInfo = msg.manga
-		m.chapters = msg.chapters
-
-		if len(listItems) > 0 {
-			m.list.Select(0) // Select the first item
-		}
-
-		log.Printf("Successfully updated state to chapterListState (%d), set %d items", m.state, len(listItems))
-		return m, nil
+		var updated Model
+		updated, cmd = m.handleChaptersMsg(msg)
+		return updated, cmd
 
 	case atHomeResponseMsg:
-		// Received server info, start download
-		m.state = chapterListState // Stay in chapter list view
-		m.err = nil                // Clear any previous error
-		chapterID := msg.info.Chapter.Hash
-		chapterTitle := m.selectedItem.title // Get title from stored selected item
-
-		// Create and store the progress bar
-		prog := progress.New(
-			progress.WithDefaultGradient(),
-			progress.WithWidth(m.width-padding*2-4),
-			progress.WithoutPercentage(),
-		)
-		m.progressModels[chapterID] = prog
-
-		// Add to active downloads list
-		m.activeDownloads[chapterID] = DownloadProgressInfo{
-			ChapterID: chapterID,
-			Total:     len(msg.info.Chapter.Data), // Set total pages
-			Done:      false,
-			Error:     nil,
-		}
-
-		// Start the download command
-		cmd = m.downloadChapterCmd(msg.info, chapterTitle)
-		cmds = append(cmds, cmd)
-		// Also start the progress bar animation
-		cmds = append(cmds, func() tea.Msg { return progress.FrameMsg{} })
+		var updated Model
+		var newCmds []tea.Cmd
+		updated, newCmds = m.handleAtHomeResponseMsg(msg, cmds)
+		return updated, tea.Batch(newCmds...)
 
 	case DownloadProgressInfo:
-		// Update active download info
-		if _, ok := m.activeDownloads[msg.ChapterID]; ok {
-			m.activeDownloads[msg.ChapterID] = msg
-		} else {
-			fmt.Printf("WARN: Progress received for untracked chapter %s\n", msg.ChapterID)
-			return m, tea.Batch(cmds...)
-		}
-
-		// Update progress bar model
-		if prog, ok := m.progressModels[msg.ChapterID]; ok {
-			var progressCmd tea.Cmd
-			if msg.Done {
-				// Final update on completion/error
-				progressCmd = prog.SetPercent(1.0)
-				// TODO: Maybe remove from maps after a short delay?
-				// For now, keep it showing final state.
-			} else {
-				progressCmd = prog.SetPercent(float64(msg.Completed) / float64(msg.Total))
-			}
-			m.progressModels[msg.ChapterID] = prog
-			cmds = append(cmds, progressCmd)
-		}
+		var updated Model
+		var newCmds []tea.Cmd
+		updated, newCmds = m.handleDownloadProgressInfo(msg, cmds)
+		return updated, tea.Batch(newCmds...)
 	}
 
 	// --- Update focused component (List or Input) ---
@@ -902,6 +970,103 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, tea.Batch(cmds...)
 }
 
+func (m Model) renderSearchStateView() string {
+	var statusLine string
+	if !m.input.Focused() && m.list.Items() != nil && len(m.list.Items()) > 0 {
+		statusLine = dimmedStyle.Render("(Press 'Tab' or '/' to search again, 'j'/'k' to navigate, 'Enter' to select)")
+	}
+
+	return lipgloss.JoinVertical(lipgloss.Left,
+		m.input.View(),
+		listStyle.Render(m.list.View()), // Show search results list
+		statusLine,
+	)
+}
+
+func (m Model) renderLoadingStateView() string {
+	return loadingStyle.Render(fmt.Sprintf("%s %s", m.spinner.View(), m.loadingMsg))
+}
+
+func (m Model) renderMangaDetailsStateView() string {
+	// TODO: Display manga details nicely
+	return "Manga Details View (Not Implemented Yet)"
+}
+
+func (m Model) renderChapterListStateView() string {
+	// Add a status line to explain how to use chapter list
+	chapterStatusLine := dimmedStyle.Render("(Use 'j'/'k' to navigate, 'Enter' to download, 'Esc' to go back)")
+	return lipgloss.JoinVertical(lipgloss.Left,
+		listStyle.Render(m.list.View()), // Show chapter list
+		chapterStatusLine,
+	)
+}
+
+func (m Model) renderErrorStateView() string {
+	return errorStyle.Render(fmt.Sprintf("Error: %v", m.err))
+}
+
+func (m Model) renderUnknownStateView() string {
+	return "Unknown state"
+}
+
+func (m Model) renderProgressView() string {
+	if len(m.activeDownloads) == 0 {
+		return ""
+	}
+	var progressBars []string
+	progressBars = append(progressBars, downloadHeaderStyle.Render("Downloads:")) // Header
+
+	// Sort IDs for consistent display order?
+	var sortedIDs []string
+	for id := range m.activeDownloads {
+		sortedIDs = append(sortedIDs, id)
+	}
+	// Sort logic here if needed (e.g., alphabetically or by start time)
+
+	for _, chapterID := range sortedIDs {
+		info := m.activeDownloads[chapterID]
+		progModel, exists := m.progressModels[chapterID]
+
+		// Use more descriptive title based on manga/chapter if available
+		title := "Chapter " + chapterID
+
+		// If download is complete, show more info about the location
+		downloadInfo := ""
+		if info.Done && info.Error == nil {
+			// Format path based on standard naming convention in downloader
+			if m.downloader != nil && m.downloader.OutputDirBase != "" {
+				// Sanitize manga title for folder name
+				safeMangaTitle := strings.NewReplacer(" ", "_", ":", "", "/", "_").Replace(m.lastMangaTitle)
+				chapterDir := filepath.Join(m.downloader.OutputDirBase, safeMangaTitle, fmt.Sprintf("chapter_%s", chapterID[:8]))
+				downloadInfo = dimmedStyle.Render(fmt.Sprintf("\nSaved to: %s", chapterDir))
+				downloadInfo += dimmedStyle.Render("\nTip: Run 'zimg .' in this directory to view")
+			}
+		}
+
+		if exists {
+			bar := progModel.View()
+			status := ""
+			if info.Done {
+				if info.Error != nil {
+					status = errorStyle.Render(fmt.Sprintf(" ❌ Error: %v", info.Error))
+				} else {
+					status = successStyle.Render(" ✅ Download Complete")
+				}
+			} else if info.Total > 0 { // Show progress only if total is known
+				status = fmt.Sprintf(" (%d/%d images)", info.Completed, info.Total)
+			} else {
+				status = " (Starting...)" // Initial state
+			}
+			progressBars = append(progressBars, fmt.Sprintf("%s%s\n%s%s",
+				title, status, bar, downloadInfo))
+		} else {
+			progressBars = append(progressBars, fmt.Sprintf("%s: (Initializing...)", title))
+		}
+	}
+	progressView := lipgloss.JoinVertical(lipgloss.Left, progressBars...)
+	return progressAreaStyle.Render(progressView) // Add padding/border
+}
+
 func (m Model) View() string {
 	if m.err != nil {
 		// Simple error view
@@ -912,90 +1077,21 @@ func (m Model) View() string {
 
 	switch m.state {
 	case searchState:
-		var statusLine string
-		if !m.input.Focused() && m.list.Items() != nil && len(m.list.Items()) > 0 {
-			statusLine = dimmedStyle.Render("(Press 'Tab' or '/' to search again, 'j'/'k' to navigate, 'Enter' to select)")
-		}
-
-		viewContent = lipgloss.JoinVertical(lipgloss.Left,
-			m.input.View(),
-			listStyle.Render(m.list.View()), // Show search results list
-			statusLine,
-		)
+		viewContent = m.renderSearchStateView()
 	case loadingState:
-		viewContent = loadingStyle.Render(fmt.Sprintf("%s %s", m.spinner.View(), m.loadingMsg))
+		viewContent = m.renderLoadingStateView()
 	case mangaDetailsState:
-		// TODO: Display manga details nicely
-		viewContent = "Manga Details View (Not Implemented Yet)"
+		viewContent = m.renderMangaDetailsStateView()
 	case chapterListState:
-		// Add a status line to explain how to use chapter list
-		chapterStatusLine := dimmedStyle.Render("(Use 'j'/'k' to navigate, 'Enter' to download, 'Esc' to go back)")
-		viewContent = lipgloss.JoinVertical(lipgloss.Left,
-			listStyle.Render(m.list.View()), // Show chapter list
-			chapterStatusLine,
-		)
+		viewContent = m.renderChapterListStateView()
 	case errorState:
-		viewContent = errorStyle.Render(fmt.Sprintf("Error: %v", m.err))
+		viewContent = m.renderErrorStateView()
 	default:
-		viewContent = "Unknown state"
+		viewContent = m.renderUnknownStateView()
 	}
 
 	// --- Download Progress View ---
-	progressView := ""
-	if len(m.activeDownloads) > 0 {
-		var progressBars []string
-		progressBars = append(progressBars, downloadHeaderStyle.Render("Downloads:")) // Header
-
-		// Sort IDs for consistent display order?
-		var sortedIDs []string
-		for id := range m.activeDownloads {
-			sortedIDs = append(sortedIDs, id)
-		}
-		// Sort logic here if needed (e.g., alphabetically or by start time)
-
-		for _, chapterID := range sortedIDs {
-			info := m.activeDownloads[chapterID]
-			progModel, exists := m.progressModels[chapterID]
-
-			// Use more descriptive title based on manga/chapter if available
-			title := "Chapter " + chapterID
-
-			// If download is complete, show more info about the location
-			downloadInfo := ""
-			if info.Done && info.Error == nil {
-				// Format path based on standard naming convention in downloader
-				if m.downloader != nil && m.downloader.OutputDirBase != "" {
-					// Sanitize manga title for folder name
-					safeMangaTitle := strings.NewReplacer(" ", "_", ":", "", "/", "_").Replace(m.lastMangaTitle)
-					chapterDir := filepath.Join(m.downloader.OutputDirBase, safeMangaTitle, fmt.Sprintf("chapter_%s", chapterID[:8]))
-					downloadInfo = dimmedStyle.Render(fmt.Sprintf("\nSaved to: %s", chapterDir))
-					downloadInfo += dimmedStyle.Render("\nTip: Run 'zimg .' in this directory to view")
-				}
-			}
-
-			if exists {
-				bar := progModel.View()
-				status := ""
-				if info.Done {
-					if info.Error != nil {
-						status = errorStyle.Render(fmt.Sprintf(" ❌ Error: %v", info.Error))
-					} else {
-						status = successStyle.Render(" ✅ Download Complete")
-					}
-				} else if info.Total > 0 { // Show progress only if total is known
-					status = fmt.Sprintf(" (%d/%d images)", info.Completed, info.Total)
-				} else {
-					status = " (Starting...)" // Initial state
-				}
-				progressBars = append(progressBars, fmt.Sprintf("%s%s\n%s%s",
-					title, status, bar, downloadInfo))
-			} else {
-				progressBars = append(progressBars, fmt.Sprintf("%s: (Initializing...)", title))
-			}
-		}
-		progressView = lipgloss.JoinVertical(lipgloss.Left, progressBars...)
-		progressView = progressAreaStyle.Render(progressView) // Add padding/border
-	}
+	progressView := m.renderProgressView()
 
 	// Combine main content, progress, and help
 	finalContent := lipgloss.JoinVertical(lipgloss.Left,

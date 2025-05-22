@@ -1,0 +1,28 @@
+2025/05/13 23:04:10.981475 --- Log Start ---
+2025/05/13 23:04:10.981642 App Init started
+2025/05/13 23:04:12.710431 KeyMsg received: Type=runes, String='t', Rune='[t]' | State=0, InputFocused=true
+2025/05/13 23:04:12.790615 KeyMsg received: Type=runes, String='e', Rune='[e]' | State=0, InputFocused=true
+2025/05/13 23:04:12.916598 KeyMsg received: Type=runes, String='s', Rune='[s]' | State=0, InputFocused=true
+2025/05/13 23:04:12.942746 KeyMsg received: Type=runes, String='t', Rune='[t]' | State=0, InputFocused=true
+2025/05/13 23:04:13.891444 KeyMsg received: Type=runes, String='t', Rune='[t]' | State=0, InputFocused=true
+2025/05/13 23:04:14.172704 KeyMsg received: Type=runes, String='i', Rune='[i]' | State=0, InputFocused=true
+2025/05/13 23:04:14.738541 KeyMsg received: Type=runes, String='i', Rune='[i]' | State=0, InputFocused=true
+2025/05/13 23:04:14.905041 KeyMsg received: Type=runes, String='t', Rune='[t]' | State=0, InputFocused=true
+2025/05/13 23:04:15.046158 KeyMsg received: Type=runes, String='e', Rune='[e]' | State=0, InputFocused=true
+2025/05/13 23:04:15.237679 KeyMsg received: Type=runes, String='s', Rune='[s]' | State=0, InputFocused=true
+2025/05/13 23:04:15.801752 KeyMsg received: Type=runes, String='a', Rune='[a]' | State=0, InputFocused=true
+2025/05/13 23:04:16.005514 KeyMsg received: Type=runes, String='s', Rune='[s]' | State=0, InputFocused=true
+2025/05/13 23:04:16.053750 KeyMsg received: Type=runes, String='d', Rune='[d]' | State=0, InputFocused=true
+2025/05/13 23:04:16.138460 KeyMsg received: Type=runes, String='f', Rune='[f]' | State=0, InputFocused=true
+2025/05/13 23:04:17.075300 KeyMsg received: Type=runes, String='j', Rune='[j]' | State=0, InputFocused=true
+2025/05/13 23:04:17.692750 KeyMsg received: Type=down, String='down', Rune='[]' | State=0, InputFocused=true
+2025/05/13 23:04:17.873623 KeyMsg received: Type=up, String='up', Rune='[]' | State=0, InputFocused=true
+2025/05/13 23:04:18.149551 KeyMsg received: Type=down, String='down', Rune='[]' | State=0, InputFocused=true
+2025/05/13 23:04:18.532659 KeyMsg received: Type=down, String='down', Rune='[]' | State=0, InputFocused=true
+2025/05/13 23:04:18.899847 KeyMsg received: Type=down, String='down', Rune='[]' | State=0, InputFocused=true
+2025/05/13 23:04:19.300374 KeyMsg received: Type=runes, String='j', Rune='[j]' | State=0, InputFocused=true
+2025/05/13 23:04:19.605205 KeyMsg received: Type=runes, String='k', Rune='[k]' | State=0, InputFocused=true
+2025/05/13 23:04:19.740936 KeyMsg received: Type=runes, String='j', Rune='[j]' | State=0, InputFocused=true
+2025/05/13 23:04:19.900848 KeyMsg received: Type=runes, String='k', Rune='[k]' | State=0, InputFocused=true
+2025/05/13 23:04:19.996613 KeyMsg received: Type=runes, String='j', Rune='[j]' | State=0, InputFocused=true
+2025/05/13 23:04:20.247902 KeyMsg received: Type=runes, String='q', Rune='[q]' | State=0, InputFocused=true

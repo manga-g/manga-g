@@ -335,23 +335,14 @@ func getMangaDetails(apiURL, mangaID string, verbose bool) {
 	}
 }
 
-func getChapterDetails(apiURL, chapterID string, verbose bool) {
-	var mangaID string
-	var mangaTitle string
-
-	// First, get chapter info to find the manga ID
+func fetchMangaIDFromChapter(apiURL, chapterID string) (string, error) {
 	apiEndpoint := fmt.Sprintf("%s/chapter/%s", apiURL, chapterID)
 	fmt.Printf("Getting chapter details for ID: %s\n", chapterID)
 	fmt.Printf("API Request: %s\n", apiEndpoint)
 
 	results, err := app.CustomRequest(apiEndpoint)
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		os.Exit(1)
-	}
-
-	if verbose {
-		printFormattedJSON(results)
+		return "", fmt.Errorf("error fetching chapter details: %w", err)
 	}
 
 	// Extract manga ID from chapter
@@ -367,15 +358,28 @@ func getChapterDetails(apiURL, chapterID string, verbose bool) {
 	if err := json.Unmarshal([]byte(results), &chapterResponse); err == nil {
 		for _, rel := range chapterResponse.Data.Relationships {
 			if rel.Type == "manga" {
-				mangaID = rel.ID
-				break
+				return rel.ID, nil
 			}
 		}
 	}
 
+	return "", fmt.Errorf("manga ID not found in chapter relationships")
+}
+
+func getChapterDetails(apiURL, chapterID string, verbose bool) {
+	var mangaID string
+	var mangaTitle string
+
+	// First, get chapter info to find the manga ID
+	mangaID, err := fetchMangaIDFromChapter(apiURL, chapterID)
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+		os.Exit(1)
+	}
+
 	// Get manga title if we found an ID
 	if mangaID != "" {
-		apiEndpoint = fmt.Sprintf("%s/manga/%s", apiURL, mangaID)
+		apiEndpoint := fmt.Sprintf("%s/manga/%s", apiURL, mangaID)
 		results, err := app.CustomRequest(apiEndpoint)
 		if err == nil {
 			var mangaResponse struct {
